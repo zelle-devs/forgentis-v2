@@ -1,0 +1,246 @@
+.nav-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 130px;
+  width: 98%;
+}
+
+/* Logo */
+.nav-logo {
+  width: 8%;
+  min-width: 70px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  will-change: transform;
+  margin-top: 30px;
+}
+
+.nav-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  will-change: transform, opacity, box-shadow;
+}
+
+/* Website Name */
+.nav-name h2 {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-blue-main);
+  letter-spacing: 2px;
+  margin: 0;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.nav-name .name-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Big Heading */
+.nav-heading {
+  width: 400px;
+  flex-shrink: 0;
+  text-align: left;
+  will-change: transform, opacity;
+}
+
+.nav-heading h1 {
+  font-family: var(--font-family-primary);
+  font-size: 90px;
+  color: var(--color-white);
+  line-height: 0.9;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0px;
+  word-wrap: break-word;
+  min-height: 270px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
+.nav-heading .word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.nav-heading .char {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: center;
+}
+
+/* Title */
+.nav-title {
+  flex: 1;
+  text-align: left;
+  max-width: 150px;
+  will-change: transform, opacity;
+}
+
+.nav-title p {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-base);
+  color: var(--color-steel-main);
+  margin: 0;
+  line-height: 1;
+}
+
+.nav-title .title-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.nav-title .title-char {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: center;
+}
+
+/* Button */
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  background: var(--color-blue-main);
+  color: var(--color-white);
+  border: 2px solid var(--color-blue-main);
+  border-radius: 50px;
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  will-change: transform, opacity, box-shadow;
+}
+
+.nav-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-button:hover::before {
+  left: 100%;
+}
+
+.nav-button:hover {
+  background: transparent;
+  color: var(--color-blue-main);
+  box-shadow: 0 0 50px rgba(2, 112, 234, 0.8);
+  transform: translateY(-3px);
+}
+
+/* Chapters - Fixed Bottom */
+.nav-chapters {
+  margin-top: 70px;
+  position: fixed;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  opacity: 0;
+  z-index: 4;
+  will-change: transform, opacity;
+}
+
+.chapter {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--color-steel-main);
+  letter-spacing: 2px;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.chapter.active {
+  color: var(--color-blue-main);
+  font-weight: var(--font-weight-bold);
+}
+
+.chapter:hover {
+  color: var(--color-white);
+}
+
+.chapter-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--color-dark-border);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .nav-heading {
+    width: 300px;
+  }
+  
+  .nav-heading h1 {
+    font-size: 70px;
+    min-height: 210px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav-heading {
+    width: 250px;
+  }
+  
+  .nav-heading h1 {
+    font-size: 60px;
+    min-height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .nav-heading {
+    width: 200px;
+  }
+  
+  .nav-heading h1 {
+    font-size: 50px;
+    min-height: 150px;
+  }
+  
+  .nav-chapters {
+    gap: 15px;
+    bottom: 0;
+  }
+  
+  .chapter-divider {
+    width: 20px;
+  }
+}
