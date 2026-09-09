@@ -231,18 +231,20 @@ function SecondSection({ scrollProgressRef }) {
   }, [])
 
   // Ultra smooth letter-by-letter fill
+ // Ultra smooth letter-by-letter fill during second half of scroll progress
   useEffect(() => {
     const handleScrollProgress = (e) => {
       const progress = e.detail.progress
       
-      const totalChars = charRefs.current.length
-      const visibleChars = Math.floor(progress * totalChars)
+      // Map progress from 0.5 - 1.0 to text fill percentage (0 - 1)
+      const textProgress = progress <= 0.5 ? 0 : (progress - 0.5) / 0.5
       
-      // Sirf new characters update karo (performance ke liye)
+      const totalChars = charRefs.current.length
+      const visibleChars = Math.floor(textProgress * totalChars)
+      
       if (visibleChars !== lastVisibleCount.current) {
         charRefs.current.forEach((char, index) => {
           if (index < visibleChars) {
-            // Character white hota hai - smooth
             gsap.to(char, {
               color: '#FFFFFF',
               opacity: 1,
@@ -250,7 +252,6 @@ function SecondSection({ scrollProgressRef }) {
               ease: 'power2.out'
             })
           } else if (index >= visibleChars && index < lastVisibleCount.current) {
-            // Character dull hota hai - smooth
             gsap.to(char, {
               color: 'rgba(157, 160, 161, 0.3)',
               opacity: 0.3,
@@ -265,10 +266,7 @@ function SecondSection({ scrollProgressRef }) {
     }
 
     window.addEventListener('scrollProgress', handleScrollProgress)
-
-    return () => {
-      window.removeEventListener('scrollProgress', handleScrollProgress)
-    }
+    return () => window.removeEventListener('scrollProgress', handleScrollProgress)
   }, [])
 
   return (
@@ -290,14 +288,14 @@ function SecondSection({ scrollProgressRef }) {
       {/* Center Column - 60% */}
       <div ref={centerColumnRef} className="second-center-column">
         <h2 ref={headingRef} className="second-heading">
-          Every piece serves as a profound declaration, striking in its design, intentional in its meaning, and undeniably his.
+          FROM ENGINEERING REQUIREMENT TO FINISHED METALWORK
         </h2>
       </div>
 
       {/* Right Column - 20% */}
       <div ref={rightColumnRef} className="second-right-column">
         <p className="right-description">
-          Precision fabrication for architecture, industry, and everything in between. Each creation tells a story of craftsmanship and innovation.
+A great fabrication partner does more than manufacture parts.
         </p>
       </div>
     </div>

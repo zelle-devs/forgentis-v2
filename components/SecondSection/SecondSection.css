@@ -77,8 +77,8 @@
 
 .second-heading {
   font-family: var(--font-family-primary);
-  font-size: var(--font-size-7xl);
-  font-weight: var(--font-weight-bold);
+  font-size: 70px;
+  font-weight: 100;
   line-height: 1.2;
   color: rgba(157, 160, 161, 0.3);
   text-align: left;

@@ -404,6 +404,16 @@ select {
   will-change: transform, opacity;
 }
 
+.fourth-section-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 .hero-wrapper {
   z-index: 1;
 }

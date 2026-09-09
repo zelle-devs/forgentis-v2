@@ -1,4 +1,3 @@
-
 'use client'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
@@ -11,76 +10,97 @@ function ImageSplit() {
   const rightWindowRef = useRef(null)
   const imageContainerRef = useRef(null)
   const windowsContainerRef = useRef(null)
+  const scaleTweenRef = useRef(null)
 
   const heroImage = '/images/hero.webp'
 
   useEffect(() => {
-    // Calculate exact scale
     const calculateScale = () => {
-      const totalWidth = 160 * 3 // 3 windows after joining
+      const totalWidth = 160 * 3
       const totalHeight = 280
-      
       const screenWidth = window.innerWidth
       const screenHeight = window.innerHeight
-      
       const scaleX = screenWidth / totalWidth
       const scaleY = screenHeight / totalHeight
-      
       return Math.max(scaleX, scaleY) * 1.05
     }
 
     const timeline = gsap.timeline({ delay: 0.3 })
 
     timeline
+      // Bottom se teeno windows enter karo - ek saath
       .fromTo(
         [leftWindowRef.current, centerWindowRef.current, rightWindowRef.current],
-        { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.5)', stagger: 0.1 }
+        { 
+          y: '100vh',
+          opacity: 0,
+          scale: 0.8,
+        },
+        { 
+          y: '0vh',
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: 'power3.out',
+          stagger: 0.08
+        }
       )
+      // Gap close - join
       .to(
         windowsContainerRef.current,
-        { gap: '0px', duration: 0.6, ease: 'power2.inOut' }
+        { 
+          gap: '0px',
+          duration: 0.8,
+          ease: 'power3.inOut'
+        }
       )
+      // Scale up - full screen
       .to(
         windowsContainerRef.current,
         {
           scale: calculateScale(),
           duration: 2,
-          ease: 'power3.inOut',
-          // onUpdate:  function () {
-          onUpdate: () => {
-            // Jab scale 80% complete ho jaye, tab image reveal karna shuru karo
-            const progress = this.progress?.()
-            if (progress > 0.7) {
-              gsap.to(imageContainerRef.current, {
-                opacity: 1,
-                duration: 0.3,
-                ease: 'power1.out'
-              })
-            }
-          },
+          ease: 'power4.inOut',
+          // onComplete: () => {
+          //   gsap.set(windowsContainerRef.current, {
+          //     opacity: 0,
+          //     pointerEvents: 'none'
+          //   })
+            
+          //   gsap.to(imageContainerRef.current, {
+          //     opacity: 1,
+          //     scale: 1,
+          //     duration: 0.5,
+          //     ease: 'power2.out'
+          //   })
+            
+          //   gsap.to(imageContainerRef.current, {
+          //     scale: 1.05,
+          //     duration: 4,
+          //     ease: 'power1.inOut',
+          //     delay: 0.5
+          //   })
+          // }
           onComplete: () => {
-            // Windows ko hide karo
-            gsap.set(windowsContainerRef.current, {
-              opacity: 0,
-              pointerEvents: 'none'
-            })
-            
-            // Image ko perfect position par lao
-            gsap.to(imageContainerRef.current, {
-              scale: 1,
-              duration: 0.5,
-              ease: 'power2.out'
-            })
-            
-            // Premium subtle zoom
-            gsap.to(imageContainerRef.current, {
-              scale: 1.05,
-              duration: 4,
-              ease: 'power1.inOut',
-              delay: 0.5
-            })
-          }
+  // Full image ko pehle exactly same position par rakh do
+  gsap.set(imageContainerRef.current, {
+    opacity: 1,
+    scale: 1,
+  })
+
+  // Windows ko hide nahi karna — sirf pointer events disable
+  gsap.set(windowsContainerRef.current, {
+    pointerEvents: 'none',
+  })
+
+  // Very slight zoom continue
+  gsap.to(imageContainerRef.current, {
+    scale: 1.05,
+    duration: 4,
+    ease: 'power1.inOut',
+    delay: 0.5
+  })
+}
         }
       )
 
