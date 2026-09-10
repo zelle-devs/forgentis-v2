@@ -428,6 +428,8 @@ import SecondSection from '@/components/SecondSection/SecondSection'
 import FourthSection from '@/components/FourthSection/FourthSection'
 import ThirdSection from '@/components/ThirdSection/ThirdSection'
 import CursorTrail from '@/components/CursorTrail/CursorTrail'
+import CapabilitySection from '@/components/CapabilitySection/CapabilitySection'
+import ProcessSection from '@/components/ProcessSection/ProcessSection'
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
@@ -911,7 +913,10 @@ gsap.set(fourthSectionRef.current, { display: 'none' })
 
           {showSecondSection && (
             <div ref={secondSectionRef} className="second-section-wrapper">
-              <SecondSection scrollProgressRef={scrollProgressRef} />
+              {/* <SecondSection scrollProgressRef={scrollProgressRef} /> */}
+              <CapabilitySection scrollProgressRef={scrollProgressRef} />
+                            {/* <ProcessSection scrollProgressRef={scrollProgressRef} /> */}
+
             </div>
           )}
 
