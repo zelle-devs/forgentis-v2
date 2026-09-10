@@ -9,40 +9,59 @@ const POINTS = [
     titleSecond: 'IN METAL',
     coloredPart: 'second', // Doosra word blue color ka hoga
     images: [
-      { src: '/images/1-a.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/1-b.png', top: '46%', left: '54%', width: '28%', height: '40%', speed: 0.22 },
+      { src: '/images/precision1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+      { src: '/images/precision3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/images/precision2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '60%', left: '4%' },
+    titlePos: { top: '70%', left: '4%' },
   },
   {
     titleFirst: 'FULL',
     titleSecond: 'CAPABILITY',
     coloredPart: 'second',
+    // images: [
+    //   { src: '/images/1-c.png', top: '10%', left: '48%', width: '36%', height: '52%', speed: 0.18 },
+    //   { src: '/images/1-d.webp', top: '54%', left: '10%', width: '26%', height: '36%', speed: 0.1 },
+    // ],
     images: [
-      { src: '/images/1-c.png', top: '10%', left: '48%', width: '36%', height: '52%', speed: 0.18 },
-      { src: '/images/1-d.webp', top: '54%', left: '10%', width: '26%', height: '36%', speed: 0.1 },
+      { src: '/images/capability1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+      { src: '/images/capability3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/images/capability2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '14%', left: '36%' },
+    // titlePos: { top: '14%', left: '36%' },
+    titlePos: { top: '70%', left: '4%' },
   },
   {
     titleFirst: 'TOTAL',
     titleSecond: 'CONTROL',
     coloredPart: 'second',
+    // images: [
+    //   { src: '/images/1-a.png', top: '14%', left: '10%', width: '26%', height: '64%', speed: 0.14 },
+    //   { src: '/images/1-b.png', top: '10%', left: '60%', width: '30%', height: '34%', speed: 0.2 },
+    // ],
     images: [
-      { src: '/images/1-a.png', top: '14%', left: '10%', width: '26%', height: '64%', speed: 0.14 },
-      { src: '/images/1-b.png', top: '10%', left: '60%', width: '30%', height: '34%', speed: 0.2 },
+      { src: '/images/control1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+      { src: '/images/control3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/images/control2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '16%', left: '18%' },
+    // titlePos: { top: '16%', left: '18%' },
+titlePos: { top: '70%', left: '4%' },
   },
   {
     titleFirst: 'EXPERT',
     titleSecond: 'CRAFT',
     coloredPart: 'second',
-    images: [
-      { src: '/images/1-c.png', top: '50%', left: '8%', width: '30%', height: '42%', speed: 0.16 },
-      { src: '/images/1-d.webp', top: '8%', left: '44%', width: '34%', height: '48%', speed: 0.1 },
+    // images: [
+    //   { src: '/images/1-c.png', top: '50%', left: '8%', width: '30%', height: '42%', speed: 0.16 },
+    //   { src: '/images/1-d.webp', top: '8%', left: '44%', width: '34%', height: '48%', speed: 0.1 },
+    // ],
+     images: [
+      { src: '/images/craft1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+      { src: '/images/craft3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/images/craft2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '4%', left: '44%' },
+    // titlePos: { top: '4%', left: '44%' },
+    titlePos: { top: '70%', left: '4%' },
   },
 ]
 
@@ -126,11 +145,11 @@ function CapabilitySection() {
         {/* Intro panel */}
         <div className="capability-panels capability-intro-panel">
           <h2 className="capability-main-title">
-            <span className="title-part-white">BUILT BEYOND<span className="title-part-color"> THE STANDARD</span></span>{' '}
+            <span className="title-part-white">BUILT BEYOND THE <span className="title-part-color">STANDARD</span></span>{' '}
             
           </h2>
           <p className="capability-main-desc">
-            <span className='colored'>We don't just fabricate what's been done before.<br/></span>
+           We don't just fabricate what's been done before.
             We take drawings,
             specifications and ambitious requirements — and turn them into
             metalwork built to perform.
@@ -178,6 +197,9 @@ function CapabilitySection() {
 }
 
 export default CapabilitySection
+
+
+
 
 // 'use client'
 // import { useEffect, useRef, useState } from 'react'

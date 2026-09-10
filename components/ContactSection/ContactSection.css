@@ -1,0 +1,139 @@
+.quality-section {
+  width: 100%;
+  height: 100vh;
+  background: var(--color-black, #0a0a0a);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 60px 80px;
+  color: var(--color-white, #fff);
+}
+
+/* Background Image & Vignette Overlay */
+.quality-bg-image-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 65%;
+  height: 100%;
+  background-image: url('/capability2.png'); /* Yahan apni image ka path dein */
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+  will-change: opacity, transform;
+}
+
+.quality-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #0a0a0a 0%, rgba(10,10,10,0.6) 50%, rgba(10,10,10,0.2) 100%);
+}
+
+.quality-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Left Content Area */
+.quality-left {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.quality-heading {
+  font-family: var(--font-family-primary);
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  font-weight: 200;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+.quality-subtext {
+  font-family: var(--font-family-secondary);
+  font-size: clamp(1rem, 1.2vw, 1.25rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.5px;
+}
+
+.quality-btn {
+  align-self: flex-start;
+  background: transparent;
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 14px 28px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.quality-btn:hover {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-white);
+}
+
+/* Right Side Giant Word (CONTACT) */
+.quality-right-word {
+  position: absolute;
+  right: 0;
+  top: 15%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.staggered-word-track {
+  display: flex;
+  gap: 4px;
+}
+
+.staggered-char {
+  font-family: var(--font-family-primary);
+  font-size: clamp(7rem, 14vw, 16rem);
+  font-weight: 100;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.95);
+  text-transform: uppercase;
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Bottom Bar Branding */
+.quality-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  font-family: var(--font-family-secondary);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.quality-brand {
+  font-weight: 700;
+  color: var(--color-white);
+}

@@ -206,12 +206,11 @@ function NavContent() {
 
         <div className="nav-heading">
           <h1 ref={headingRef}>
-            PRECISION <br />
-            FABRICATION.<br />
-            BUILT <br />
-            FOR <br />
-            WHAT'S <br />
-            NEXT
+            we shape what builds
+            {/* We <br />
+            Shape <br />
+            What <br />
+            Builds <br /> */}
           </h1>
         </div>
 

@@ -3,59 +3,76 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import './ThirdSection.css'
 
-function ThirdSection({ scrollProgressRef }) {
+function ThirdSection() {
   const sectionRef = useRef(null)
   const sliderRef = useRef(null)
   const firstSlideImageRef = useRef(null)
+  const introRef = useRef(null)
 
-  const images = [
-    { id: 1, src: '/images/1-a.png', title: 'Chapter One', desc: 'The Beginning' },
-    { id: 2, src: '/images/1-b.png', title: 'Chapter Two', desc: 'The Journey' },
-    { id: 3, src: '/images/1-c.png', title: 'Chapter Three', desc: 'The Craft' },
-    { id: 4, src: '/images/1-d.webp', title: 'Chapter Four', desc: 'The Legacy' },
+  const slides = [
+    {
+      id: 1,
+      src: '/images/build1.png',
+      desc: 'ARCHITECTURAL METALWORK',
+      title: 'Facades, screens, railings, staircases and feature elements.',
+      pos: { top: '3%', left: '3%' },
+    },
+    {
+      id: 2,
+      src: '/images/build2.jpeg',
+      desc: 'COMMERCIAL & INTERIOR',
+      title: 'Furniture bases, signage, panels and custom interior metalwork.',
+      pos: { top: '80%', left: '65%' },
+    },
+    {
+      id: 3,
+      src: '/images/build3.jpeg',
+      desc: 'INDUSTRIAL FABRICATION',
+      title: 'Engineered components, structural assemblies and production parts.',
+      pos: { top: '80%', left: '42%' },
+    },
+    {
+      id: 4,
+      src: '/images/build4.jpeg',
+      desc: 'CUSTOM FABRICATION',
+      title: 'Complex requirements transformed into practical, precisely fabricated solutions.',
+      pos: { top: '3%', left: '3%' },
+      button: true,
+    },
   ]
 
   useEffect(() => {
-    // ✅ sectionRef ab y translate nahi karta — parent wrapper (thirdSectionRef)
-    // pehle se hi poore section ko slide karta hai. Yahan sirf zoom ka initial state.
     if (firstSlideImageRef.current) {
       gsap.set(firstSlideImageRef.current, { scale: 1.3 })
+    }
+    if (introRef.current) {
+      gsap.set(introRef.current, { yPercent: 0, opacity: 1 })
     }
   }, [])
 
   useEffect(() => {
-    // ✅ Phase 1 (vertical slide + zoom) — apna alag event
+    // Create optimized quickTo scrubbers for lag-free buttery smooth interpolation
+    const imageScaleX = gsap.quickTo(firstSlideImageRef.current, "scale", { duration: 0.3, ease: "power3.out" })
+    const introY = gsap.quickTo(introRef.current, "yPercent", { duration: 0.3, ease: "power3.out" })
+    const introOpacity = gsap.quickTo(introRef.current, "opacity", { duration: 0.3, ease: "power3.out" })
+    const sliderX = gsap.quickTo(sliderRef.current, "x", { duration: 0.4, ease: "power3.out" })
+
     const handleSlideProgress = (e) => {
-      const slideProgress = e.detail.progress // already 0 → 1 normalized
-
-      if (firstSlideImageRef.current) {
-        const scaleValue = 1.3 - (slideProgress * 0.3)
-        gsap.to(firstSlideImageRef.current, {
-          scale: scaleValue,
-          duration: 0.08,
-          ease: 'none',
-          overwrite: 'auto',
-        })
-      }
-
-      // slider ko reset/rest position pe rakho jab tak horizontal phase shuru na ho
-      if (sliderRef.current) {
-        gsap.to(sliderRef.current, { x: 0, duration: 0.08, ease: 'none', overwrite: 'auto' })
-      }
+      const slideProgress = e.detail.progress // 0 → 1
+      imageScaleX(1.3 - slideProgress * 0.3)
+      introY(slideProgress * -30)
+      introOpacity(1 - slideProgress)
+      sliderX(0)
     }
 
-    // ✅ Phase 2 (horizontal scroll) — apna alag event, ab kabhi progress=0 confuse nahi karega
     const handleHorizontalProgress = (e) => {
       const horizontalProgress = e.detail.progress // 0 → 1
-
-      if (firstSlideImageRef.current) {
-        gsap.to(firstSlideImageRef.current, { scale: 1, duration: 0.08, ease: 'none', overwrite: 'auto' })
-      }
-
+      imageScaleX(1)
+      introOpacity(0)
+      
       if (sliderRef.current) {
         const maxScroll = sliderRef.current.scrollWidth - window.innerWidth + 40
-        const x = -horizontalProgress * maxScroll
-        gsap.to(sliderRef.current, { x, duration: 0.08, ease: 'none', overwrite: 'auto' })
+        sliderX(-horizontalProgress * maxScroll)
       }
     }
 
@@ -69,29 +86,33 @@ function ThirdSection({ scrollProgressRef }) {
 
   return (
     <div ref={sectionRef} className="third-section">
+      <div ref={introRef} className="third-intro">
+        <h2 className="third-intro-title">MADE FOR THE PROJECT.<span className='third-intro-title-color'>NOT THE CATALOGUE.</span></h2>
+        <p className="third-intro-desc">Every project has its own requirements. We fabricate accordingly.</p>
+      </div>
+
       <div ref={sliderRef} className="third-slider">
-        {images.map((image, index) => (
-          <div key={image.id} className="third-slide">
+        {slides.map((slide, index) => (
+          <div key={slide.id} className="third-slide">
             <img
               ref={index === 0 ? firstSlideImageRef : null}
-              src={image.src}
-              alt={image.title}
+              src={slide.src}
+              alt={slide.desc}
               className="slide-image"
             />
+            <div className="slide-image-overlay" />
 
-            <div className="slide-top-content">
-              <div className="slide-left-text">
-                <span>{image.desc}</span>
-              </div>
-              <div className="slide-center-text">
-                <h3>
-                  {image.title.split(' ')[0]}{' '}
-                  <span className="highlight">{image.title.split(' ')[1]}</span>
-                </h3>
-              </div>
-              <div className="slide-right-text">
-                <span>{String(image.id).padStart(2, '0')}</span>
-              </div>
+            <div
+              className="slide-content-box"
+              style={{ top: slide.pos.top, left: slide.pos.left }}
+            >
+              <span className="slide-category">{slide.desc}</span>
+              <h3>{slide.title}</h3>
+              {slide.button && <button className="explore-work-btn">EXPLORE OUR WORK</button>}
+            </div>
+
+            <div className="slide-counter">
+              <span>{String(slide.id).padStart(2, '0')}</span>
             </div>
           </div>
         ))}
@@ -102,106 +123,147 @@ function ThirdSection({ scrollProgressRef }) {
 
 export default ThirdSection
 
+
 // 'use client'
 // import { useEffect, useRef } from 'react'
 // import gsap from 'gsap'
 // import './ThirdSection.css'
 
-// function ThirdSection({ scrollProgressRef }) {
+// function ThirdSection() {
 //   const sectionRef = useRef(null)
 //   const sliderRef = useRef(null)
 //   const firstSlideImageRef = useRef(null)
+//   const introRef = useRef(null)
 
-//   const images = [
-//     { id: 1, src: '/images/1-a.png', title: 'Chapter One', desc: 'The Beginning' },
-//     { id: 2, src: '/images/1-b.png', title: 'Chapter Two', desc: 'The Journey' },
-//     { id: 3, src: '/images/1-c.png', title: 'Chapter Three', desc: 'The Craft' },
-//     { id: 4, src: '/images/1-d.webp', title: 'Chapter Four', desc: 'The Legacy' },
+//   const slides = [
+//     {
+//       id: 1,
+//       src: '/images/build1.png',
+//       desc: 'ARCHITECTURAL METALWORK',
+//       title: 'Facades, screens, railings, staircases and feature elements.',
+//       pos: { top: '75%', left: '8%' },
+//     },
+//     {
+//       id: 2,
+//       src: '/images/build2.jpeg',
+//       desc: 'COMMERCIAL & INTERIOR',
+//       title: 'Furniture bases, signage, panels and custom interior metalwork.',
+//       pos: { top: '10%', left: '8%' },
+//     },
+//     {
+//       id: 3,
+//       src: '/images/build3.jpeg',
+//       desc: 'INDUSTRIAL FABRICATION',
+//       title: 'Engineered components, structural assemblies and production parts.',
+//       pos: { top: '80%', left: '32%' },
+//     },
+//     {
+//       id: 4,
+//       src: '/images/build4.jpeg',
+//       desc: 'CUSTOM FABRICATION',
+//       title: 'Complex requirements transformed into practical, precisely fabricated solutions.',
+//       pos: { top: '70%', left: '60%' },
+//       button: true,
+//     },
 //   ]
 
 //   useEffect(() => {
-//     // Initial state - section neeche, first image zoomed
-//     gsap.set(sectionRef.current, { y: '100%' })
 //     if (firstSlideImageRef.current) {
 //       gsap.set(firstSlideImageRef.current, { scale: 1.3 })
+//     }
+//     if (introRef.current) {
+//       gsap.set(introRef.current, { yPercent: 0, opacity: 1 })
 //     }
 //   }, [])
 
 //   useEffect(() => {
-//     const handleScrollProgress = (e) => {
-//       const progress = e.detail.progress
-      
-//       if (sectionRef.current && sliderRef.current) {
-//         if (progress <= 0.5) {
-//           // Phase 1: Slide up with zoom out
-//           const slideProgress = progress / 0.5
-//           const yPos = (1 - slideProgress) * 100
-          
-//           gsap.to(sectionRef.current, {
-//             y: `${yPos}%`,
-//             duration: 0.05,
-//             ease: 'none'
-//           })
-          
-//           // First image zoom out - 1.3 se 1.0
-//           if (firstSlideImageRef.current) {
-//             const scaleValue = 1.3 - (slideProgress * 0.3)
-//             gsap.to(firstSlideImageRef.current, {
-//               scale: scaleValue,
-//               duration: 0.05,
-//               ease: 'none'
-//             })
-//           }
-          
-//           gsap.to(sliderRef.current, { x: 0, duration: 0.05, ease: 'none' })
-//         } else {
-//           // Phase 2: Horizontal scroll
-//           const horizontalProgress = (progress - 0.5) / 0.5
-          
-//           gsap.to(sectionRef.current, { y: '0%', duration: 0.05, ease: 'none' })
-          
-//           if (firstSlideImageRef.current) {
-//             gsap.to(firstSlideImageRef.current, { scale: 1, duration: 0.05, ease: 'none' })
-//           }
-          
-//           const maxScroll = sliderRef.current.scrollWidth - window.innerWidth + 40
-//           const x = -horizontalProgress * maxScroll
-          
-//           gsap.to(sliderRef.current, { x: x, duration: 0.05, ease: 'none' })
-//         }
+//     // Phase 1 (Vertical slide + zoom + Intro fading out)
+//     const handleSlideProgress = (e) => {
+//       const slideProgress = e.detail.progress // 0 → 1
+
+//       if (firstSlideImageRef.current) {
+//         const scaleValue = 1.3 - slideProgress * 0.3
+//         gsap.to(firstSlideImageRef.current, {
+//           scale: scaleValue,
+//           duration: 0.08,
+//           ease: 'none',
+//           overwrite: 'auto',
+//         })
+//       }
+
+//       if (introRef.current) {
+//         gsap.to(introRef.current, {
+//           yPercent: slideProgress * -30,
+//           opacity: 1 - slideProgress,
+//           duration: 0.08,
+//           ease: 'none',
+//           overwrite: 'auto',
+//         })
+//       }
+
+//       if (sliderRef.current) {
+//         gsap.to(sliderRef.current, { x: 0, duration: 0.08, ease: 'none', overwrite: 'auto' })
 //       }
 //     }
 
-//     window.addEventListener('scrollProgress', handleScrollProgress)
-//     return () => window.removeEventListener('scrollProgress', handleScrollProgress)
+//     // Phase 2 (Horizontal scroll)
+//     const handleHorizontalProgress = (e) => {
+//       const horizontalProgress = e.detail.progress // 0 → 1
+
+//       if (firstSlideImageRef.current) {
+//         gsap.to(firstSlideImageRef.current, { scale: 1, duration: 0.08, ease: 'none', overwrite: 'auto' })
+//       }
+
+//       if (introRef.current) {
+//         gsap.to(introRef.current, { opacity: 0, duration: 0.08, ease: 'none', overwrite: 'auto' })
+//       }
+
+//       if (sliderRef.current) {
+//         const maxScroll = sliderRef.current.scrollWidth - window.innerWidth + 40
+//         const x = -horizontalProgress * maxScroll
+//         gsap.to(sliderRef.current, { x, duration: 0.08, ease: 'none', overwrite: 'auto' })
+//       }
+//     }
+
+//     window.addEventListener('thirdSlideProgress', handleSlideProgress)
+//     window.addEventListener('thirdHorizontalProgress', handleHorizontalProgress)
+//     return () => {
+//       window.removeEventListener('thirdSlideProgress', handleSlideProgress)
+//       window.removeEventListener('thirdHorizontalProgress', handleHorizontalProgress)
+//     }
 //   }, [])
 
 //   return (
 //     <div ref={sectionRef} className="third-section">
+//       {/* Top Intro Section (Fills the blank space initially) */}
+//       <div ref={introRef} className="third-intro">
+//         <h2 className="third-intro-title">MADE FOR THE PROJECT.<span className='third-intro-title-color'>NOT THE CATALOGUE.</span></h2>
+//         <p className="third-intro-desc">Every project has its own requirements. We fabricate accordingly.</p>
+//       </div>
+
 //       <div ref={sliderRef} className="third-slider">
-//         {images.map((image, index) => (
-//           <div key={image.id} className="third-slide">
-//             <img 
+//         {slides.map((slide, index) => (
+//           <div key={slide.id} className="third-slide">
+//             <img
 //               ref={index === 0 ? firstSlideImageRef : null}
-//               src={image.src} 
-//               alt={image.title} 
-//               className="slide-image" 
+//               src={slide.src}
+//               alt={slide.desc}
+//               className="slide-image"
 //             />
-            
-//             {/* Top Content Overlay */}
-//             <div className="slide-top-content">
-//               <div className="slide-left-text">
-//                 <span>{image.desc}</span>
-//               </div>
-//               <div className="slide-center-text">
-//                 <h3>
-//                   {image.title.split(' ')[0]}{' '}
-//                   <span className="highlight">{image.title.split(' ')[1]}</span>
-//                 </h3>
-//               </div>
-//               <div className="slide-right-text">
-//                 <span>{String(image.id).padStart(2, '0')}</span>
-//               </div>
+//             <div className="slide-image-overlay" />
+
+//             {/* Dynamic & Random Content Positioning */}
+//             <div
+//               className="slide-content-box"
+//               style={{ top: slide.pos.top, left: slide.pos.left }}
+//             >
+//               <span className="slide-category">{slide.desc}</span>
+//               <h3>{slide.title}</h3>
+//               {slide.button && <button className="explore-work-btn">EXPLORE OUR WORK</button>}
+//             </div>
+
+//             <div className="slide-counter">
+//               <span>{String(slide.id).padStart(2, '0')}</span>
 //             </div>
 //           </div>
 //         ))}

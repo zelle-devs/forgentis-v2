@@ -284,7 +284,7 @@ export default function FourthSection() {
     <div className="fourth-section">
       {/* Image puri background screen par rhegi */}
       <div className="image-container" ref={imageRef}>
-        <img src="/images/1-c.png" alt="Revealed Section" className="revealed-image" />
+        <img src="/images/desire-1.webp" alt="Revealed Section" className="revealed-image" />
       </div>
 
       {/* Sirf SVG shape/border center mein 30px padding ke sath fit hoga */}

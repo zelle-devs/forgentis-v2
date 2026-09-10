@@ -1,0 +1,92 @@
+.section {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-black, #0a0a0a);
+  color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.contentArea {
+  flex: 1;
+  height: 100%;
+  padding: 5vh 4vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.title {
+  font-size: clamp(2.5rem, 4vw, 5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 800px;
+}
+
+.highlight {
+  color: #b8865b; /* Premium accent tone matching your theme */
+}
+
+.pointsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 750px;
+  margin-top: 2rem;
+}
+
+.pointCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.5rem;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.pointNum {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #b8865b;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.pointTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
+}
+
+.pointDesc {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+  line-height: 1.4;
+}
+
+.imageContainer {
+  position: relative;
+  width: 50vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #222222 0%, #111111 100%);
+  /* Replace background with your actual <Image> or background image URL */
+  background-image: url('/path-to-your-image.jpg');
+  background-size: cover;
+  background-position: center;
+}
