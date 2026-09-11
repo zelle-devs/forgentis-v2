@@ -3,6 +3,206 @@
   height: 100vh;
   background: var(--color-black);
   position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* Vertical track — 2 panels (intro + slider) */
+.third-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  will-change: transform;
+}
+
+/* Intro Panel — CapabilitySection intro jaisa centered */
+.third-intro-panel {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  padding: 0 10%;
+}
+
+.third-intro-title {
+  font-family: var(--font-family-primary);
+  font-size: 70px;
+  font-weight: 100;
+  color: var(--color-white);
+  letter-spacing: 2px;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  max-width: 550px;
+  line-height: 1.1;
+}
+
+.third-intro-title-color {
+  color: var(--color-blue-main);
+  font-weight: 300;
+}
+
+.third-intro-desc {
+  font-family: var(--font-family-secondary);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 1px;
+  max-width: 600px;
+  margin: 0;
+}
+
+/* Slider Panel */
+.third-slider-panel {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.third-slider {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 40px);
+  width: 100%;
+  will-change: transform;
+  cursor: grab;
+}
+
+.third-slider:active {
+  cursor: grabbing;
+}
+
+.third-slide {
+  flex-shrink: 0;
+  width: calc(100vw - 40px);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+}
+
+.slide-image-overlay {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%);
+  border-radius: 8px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.slide-content-box {
+  position: absolute;
+  max-width: 500px;
+  z-index: 10;
+  padding: 20px;
+  pointer-events: auto;
+  text-shadow: var(--text-shadow-btn)!important;
+}
+
+.slide-category {
+  display: block;
+  font-family: var(--font-family-secondary);
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  color: var(--color-blue-main, #3b82f6);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.slide-content-box h3 {
+  font-size: var(--font-size-sm, 15px);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-light, 700);
+  color: var(--color-white, #fff);
+  letter-spacing: 1px;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+}
+
+.explore-work-btn {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+  background: var(--color-white, #fff);
+  color: var(--color-black, #000);
+  border: none;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  text-transform: uppercase;
+}
+
+.explore-work-btn:hover {
+  background: var(--color-blue-main) !important;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.slide-counter {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  z-index: 3;
+}
+
+.slide-counter span {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm, 14px);
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 2px;
+}
+
+@media (max-width: 1024px) {
+  .third-slider-panel { padding: 15px; }
+  .third-slide { width: calc(100vw - 30px); }
+  .third-slider { gap: 15px; height: calc(100vh - 30px); }
+  .slide-content-box { max-width: 320px; }
+  .third-intro-title { font-size: 50px; }
+}
+
+@media (max-width: 768px) {
+  .third-slider-panel { padding: 10px; }
+  .third-slide { width: calc(100vw - 20px); }
+  .third-slider { gap: 10px; height: calc(100vh - 20px); }
+  .third-intro-title { font-size: 32px; }
+  .slide-content-box {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    padding: 20px;
+    margin-top: auto;
+  }
+}
+
+
+/* .third-section {
+  width: 100%;
+  height: 100vh;
+  background: var(--color-black);
+  position: relative;
   overflow: visible;
   padding: 20px;
   display: flex;
@@ -12,7 +212,6 @@
   will-change: transform;
 }
 
-/* Intro Header filling the top space */
 .third-intro {
   position: absolute;
   top: 0;
@@ -52,7 +251,6 @@
   width: 100%;
   will-change: transform;
   cursor: grab;
-  /* margin-top: 40px; */
 }
 
 .third-slider:active {
@@ -79,7 +277,6 @@
   will-change: transform;
 }
 
-/* Dark gradient overlay for readability on images */
 .slide-image-overlay {
   content: '';
   position: absolute;
@@ -90,7 +287,6 @@
   pointer-events: none;
 }
 
-/* Random Positioned Content Box inside each slide */
 .slide-content-box {
   position: absolute;
   max-width: 500px;
@@ -104,9 +300,7 @@
   font-family: var(--font-family-secondary);
   font-size: clamp(1.2rem, 2vw, 1.8rem);
   color: var(--color-blue-main, #3b82f6);
-  /* letter-spacing: 2px; */
   text-transform: uppercase;
-  /* margin-bottom: 8px; */
   font-weight: 600;
 }
 
@@ -115,17 +309,15 @@
   font-family: var(--font-family-primary);
   font-weight: var(--font-weight-light, 700);
   color: var(--color-white, #fff);
-  /* line-height: 1.3; */
   letter-spacing: 1px;
   margin: 0 0 16px 0;
   text-transform: uppercase;
 }
 
-/* Explore Button styling */
 .explore-work-btn {
   position: relative;
-  z-index: 20; /* 👈 Button ko sabse top layer par rakhein */
-  pointer-events: auto; /* 👈 Click event active karne ke liye */
+  z-index: 20; 
+  pointer-events: auto; 
   background: var(--color-white, #fff);
   color: var(--color-black, #000);
   border: none;
@@ -145,7 +337,6 @@
   transform: translateY(-2px);
 }
 
-/* Slide Number Counter (Bottom Right) */
 .slide-counter {
   position: absolute;
   bottom: 30px;
@@ -160,7 +351,6 @@
   letter-spacing: 2px;
 }
 
-/* Responsive queries */
 @media (max-width: 1024px) {
   .third-section { padding: 15px; }
   .third-slide { width: calc(100vw - 30px); }
@@ -180,4 +370,4 @@
     padding: 20px;
     margin-top: auto;
   }
-}
+} */

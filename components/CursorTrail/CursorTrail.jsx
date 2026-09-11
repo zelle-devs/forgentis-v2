@@ -33,7 +33,6 @@ function CursorTrail() {
       mouseRef.current.x = e.clientX
       mouseRef.current.y = e.clientY
 
-      // Add point with velocity info
       pointsRef.current.push({
         x: e.clientX,
         y: e.clientY,
@@ -43,7 +42,6 @@ function CursorTrail() {
       lastMouseRef.current.x = e.clientX
       lastMouseRef.current.y = e.clientY
 
-      // Limit points - shorter trail (30 points max)
       if (pointsRef.current.length > 30) {
         pointsRef.current.shift()
       }
@@ -54,68 +52,98 @@ function CursorTrail() {
     const animate = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
 
-      // Update life
       pointsRef.current = pointsRef.current.filter((point) => {
-        point.life -= 0.04 // Faster fade
+        point.life -= 0.04
         return point.life > 0
       })
 
-      // Draw smooth continuous line using quadratic curves
+      // ==========================================
+      // CURSOR TRAIL
+      // ==========================================
+
       if (pointsRef.current.length > 2) {
         for (let i = 1; i < pointsRef.current.length - 1; i++) {
           const current = pointsRef.current[i]
           const next = pointsRef.current[i + 1]
           const previous = pointsRef.current[i - 1]
-          
+
           const midX = (current.x + next.x) / 2
           const midY = (current.y + next.y) / 2
-          
+
           const alpha = current.life
           const lineWidth = 3 * current.life + 0.5
 
-          // =========================
-          // OUTER GLOW (Soft Blue)
-          // =========================
+          // ==========================================
+          // OUTER GLOW - Deep Warm Brown
+          // ==========================================
+
           ctx.beginPath()
           ctx.moveTo(previous.x, previous.y)
-          ctx.quadraticCurveTo(current.x, current.y, midX, midY)
-          ctx.strokeStyle = `rgba(2, 112, 234, ${alpha * 0.2})`
+          ctx.quadraticCurveTo(
+            current.x,
+            current.y,
+            midX,
+            midY
+          )
+
+          ctx.strokeStyle = `rgba(104, 70, 58, ${alpha * 0.18})`
           ctx.lineWidth = lineWidth * 4
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
           ctx.stroke()
 
-          // =========================
-          // MIDDLE GLOW (Brighter Blue)
-          // =========================
+          // ==========================================
+          // MIDDLE GLOW - Main Brown
+          // ==========================================
+
           ctx.beginPath()
           ctx.moveTo(previous.x, previous.y)
-          ctx.quadraticCurveTo(current.x, current.y, midX, midY)
-          ctx.strokeStyle = `rgba(52, 140, 237, ${alpha * 0.5})`
+          ctx.quadraticCurveTo(
+            current.x,
+            current.y,
+            midX,
+            midY
+          )
+
+          ctx.strokeStyle = `rgba(148, 104, 84, ${alpha * 0.5})`
           ctx.lineWidth = lineWidth * 2
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
           ctx.stroke()
 
-          // =========================
-          // MAIN LINE (Electric Blue)
-          // =========================
+          // ==========================================
+          // MAIN LINE - #946854
+          // ==========================================
+
           ctx.beginPath()
           ctx.moveTo(previous.x, previous.y)
-          ctx.quadraticCurveTo(current.x, current.y, midX, midY)
-          ctx.strokeStyle = `rgba(2, 112, 234, ${alpha * 0.9})`
+          ctx.quadraticCurveTo(
+            current.x,
+            current.y,
+            midX,
+            midY
+          )
+
+          ctx.strokeStyle = `rgba(148, 104, 84, ${alpha * 0.9})`
           ctx.lineWidth = lineWidth
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
           ctx.stroke()
 
-          // =========================
-          // INNER CORE (White)
-          // =========================
+          // ==========================================
+          // INNER CORE - Warm White
+          // ==========================================
+
           ctx.beginPath()
           ctx.moveTo(previous.x, previous.y)
-          ctx.quadraticCurveTo(current.x, current.y, midX, midY)
-          ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.5})`
+          ctx.quadraticCurveTo(
+            current.x,
+            current.y,
+            midX,
+            midY
+          )
+
+          ctx.strokeStyle = `rgba(255, 245, 240, ${alpha * 0.55})`
           ctx.lineWidth = lineWidth * 0.35
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
@@ -123,64 +151,156 @@ function CursorTrail() {
         }
       }
 
-      // Draw premium glowing dot at cursor
+      // ==========================================
+      // CURSOR GLOW
+      // ==========================================
+
       if (pointsRef.current.length > 0) {
-        const lastPoint = pointsRef.current[pointsRef.current.length - 1]
-        
-        // Large soft outer glow
+        const lastPoint =
+          pointsRef.current[pointsRef.current.length - 1]
+
+        // ==========================================
+        // LARGE SOFT OUTER GLOW
+        // ==========================================
+
         const outerGlow = ctx.createRadialGradient(
-          lastPoint.x, lastPoint.y, 0,
-          lastPoint.x, lastPoint.y, 15
+          lastPoint.x,
+          lastPoint.y,
+          0,
+          lastPoint.x,
+          lastPoint.y,
+          15
         )
-        outerGlow.addColorStop(0, 'rgba(126, 181, 242, 0.6)')
-        outerGlow.addColorStop(0.4, 'rgba(52, 140, 237, 0.3)')
-        outerGlow.addColorStop(1, 'rgba(0, 101, 213, 0)')
-        
+
+        outerGlow.addColorStop(
+          0,
+          'rgba(201, 160, 142, 0.65)'
+        )
+
+        outerGlow.addColorStop(
+          0.4,
+          'rgba(148, 104, 84, 0.32)'
+        )
+
+        outerGlow.addColorStop(
+          1,
+          'rgba(104, 70, 58, 0)'
+        )
+
         ctx.beginPath()
-        ctx.arc(lastPoint.x, lastPoint.y, 15, 0, Math.PI * 2)
+        ctx.arc(
+          lastPoint.x,
+          lastPoint.y,
+          15,
+          0,
+          Math.PI * 2
+        )
+
         ctx.fillStyle = outerGlow
         ctx.fill()
 
-        // Medium glow
+        // ==========================================
+        // MEDIUM GLOW
+        // ==========================================
+
         const midGlow = ctx.createRadialGradient(
-          lastPoint.x, lastPoint.y, 0,
-          lastPoint.x, lastPoint.y, 8
+          lastPoint.x,
+          lastPoint.y,
+          0,
+          lastPoint.x,
+          lastPoint.y,
+          8
         )
-        midGlow.addColorStop(0, 'rgba(255, 255, 255, 0.9)')
-        midGlow.addColorStop(0.4, 'rgba(126, 181, 242, 0.7)')
-        midGlow.addColorStop(1, 'rgba(2, 112, 234, 0.3)')
-        
+
+        midGlow.addColorStop(
+          0,
+          'rgba(255, 245, 240, 0.95)'
+        )
+
+        midGlow.addColorStop(
+          0.4,
+          'rgba(201, 160, 142, 0.75)'
+        )
+
+        midGlow.addColorStop(
+          1,
+          'rgba(148, 104, 84, 0.35)'
+        )
+
         ctx.beginPath()
-        ctx.arc(lastPoint.x, lastPoint.y, 8, 0, Math.PI * 2)
+        ctx.arc(
+          lastPoint.x,
+          lastPoint.y,
+          8,
+          0,
+          Math.PI * 2
+        )
+
         ctx.fillStyle = midGlow
         ctx.fill()
 
-        // Core dot
+        // ==========================================
+        // CORE DOT
+        // ==========================================
+
         const coreDot = ctx.createRadialGradient(
-          lastPoint.x - 1, lastPoint.y - 1, 0,
-          lastPoint.x, lastPoint.y, 3
+          lastPoint.x - 1,
+          lastPoint.y - 1,
+          0,
+          lastPoint.x,
+          lastPoint.y,
+          3
         )
-        coreDot.addColorStop(0, 'rgba(255, 255, 255, 1)')
-        coreDot.addColorStop(0.6, 'rgba(126, 181, 242, 0.9)')
-        coreDot.addColorStop(1, 'rgba(2, 112, 234, 0.6)')
-        
+
+        coreDot.addColorStop(
+          0,
+          'rgba(255, 250, 247, 1)'
+        )
+
+        coreDot.addColorStop(
+          0.6,
+          'rgba(229, 200, 186, 0.95)'
+        )
+
+        coreDot.addColorStop(
+          1,
+          'rgba(148, 104, 84, 0.65)'
+        )
+
         ctx.beginPath()
-        ctx.arc(lastPoint.x, lastPoint.y, 3, 0, Math.PI * 2)
+        ctx.arc(
+          lastPoint.x,
+          lastPoint.y,
+          3,
+          0,
+          Math.PI * 2
+        )
+
         ctx.fillStyle = coreDot
         ctx.fill()
       }
 
-      animationFrameRef.current = requestAnimationFrame(animate)
+      animationFrameRef.current =
+        requestAnimationFrame(animate)
     }
 
     animate()
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas)
-      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener(
+        'resize',
+        resizeCanvas
+      )
+
+      window.removeEventListener(
+        'mousemove',
+        handleMouseMove
+      )
 
       if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
+        cancelAnimationFrame(
+          animationFrameRef.current
+        )
       }
     }
   }, [])
@@ -198,13 +318,13 @@ export default CursorTrail
 // 'use client'
 
 // import { useEffect, useRef } from 'react'
-// import gsap from 'gsap'
 // import './CursorTrail.css'
 
 // function CursorTrail() {
 //   const canvasRef = useRef(null)
 //   const pointsRef = useRef([])
 //   const mouseRef = useRef({ x: 0, y: 0 })
+//   const lastMouseRef = useRef({ x: 0, y: 0 })
 //   const animationFrameRef = useRef(null)
 
 //   useEffect(() => {
@@ -230,14 +350,18 @@ export default CursorTrail
 //       mouseRef.current.x = e.clientX
 //       mouseRef.current.y = e.clientY
 
+//       // Add point with velocity info
 //       pointsRef.current.push({
 //         x: e.clientX,
 //         y: e.clientY,
 //         life: 1,
-//         size: 3.5 + Math.random() * 2.5,
 //       })
 
-//       if (pointsRef.current.length > 100) {
+//       lastMouseRef.current.x = e.clientX
+//       lastMouseRef.current.y = e.clientY
+
+//       // Limit points - shorter trail (30 points max)
+//       if (pointsRef.current.length > 30) {
 //         pointsRef.current.shift()
 //       }
 //     }
@@ -245,115 +369,125 @@ export default CursorTrail
 //     window.addEventListener('mousemove', handleMouseMove)
 
 //     const animate = () => {
-//       ctx.clearRect(
-//         0,
-//         0,
-//         window.innerWidth,
-//         window.innerHeight
-//       )
+//       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
 
+//       // Update life
 //       pointsRef.current = pointsRef.current.filter((point) => {
-//         point.life -= 0.018
-
-//         // Very subtle organic movement
-//         point.x += (Math.random() - 0.5) * 0.25
-//         point.y += (Math.random() - 0.5) * 0.25
-
-//         if (point.life <= 0) return false
-
-//         const alpha = point.life
-//         const radius = point.size * (0.7 + point.life * 0.5)
-
-//         // =========================
-//         // OUTER BLUE GLOW
-//         // =========================
-
-//         const glow = ctx.createRadialGradient(
-//           point.x,
-//           point.y,
-//           0,
-//           point.x,
-//           point.y,
-//           radius * 4
-//         )
-
-//         glow.addColorStop(
-//           0,
-//           `rgba(126, 181, 242, ${alpha * 0.45})`
-//         )
-
-//         glow.addColorStop(
-//           0.35,
-//           `rgba(52, 140, 237, ${alpha * 0.25})`
-//         )
-
-//         glow.addColorStop(
-//           1,
-//           `rgba(0, 101, 213, 0)`
-//         )
-
-//         ctx.beginPath()
-//         ctx.arc(
-//           point.x,
-//           point.y,
-//           radius * 4,
-//           0,
-//           Math.PI * 2
-//         )
-
-//         ctx.fillStyle = glow
-//         ctx.fill()
-
-//         // =========================
-//         // MAIN GRADIENT DOT
-//         // =========================
-
-//         const gradient = ctx.createRadialGradient(
-//           point.x - radius * 0.35,
-//           point.y - radius * 0.35,
-//           0,
-//           point.x,
-//           point.y,
-//           radius
-//         )
-
-//         gradient.addColorStop(
-//           0,
-//           `rgba(255, 255, 255, ${alpha})`
-//         )
-
-//         gradient.addColorStop(
-//           0.18,
-//           `rgba(126, 181, 242, ${alpha})`
-//         )
-
-//         gradient.addColorStop(
-//           0.55,
-//           `rgba(52, 140, 237, ${alpha * 0.95})`
-//         )
-
-//         gradient.addColorStop(
-//           1,
-//           `rgba(0, 101, 213, ${alpha * 0.8})`
-//         )
-
-//         ctx.beginPath()
-//         ctx.arc(
-//           point.x,
-//           point.y,
-//           radius,
-//           0,
-//           Math.PI * 2
-//         )
-
-//         ctx.fillStyle = gradient
-//         ctx.fill()
-
-//         return true
+//         point.life -= 0.04 // Faster fade
+//         return point.life > 0
 //       })
 
-//       animationFrameRef.current =
-//         requestAnimationFrame(animate)
+//       // Draw smooth continuous line using quadratic curves
+//       if (pointsRef.current.length > 2) {
+//         for (let i = 1; i < pointsRef.current.length - 1; i++) {
+//           const current = pointsRef.current[i]
+//           const next = pointsRef.current[i + 1]
+//           const previous = pointsRef.current[i - 1]
+          
+//           const midX = (current.x + next.x) / 2
+//           const midY = (current.y + next.y) / 2
+          
+//           const alpha = current.life
+//           const lineWidth = 3 * current.life + 0.5
+
+//           // =========================
+//           // OUTER GLOW (Soft Blue)
+//           // =========================
+//           ctx.beginPath()
+//           ctx.moveTo(previous.x, previous.y)
+//           ctx.quadraticCurveTo(current.x, current.y, midX, midY)
+//           ctx.strokeStyle = `rgba(2, 112, 234, ${alpha * 0.2})`
+//           ctx.lineWidth = lineWidth * 4
+//           ctx.lineCap = 'round'
+//           ctx.lineJoin = 'round'
+//           ctx.stroke()
+
+//           // =========================
+//           // MIDDLE GLOW (Brighter Blue)
+//           // =========================
+//           ctx.beginPath()
+//           ctx.moveTo(previous.x, previous.y)
+//           ctx.quadraticCurveTo(current.x, current.y, midX, midY)
+//           ctx.strokeStyle = `rgba(52, 140, 237, ${alpha * 0.5})`
+//           ctx.lineWidth = lineWidth * 2
+//           ctx.lineCap = 'round'
+//           ctx.lineJoin = 'round'
+//           ctx.stroke()
+
+//           // =========================
+//           // MAIN LINE (Electric Blue)
+//           // =========================
+//           ctx.beginPath()
+//           ctx.moveTo(previous.x, previous.y)
+//           ctx.quadraticCurveTo(current.x, current.y, midX, midY)
+//           ctx.strokeStyle = `rgba(2, 112, 234, ${alpha * 0.9})`
+//           ctx.lineWidth = lineWidth
+//           ctx.lineCap = 'round'
+//           ctx.lineJoin = 'round'
+//           ctx.stroke()
+
+//           // =========================
+//           // INNER CORE (White)
+//           // =========================
+//           ctx.beginPath()
+//           ctx.moveTo(previous.x, previous.y)
+//           ctx.quadraticCurveTo(current.x, current.y, midX, midY)
+//           ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.5})`
+//           ctx.lineWidth = lineWidth * 0.35
+//           ctx.lineCap = 'round'
+//           ctx.lineJoin = 'round'
+//           ctx.stroke()
+//         }
+//       }
+
+//       // Draw premium glowing dot at cursor
+//       if (pointsRef.current.length > 0) {
+//         const lastPoint = pointsRef.current[pointsRef.current.length - 1]
+        
+//         // Large soft outer glow
+//         const outerGlow = ctx.createRadialGradient(
+//           lastPoint.x, lastPoint.y, 0,
+//           lastPoint.x, lastPoint.y, 15
+//         )
+//         outerGlow.addColorStop(0, 'rgba(126, 181, 242, 0.6)')
+//         outerGlow.addColorStop(0.4, 'rgba(52, 140, 237, 0.3)')
+//         outerGlow.addColorStop(1, 'rgba(0, 101, 213, 0)')
+        
+//         ctx.beginPath()
+//         ctx.arc(lastPoint.x, lastPoint.y, 15, 0, Math.PI * 2)
+//         ctx.fillStyle = outerGlow
+//         ctx.fill()
+
+//         // Medium glow
+//         const midGlow = ctx.createRadialGradient(
+//           lastPoint.x, lastPoint.y, 0,
+//           lastPoint.x, lastPoint.y, 8
+//         )
+//         midGlow.addColorStop(0, 'rgba(255, 255, 255, 0.9)')
+//         midGlow.addColorStop(0.4, 'rgba(126, 181, 242, 0.7)')
+//         midGlow.addColorStop(1, 'rgba(2, 112, 234, 0.3)')
+        
+//         ctx.beginPath()
+//         ctx.arc(lastPoint.x, lastPoint.y, 8, 0, Math.PI * 2)
+//         ctx.fillStyle = midGlow
+//         ctx.fill()
+
+//         // Core dot
+//         const coreDot = ctx.createRadialGradient(
+//           lastPoint.x - 1, lastPoint.y - 1, 0,
+//           lastPoint.x, lastPoint.y, 3
+//         )
+//         coreDot.addColorStop(0, 'rgba(255, 255, 255, 1)')
+//         coreDot.addColorStop(0.6, 'rgba(126, 181, 242, 0.9)')
+//         coreDot.addColorStop(1, 'rgba(2, 112, 234, 0.6)')
+        
+//         ctx.beginPath()
+//         ctx.arc(lastPoint.x, lastPoint.y, 3, 0, Math.PI * 2)
+//         ctx.fillStyle = coreDot
+//         ctx.fill()
+//       }
+
+//       animationFrameRef.current = requestAnimationFrame(animate)
 //     }
 
 //     animate()
@@ -377,4 +511,3 @@ export default CursorTrail
 // }
 
 // export default CursorTrail
-

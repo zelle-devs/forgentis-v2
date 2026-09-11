@@ -1,4 +1,4 @@
-/* .contact-section {
+.contact-section {
   width: 100%;
   height: 100vh;
   background: var(--color-black, #0a0a0a);
@@ -7,15 +7,16 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 60px 80px;
+  padding: 75px 80px;
   color: var(--color-white, #fff);
 }
 
+/* Background Image — center se reveal */
 .contact-bg-image-wrapper {
   position: absolute;
   top: 0;
   right: 0;
-  width: 65%;
+  width: 55%;
   height: 100%;
   background-image: url('/images/desire-1.webp');
   background-size: cover;
@@ -35,31 +36,37 @@
 
 .contact-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  text-align: left;
   width: 100%;
   height: 100%;
   position: relative;
   z-index: 2;
 }
 
+/* Center Content */
 .contact-left {
-  max-width: 480px;
+  max-width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  align-items: left;
+  gap: 14px;
   will-change: transform, opacity;
+  z-index: 3;
 }
 
 .contact-heading {
   font-family: var(--font-family-primary);
   font-size: clamp(2rem, 3vw, 3.2rem);
   font-weight: 200;
-  line-height: 1.1;
+  line-height: 1;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--color-white);
   margin: 0;
+  text-align: left;
 }
 
 .contact-subtext {
@@ -69,10 +76,11 @@
   color: rgba(255, 255, 255, 0.75);
   letter-spacing: 0.5px;
   margin: 0;
+  text-align: left;
 }
 
 .contact-btn {
-  align-self: flex-start;
+    max-width: fit-content;
   background: transparent;
   color: var(--color-white);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -93,14 +101,17 @@
   border-color: var(--color-white);
 }
 
+/* CONTACT word — image ke neeche, center */
 .contact-right-word {
   position: absolute;
-  right: 0;
-  top: 15%;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   pointer-events: none;
-  z-index: 3;
+  z-index: 4;
 }
 
 .staggered-word-track {
@@ -110,7 +121,7 @@
 
 .staggered-char {
   font-family: var(--font-family-primary);
-  font-size: clamp(7rem, 14vw, 16rem);
+  font-size: clamp(9rem, 15vw, 17rem);
   font-weight: 100;
   line-height: 1;
   color: rgba(255, 255, 255, 0.95);
@@ -118,15 +129,20 @@
   display: inline-block;
   will-change: transform;
 }
-
+.colored{
+    color: var(--color-blue-main);
+    font-weight: 300;
+}
+/* Footer */
 .contact-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 20px;
+  padding-top: 10px;
   font-family: var(--font-family-secondary);
   font-size: 12px;
+  margin-bottom: -50px;
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
@@ -136,4 +152,4 @@
 .contact-brand {
   font-weight: 700;
   color: var(--color-white);
-} */
+}

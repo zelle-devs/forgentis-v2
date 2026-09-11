@@ -14,13 +14,14 @@
 .process-counter {
   position: absolute;
   top: 40px;
-  left: 40px;
+  left: 45%;
   z-index: 200;
   display: flex;
   align-items: center;
   gap: 10px;
   font-family: var(--font-family-primary);
   color: var(--color-white);
+ text-shadow: var(--color-shadow-btn);
 }
 
 .process-counter-current {
@@ -65,11 +66,14 @@
   font-size: 90px;
   color: var(--color-white);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
   margin: 0 0 24px;
   max-width: 900px;
 }
-
+.process-title-colored{
+  color: var(--color-blue-main);
+  font-weight: 300;
+}
 .process-desc {
   font-family: var(--font-family-secondary);
   font-size: var(--font-size-lg);
@@ -104,6 +108,15 @@
   position: absolute;
   max-width: 380px;
   z-index: 2;
+  padding: 10px;
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+/* border-radius: 16px; */
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+/* -webkit-backdrop-filter: blur(5px); */
+border: 1px solid rgba(255, 255, 255, 0.3);
+text-shadow: var(--text-shadow-btn)!important;
 }
 
 .process-card-text h3 {

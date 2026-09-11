@@ -1,105 +1,130 @@
-'use client'
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import './ContactSection.css'
+// 'use client'
+// import { useEffect, useRef } from 'react'
+// import gsap from 'gsap'
+// import './ContactSection.css'
 
-function ContactSection() {
-  const sectionRef = useRef(null)
-  const leftContentRef = useRef(null)
-  const bgImageRef = useRef(null)
-  const lettersRef = useRef([])
+// function ContactSection() {
+//   const sectionRef = useRef(null)
+//   const leftContentRef = useRef(null)
+//   const bgImageRef = useRef(null)
+//   const lettersRef = useRef([])
 
-  const contactWord = "CONTACT"
+//   const contactWord = "CONTACT"
 
-  useEffect(() => {
-    const handleQualityProgress = (e) => {
-      const progress = e.detail.progress // 0 -> 1
+//   // Mount hote hi initial state set karo — image center se chhoti, letters offset pe
+//   useEffect(() => {
+//     // Image center se chhoti, mask ke saath
+//     if (bgImageRef.current) {
+//       gsap.set(bgImageRef.current, {
+//         clipPath: 'circle(0% at 50% 50%)',
+//         opacity: 0,
+//         scale: 1.15,
+//       })
+//     }
 
-      // Left content animation
-      if (leftContentRef.current) {
-        gsap.to(leftContentRef.current, {
-          y: -progress * 40,
-          opacity: 1 - progress * 0.2,
-          duration: 0.1,
-          ease: 'none',
-          overwrite: 'auto',
-        })
-      }
+//     // Left content neeche se
+//     if (leftContentRef.current) {
+//       gsap.set(leftContentRef.current, { y: 60, opacity: 0 })
+//     }
 
-      // Background image fade/parallax effect
-      if (bgImageRef.current) {
-        gsap.to(bgImageRef.current, {
-          opacity: 0.35 + progress * 0.25,
-          scale: 1 + progress * 0.05,
-          duration: 0.1,
-          ease: 'none',
-          overwrite: 'auto',
-        })
-      }
+//     // Letters random offset pe
+//     const initialOffsets = [-70, 90, -50, 80, -40, 60, -80]
+//     lettersRef.current.forEach((el, i) => {
+//       if (!el) return
+//       gsap.set(el, { y: initialOffsets[i] || 0 })
+//     })
+//   }, [])
 
-      // Staggered letters aligning into a straight line
-      lettersRef.current.forEach((el, index) => {
-        if (!el) return
-        const initialOffsets = [-50, 70, -35, 60, -25, 45, -60]
-        const currentOffset = initialOffsets[index] * (1 - progress)
+//   // contactProgress event se drive
+//   useEffect(() => {
+//     const handleContactProgress = (e) => {
+//       const progress = e.detail.progress // 0 -> 1
 
-        gsap.to(el, {
-          y: currentOffset,
-          duration: 0.1,
-          ease: 'none',
-          overwrite: 'auto',
-        })
-      })
-    }
+//       // Image: center se circle expand hoke poori screen bhar jaye
+//       if (bgImageRef.current) {
+//         const clipPercent = progress * 80 // 0% -> 80%
+//         gsap.to(bgImageRef.current, {
+//           clipPath: `circle(${clipPercent}% at 50% 50%)`,
+//           opacity: 0.35 + progress * 0.35,
+//           scale: 1.15 - progress * 0.15,
+//           duration: 0.15,
+//           ease: 'power2.out',
+//           overwrite: 'auto',
+//         })
+//       }
 
-    window.addEventListener('qualityProgress', handleQualityProgress)
-    return () => {
-      window.removeEventListener('qualityProgress', handleQualityProgress)
-    }
-  }, [])
+//       // Left content slide up + fade in
+//       if (leftContentRef.current) {
+//         const localProgress = Math.min(1, progress / 0.6)
+//         gsap.to(leftContentRef.current, {
+//           y: (1 - localProgress) * 60,
+//           opacity: localProgress,
+//           duration: 0.15,
+//           ease: 'power2.out',
+//           overwrite: 'auto',
+//         })
+//       }
 
-  return (
-    <div ref={sectionRef} className="quality-section">
-      {/* Background Fade Portrait Image */}
-      <div ref={bgImageRef} className="quality-bg-image-wrapper">
-        <div className="quality-bg-overlay" />
-      </div>
+//       // Letters: offset se 0 pe align
+//       const initialOffsets = [-70, 90, -50, 80, -40, 60, -80]
+//       lettersRef.current.forEach((el, i) => {
+//         if (!el) return
+//         const offset = (initialOffsets[i] || 0) * (1 - progress)
+//         gsap.to(el, {
+//           y: offset,
+//           duration: 0.15,
+//           ease: 'power2.out',
+//           overwrite: 'auto',
+//         })
+//       })
+//     }
 
-      <div className="quality-container">
-        {/* Left Side Content */}
-        <div ref={leftContentRef} className="quality-left">
-          <h2 className="quality-heading">HAVE SOMETHING WORTH BUILDING?</h2>
-          <p className="quality-subtext">
-            Bring us the challenge.<br />
-            Bring us the idea.<br />
-            We&apos;ll turn it into metal.
-          </p>
-          <button className="quality-btn">START A PROJECT</button>
-        </div>
+//     window.addEventListener('contactProgress', handleContactProgress)
+//     return () => window.removeEventListener('contactProgress', handleContactProgress)
+//   }, [])
 
-        {/* Right Side: Giant Staggered 'CONTACT' word */}
-        <div className="quality-right-word">
-          <div className="staggered-word-track">
-            {contactWord.split('').map((char, index) => (
-              <span
-                key={index}
-                ref={(el) => (lettersRef.current[index] = el)}
-                className="staggered-char"
-              >
-                {char}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+//   return (
+//     <div ref={sectionRef} className="contact-section">
+//       {/* Background Image with center reveal */}
+//       <div ref={bgImageRef} className="contact-bg-image-wrapper">
+//         <div className="contact-bg-overlay" />
+//       </div>
 
-      {/* Bottom Footer Info */}
-      <div className="quality-footer">
-        <span className="quality-brand">FORGENTIS</span>
-        <span className="quality-tagline">PRECISION FABRICATION. WITHOUT COMPROMISE.</span>
-      </div>
-    </div>
-  )
-}
+//       <div className="contact-container">
+//         {/* Left Side Content */}
+//         <div ref={leftContentRef} className="contact-left">
+//           <h2 className="contact-heading">HAVE SOMETHING WORTH BUILDING?</h2>
+//           <p className="contact-subtext">
+//             Bring us the challenge.<br />
+//             Bring us the idea.<br />
+//             We&apos;ll turn it into metal.
+//           </p>
+//           <button className="contact-btn">START A PROJECT</button>
+//         </div>
 
-export default ContactSection
+//         {/* Right Side: Giant Staggered 'CONTACT' word */}
+//         <div className="contact-right-word">
+//           <div className="staggered-word-track">
+//             {contactWord.split('').map((char, index) => (
+//               <span
+//                 key={index}
+//                 ref={(el) => (lettersRef.current[index] = el)}
+//                 className="staggered-char"
+//               >
+//                 {char}
+//               </span>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Bottom Footer */}
+//       <div className="contact-footer">
+//         <span className="contact-brand">FORGENTIS</span>
+//         <span className="contact-tagline">PRECISION FABRICATION. WITHOUT COMPROMISE.</span>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default ContactSection

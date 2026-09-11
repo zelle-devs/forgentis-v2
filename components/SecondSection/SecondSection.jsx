@@ -10,6 +10,7 @@ function SecondSection() {
   const rightColumnRef = useRef(null)
   const headingRef = useRef(null)
   const charRefs = useRef([])
+  const clamp01 = (v) => Math.max(0, Math.min(1, v))
   const lastVisibleCount = useRef(0)
 
   useEffect(() => {
@@ -60,40 +61,67 @@ function SecondSection() {
   }, [])
 
   // Listen to secondTextProgress which maps cleanly as you scroll through SecondSection
-  useEffect(() => {
-    const handleSecondTextProgress = (e) => {
-      const textProgress = e.detail.progress // 0 -> 1 as you scroll inside SecondSection
+  // useEffect(() => {
+  //   const handleSecondTextProgress = (e) => {
+  //     const textProgress = e.detail.progress // 0 -> 1 as you scroll inside SecondSection
       
-      const totalChars = charRefs.current.length
-      const visibleChars = Math.floor(textProgress * totalChars)
+  //     const totalChars = charRefs.current.length
+  //     const visibleChars = Math.floor(textProgress * totalChars)
       
-      if (visibleChars !== lastVisibleCount.current) {
-        charRefs.current.forEach((char, index) => {
-          if (index < visibleChars) {
-            gsap.to(char, {
-              color: '#FFFFFF',
-              opacity: 1,
-              duration: 0.4,
-              ease: 'power2.out',
-              overwrite: 'auto',
-            })
-          } else {
-            gsap.to(char, {
-              color: 'rgba(157, 160, 161, 0.3)',
-              opacity: 0.3,
-              duration: 0.4,
-              ease: 'power2.out',
-              overwrite: 'auto',
-            })
-          }
-        })
-        lastVisibleCount.current = visibleChars
-      }
-    }
+  //     if (visibleChars !== lastVisibleCount.current) {
+  //       charRefs.current.forEach((char, index) => {
+  //         if (index < visibleChars) {
+  //           gsap.to(char, {
+  //             color: '#FFFFFF',
+  //             opacity: 1,
+  //             duration: 0.4,
+  //             ease: 'power2.out',
+  //             overwrite: 'auto',
+  //           })
+  //         } else {
+  //           gsap.to(char, {
+  //             color: 'rgba(157, 160, 161, 0.3)',
+  //             opacity: 0.3,
+  //             duration: 0.4,
+  //             ease: 'power2.out',
+  //             overwrite: 'auto',
+  //           })
+  //         }
+  //       })
+  //       lastVisibleCount.current = visibleChars
+  //     }
+  //   }
 
-    window.addEventListener('secondTextProgress', handleSecondTextProgress)
-    return () => window.removeEventListener('secondTextProgress', handleSecondTextProgress)
-  }, [])
+  //   window.addEventListener('secondTextProgress', handleSecondTextProgress)
+  //   return () => window.removeEventListener('secondTextProgress', handleSecondTextProgress)
+  // }, [])
+
+  useEffect(() => {
+  const handleSecondTextProgress = (e) => {
+    const textProgress = e.detail.progress // 0 -> 1 (ab slide ke saath sync)
+
+    const totalChars = charRefs.current.length
+    const visibleChars = textProgress * totalChars // float rakho, floor mat karo
+
+    charRefs.current.forEach((char, index) => {
+      // Har char ka apna local progress — smooth gradient fill
+      const charProgress = clamp01(visibleChars - index)
+
+      gsap.to(char, {
+        color: charProgress > 0
+          ? `rgba(255, 255, 255, ${0.3 + 0.7 * charProgress})`
+          : 'rgba(157, 160, 161, 0.3)',
+        opacity: 0.3 + 0.7 * charProgress,
+        duration: 0.25,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      })
+    })
+  }
+
+  window.addEventListener('secondTextProgress', handleSecondTextProgress)
+  return () => window.removeEventListener('secondTextProgress', handleSecondTextProgress)
+}, [])
 
   return (
     <div ref={sectionRef} className="second-section">

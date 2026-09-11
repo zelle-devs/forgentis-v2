@@ -1,3 +1,52 @@
+.fourth-section {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background: #0a0a0a;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Image — poori screen cover, same aspect as SVG */
+.image-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.revealed-image {
+  width: 100%;
+  height: 100%;
+ /* object-fit: fill;       */
+  object-position: center;
+}
+
+/* SVG Overlay — bilkul image ke upar, same alignment */
+.svg-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  padding-left: 30px;   
+  box-sizing: border-box;
+}
+
+.fourth-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  will-change: opacity;
+}
+
 /* .fourth-section {
   position: absolute;
   inset: 0;
@@ -17,45 +66,6 @@
   height: 100%;
   z-index: 1;
   pointer-events: none;
-}
-
-.revealed-image {
-  width: 100%;
-  height: 100%;
-
-}
-
-.fourth-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 2;
-  pointer-events: none;
-} */
-
-
-.fourth-section {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100vh;
-  background: #0a0a0a;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Image poori screen par full background cover karegi */
-.image-container {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
   will-change: opacity, transform;
 }
 
@@ -65,7 +75,6 @@
   object-fit: fill;
 }
 
-/* Sirf SVG shapes ko center mein rakhne ke liye wrapper with padding */
 .svg-wrapper {
   position: absolute;
   inset: 0;
@@ -85,19 +94,4 @@
   max-height: 640px;
   object-fit: contain;
   will-change: opacity;
-}
-/* .fourth-section {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent!important;
-  overflow: hidden;
-}
-
-.fourth-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 } */
