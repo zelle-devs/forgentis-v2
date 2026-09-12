@@ -3,16 +3,10 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import './QualitySection.css'
 
-const POINTS = [
-  { title: 'GET IT RIGHT.', desc: 'Precision starts with understanding the requirement.' },
-  { title: 'KEEP CONTROL.', desc: 'One coordinated workflow from drawing to delivery.' },
-  { title: 'BUILD WITH CONFIDENCE.', desc: 'Quality checks throughout production.' },
-  { title: 'DELIVER WITH PURPOSE.', desc: 'Because your timeline matters as much as the fabrication.' },
-]
 
 const STEP = 0.015
 
-function QualitySection() {
+function QualitySection({POINTS,heading_part_1,heading_part_2,heading_part_3,heading_part_4}) {
   const wrapperRef = useRef(null)
   const imageWrapRef = useRef(null)
   const imageRef = useRef(null)
@@ -80,9 +74,9 @@ useEffect(() => {
       </div>
 
       <h2 ref={titleRef} className="quality-title">
-        <span className="quality-title-line">WHEN <span className="accent">"GOOD</span></span>
-        <span className="quality-title-line">ENOUGH"</span>
-        <span className="quality-title-line accent">ISN'T</span>
+        <span className="quality-title-line">{heading_part_1} <span className="accent">{heading_part_2}</span></span>
+        <span className="quality-title-line">{heading_part_3}</span>
+        <span className="quality-title-line accent">{heading_part_4}</span>
       </h2>
 
       <div className="quality-list">

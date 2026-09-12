@@ -3,7 +3,7 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: var(--color-black);
+  background: var(--color-black, #000);
 }
 
 .hero-overlay {
@@ -12,16 +12,45 @@
   left: 0;
   width: 100%;
   height: 100%;
-  /* background: rgba(13, 13, 13, 0.5); */
-   background: linear-gradient(
+  background: linear-gradient(
     to right,
     rgba(0, 0, 0, 0.85) 0%,
     rgba(0, 0, 0, 0.65) 25%,
     rgba(0, 0, 0, 0.45) 50%,
     rgba(0, 0, 0, 0.25) 75%,
-    rgba(0, 0, 0, 0.15) 100%,
-
-    transparent 75%
+    rgba(0, 0, 0, 0.15) 100%
   );
   z-index: 2;
+  pointer-events: none;
+}
+
+/* Content Container */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  transform: translateY(-50%);
+  z-index: 3;
+  max-width: 650px;
+  color: #ffffff;
+}
+
+.hero-headline {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 100;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+   font-family: var(--font-family-primary);
+  opacity: 0; /* Animation se pehle hidden */
+}
+
+.hero-headline > span{
+  color: var(--color-blue-main);
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  opacity: 0; /* Animation se pehle hidden */
 }

@@ -3,18 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import './ProcessSection.css'
 
-const POINTS = [
-  { title: 'CNC LASER CUTTING', desc: 'Clean, accurate cuts with repeatable precision.', image: '/images/cap1.png', pos: { top: '70%', left: '2%' } },
-  { title: '3D PIPE CUTTING', desc: 'Complex tube and pipe geometries fabricated to specification.', image: '/images/cap2.png', pos: { top: '70%', left: '75%' } },
-  { title: 'BENDING & FORMING', desc: 'Controlled shaping for precise, consistent results.', image: '/images/cap3.png', pos: { top: '70%', left: '75%' } },
-  { title: 'MACHINING', desc: 'Precision components produced to your required specifications.', image: '/images/cap4.png', pos: { top: '20%', left: '5%' } },
-  { title: 'WELDING & ASSEMBLY', desc: 'From individual components to complete fabricated assemblies.', image: '/images/cap5.png', pos: { top: '65%', left: '5%' } },
-  { title: 'FINISHING', desc: 'PVD, powder coating, brushed and specialty finishes to complete the result.', image: '/images/cap6.png', pos: { top: '60%', left: '70%' }, button: true },
-]
 
-const TOTAL_ITEMS = POINTS.length + 1
-
-function ProcessSection() {
+function ProcessSection({heading_part_1,heading_part_2,description,POINTS,TOTAL_ITEMS}) {
   const introRef = useRef(null)
   const cardRefs = useRef([])
   const [activeIndex, setActiveIndex] = useState(0)
@@ -92,10 +82,9 @@ function ProcessSection() {
 
       <div className="process-stack">
         <div ref={introRef} className="process-intro">
-          <h2 className="process-title">BUILT TO FABRICATE <span  className='process-title-colored'>EQUIPPED TO DELIVER</span></h2>
+          <h2 className="process-title">{heading_part_1}<span  className='process-title-colored'>{heading_part_2}</span></h2>
           <p className="process-desc">
-            From precision cutting to final finishing, our capabilities are built to
-            handle demanding architectural, commercial and industrial requirements.
+            {description}
           </p>
         </div>
 

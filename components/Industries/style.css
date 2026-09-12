@@ -1,0 +1,293 @@
+.app_section {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--color-black, #0a0a0a);
+  color: var(--color-white, #ffffff);
+}
+
+/* Counter HUD */
+.app_counter {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-family-primary, sans-serif);
+  color: var(--color-blue-main, #4487c5);
+}
+
+.app_counter_current {
+  font-size: var(--font-size-lg, 1.25rem);
+  font-weight: 700;
+}
+
+.app_counter_divider {
+  width: 20px;
+  height: 1px;
+  background: var(--color-steel-main, rgba(255, 255, 255, 0.3));
+}
+
+.app_counter_total {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-steel-main, rgba(255, 255, 255, 0.5));
+}
+
+/* Moving Track */
+.app_track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  will-change: transform;
+}
+
+/* Fullscreen Panels */
+.app_panel {
+  position: relative;
+  width: 100%;
+  height: 90dvh;
+  box-sizing: border-box;
+}
+
+/* 1. Intro Panel */
+.app_intro_panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10%;
+}
+
+.app_intro_title {
+  font-family: var(--font-family-primary, sans-serif);
+  font-weight: 100;
+  font-size: clamp(38px, 5.5vw, 85px);
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--color-white, #ffffff);
+  margin: 0 0 24px;
+  max-width: 850px;
+}
+
+.app_intro_title span {
+  font-weight: 300;
+  color: var(--color-blue-main, #4487c5);
+}
+
+.app_intro_desc {
+  font-family: var(--font-family-secondary, sans-serif);
+  font-size: clamp(1rem, 1.3vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  max-width: 680px;
+  margin: 0 0 28px;
+}
+
+.app_intro_bullets {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.app_intro_bullets span {
+  font-size: 0.88rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-blue-main, #4487c5);
+  font-weight: 500;
+  border-bottom: 1px solid rgba(68, 135, 197, 0.3);
+  padding-bottom: 4px;
+}
+
+/* 2. Alternating Split Panels */
+.app_item_panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8vw;
+  gap: 6vw;
+}
+
+.app_item_panel.row_reverse {
+  flex-direction: row-reverse;
+}
+
+/* Image Container */
+.app_image_wrap {
+  width: 44%;
+  height: 62vh;
+  border-radius: var(--radius-sm, 6px);
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  position: relative;
+  will-change: transform;
+}
+
+.app_image_wrap img {
+  width: 100%;
+  height: 115%; /* Extra height for inner counter-scroll translation */
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+/* Content Container */
+.app_content_wrap {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  will-change: transform;
+  z-index: 2;
+}
+
+.app_tag {
+  font-family: var(--font-family-primary, sans-serif);
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  color: var(--color-blue-main, #4487c5);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.app_title {
+  font-family: var(--font-family-primary, sans-serif);
+  font-weight: 100;
+  font-size: clamp(1.8rem, 2.8vw, 3.2rem);
+  line-height: 1.12;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+}
+
+.app_title span {
+  color: var(--color-blue-main, #4487c5);
+  font-weight: 300;
+}
+
+.app_desc {
+  font-family: var(--font-family-secondary, sans-serif);
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+/* List Badges */
+.app_list_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.app_list_title {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.app_items_grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app_badge {
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.app_footer_statement {
+  font-size: 0.85rem;
+  color: var(--color-blue-main, #4487c5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* CTA Button */
+.app_action_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 10px 22px;
+  background: transparent;
+  color: var(--color-blue-main, #4487c5);
+  border: 1px solid var(--color-blue-main, #4487c5);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.app_action_btn:hover {
+  background: var(--color-blue-main, #4487c5);
+  color: #000;
+  box-shadow: 0 0 18px rgba(68, 135, 197, 0.4);
+}
+
+.app_action_btn:hover .app_btn_arrow {
+  transform: translateX(4px);
+}
+
+.app_btn_arrow {
+  transition: transform 0.2s ease;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .app_item_panel {
+    padding: 0 5vw;
+    gap: 4vw;
+  }
+  .app_image_wrap {
+    width: 46%;
+    height: 52vh;
+  }
+  .app_content_wrap {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app_item_panel,
+  .app_item_panel.row_reverse {
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 6vw;
+    gap: 20px;
+  }
+  .app_image_wrap {
+    width: 100%;
+    height: 35vh;
+  }
+  .app_content_wrap {
+    width: 100%;
+    gap: 10px;
+  }
+  .app_intro_bullets {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,277 @@
+/* =====================================================
+   QUALITY SECTION
+===================================================== */
+.quality-container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  background-color: var(--color-black);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 4rem;
+  font-family: var(--font-family-primary, sans-serif);
+}
+
+.quality-grid {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: 4rem;
+}
+
+/* =====================================================
+   LEFT CONTENT & TYPOGRAPHY
+===================================================== */
+.quality-left {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.quality-tag {
+  font-family: var(--font-family-primary);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: var(--color-blue-main);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.quality-heading {
+  max-width: 720px;
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-weight: 100;
+  font-size: var(--font-size-5xl, clamp(2.4rem, 4vw, 4rem));
+  line-height: 1.15;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+}
+
+.quality-heading > span {
+  display: inline-block;
+  color: var(--color-blue-main);
+  font-weight: 400;
+}
+
+.quality-description {
+  max-width: 600px;
+  margin: 1.5rem 0 2rem;
+  font-size: var(--font-size-xl, 1.1rem);
+  line-height: 1.45;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* =====================================================
+   PROCESS LIST (Refined Dark Variant)
+===================================================== */
+.quality-process {
+  width: 100%;
+  max-width: 680px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.quality-process-row {
+  min-height: 50px;
+  display: grid;
+  grid-template-columns: 45px 110px 1fr;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 0;
+}
+
+.quality-process-number {
+  font-family: monospace;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  color: var(--color-blue-main);
+}
+
+.quality-process-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--color-white);
+  text-transform: uppercase;
+}
+
+.quality-process-description {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 300;
+}
+
+.quality-statement {
+  margin-top: 1.8rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-blue-main);
+}
+
+/* =====================================================
+   RIGHT CARDS
+===================================================== */
+.quality-right {
+  position: relative;
+  width: 100%;
+  height: 650px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.quality-cards-stage {
+  position: relative;
+  width: 480px;
+  height: 610px;
+  margin-top: -65px;
+}
+
+.quality-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 350px;
+  padding: 2.2rem;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.quality-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+.quality-card-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-white);
+}
+
+.quality-card-number {
+  font-family: monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--color-blue-main);
+}
+
+.quality-card-label {
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--color-white);
+}
+
+.quality-card-content {
+  position: relative;
+  z-index: 2;
+  color: var(--color-white);
+}
+
+.quality-card-content h3 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2.5rem, 3.5vw, 3.8rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-weight: 200;
+  color: var(--color-white);
+}
+
+.quality-card-content p {
+  max-width: 320px;
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* =====================================================
+   RESPONSIVENESS
+===================================================== */
+@media (max-width: 1100px) {
+  .quality-container {
+    padding: 0 2rem;
+  }
+  .quality-grid {
+    gap: 2rem;
+  }
+  .quality-card {
+    width: 300px;
+    height: 350px;
+  }
+  .quality-cards-stage {
+    width: 420px;
+    height: 560px;
+    margin-top: -45px;
+  }
+}
+
+@media (max-width: 800px) {
+  .quality-container {
+    height: auto;
+    min-height: 100dvh;
+    padding: 4rem 1.5rem;
+  }
+  .quality-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .quality-right {
+    height: 540px;
+  }
+  .quality-cards-stage {
+    width: 100%;
+    height: 500px;
+    margin-top: 0;
+  }
+  .quality-card {
+    width: min(360px, 88vw);
+    height: 480px;
+    padding: 1.8rem;
+  }
+}

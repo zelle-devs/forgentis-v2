@@ -73,7 +73,7 @@
   text-transform: uppercase;
   /* letter-spacing: 2px; */
   margin: 0 0 24px;
-  max-width: 550px;
+  max-width: 750px;
 }
 
 .capability-main-title .title-part-white {
@@ -92,6 +92,14 @@
   line-height: 1.2;
   max-width: 550px;
 }
+
+.capability-point-desc{
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-lg);
+}
+
+
+capability-point-desc
 .colored{
     color: var(--color-white);
 }
@@ -112,7 +120,7 @@
 
 /* Points Titles Styling */
 .capability-point-title {
-  max-width: 10px;
+  /* max-width: 10px; */
   position: absolute;
   z-index: 4;
   font-family: var(--font-family-primary);
@@ -132,7 +140,7 @@
 
 .capability-point-title .highlight-white {
   color: var(--color-white);
-  line-height: 0.2;
+  /* line-height: 0.2; */
 }
 
 .capability-point-title .highlight-blue {

@@ -9,6 +9,8 @@ function LoadingScreen({ onComplete }) {
   const textRef = useRef(null)
   const subtitleRef = useRef(null)
 
+  
+
   useEffect(() => {
     const timeline = gsap.timeline({
       onComplete: () => {
@@ -111,7 +113,7 @@ function LoadingScreen({ onComplete }) {
             Forgentis
           </h1>
           <p ref={subtitleRef} className="loading-subtitle">
-            Fabrication
+            <img src="/images/tagfor.png" alt="" srcset="" />
           </p>
         </div>
       </div>

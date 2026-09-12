@@ -110,7 +110,7 @@
   color: var(--color-steel-main);
   line-height: 1.5;
   margin: 0;
-  max-width: 320px;
+  max-width: 620px;
 }
 
 @media (max-width: 1200px) {

@@ -1,0 +1,146 @@
+.stats_section_wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  background-color: var(--color-black, #0a0a0a);
+  color: var(--color-white, #ffffff);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Master Movable Track */
+.stats_scroll_track {
+  width: 86vw;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 14vh;
+  padding-bottom: 12vh;
+  will-change: transform;
+}
+
+/* Heading Container */
+.stats_header_wrap {
+  width: 100%;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.stats_section_heading {
+  font-family: var(--font-family-primary, sans-serif);
+  font-weight: 100;
+  font-size: clamp(2rem, 3.5vw, 3.8rem);
+  color: var(--color-white, #ffffff);
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  margin: 0 0 60px 0;
+  line-height: 1.1;
+}
+
+.stats_section_heading > span {
+  color: #a0725a; /* Same bronze accent */
+  font-weight: 100;
+}
+
+/* Stats Container */
+.stats_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Reduced gap between numbers to prevent massive bottom space */
+}
+
+/* Base row layout */
+.stat_row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+  position: relative;
+  width: 100%;
+}
+
+.stat_row.row_reverse {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+/* Giant Number Styling */
+.stat_number_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.75;
+  user-select: none;
+}
+
+.stat_number {
+  font-family: var(--font-family-primary, sans-serif);
+  font-size: clamp(120px, 16vw, 300px);
+  font-weight: 100;
+  line-height: 0.75;
+  letter-spacing: -8px;
+  color: #a0725a;
+  display: block;
+}
+
+/* Text Container */
+.stat_text_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transform: translateY(-10px);
+}
+
+.stat_row.row_reverse .stat_text_wrap {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.stat_title {
+  font-family: var(--font-family-primary, sans-serif);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.stat_subtitle {
+  font-family: var(--font-family-primary, sans-serif);
+  font-size: clamp(0.95rem, 1.3vw, 1.25rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats_scroll_track {
+    width: 92vw;
+    padding-top: 10vh;
+  }
+
+  .stats_container {
+    gap: 40px;
+  }
+
+  .stat_row {
+    gap: 16px;
+  }
+
+  .stat_number {
+    font-size: clamp(80px, 25vw, 140px);
+    letter-spacing: -3px;
+  }
+
+  .stat_text_wrap {
+    transform: translateY(0);
+  }
+}
