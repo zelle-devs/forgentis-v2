@@ -108,14 +108,15 @@ function LoadingScreen({ onComplete }) {
         </div>
 
         {/* Text Content */}
-        <div className="loading-text-content">
-          <h1 ref={textRef} className="loading-title">
-            Forgentis
-          </h1>
-          <p ref={subtitleRef} className="loading-subtitle">
-            <img src="/images/tagfor.png" alt="" srcset="" />
-          </p>
-        </div>
+        {/* Text Content */}
+<div className="loading-text-content">
+  <h1 ref={textRef} className="loading-title">
+    <img src="/images/name.png" alt="Forgentis" />
+  </h1>
+  <p ref={subtitleRef} className="loading-subtitle">
+    <img src="/images/tagfor.png" alt="" srcSet="" />
+  </p>
+</div>
       </div>
     </div>
   )

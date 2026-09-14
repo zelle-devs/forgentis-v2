@@ -37,17 +37,14 @@
 }
 
 .loading-title {
-  font-family: var(--font-family-primary);
-  font-size: 40px;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-white);
-  letter-spacing: 4px;
   margin: 0;
-  text-transform: uppercase;
-  background: linear-gradient(45deg, var(--color-blue-light), var(--color-blue-main));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  line-height: 0; /* h1 ka default line-height image ke neeche extra gap na chhode */
+}
+
+.loading-title img {
+  width: 280px;      /* apni image ke hisab se adjust karo */
+  height: auto;
+  display: block;
 }
 
 .loading-subtitle {

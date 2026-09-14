@@ -27,7 +27,7 @@
   backface-visibility: hidden;
 }
 
-/* Windows Container - Center mein ek row */
+
 .windows-container {
   position: absolute;
   top: 50%;
@@ -43,7 +43,7 @@
   transform-style: preserve-3d;
 }
 
-/* Window Styling - Clean, no borders, no shadows */
+
 .window {
   position: relative;
   overflow: hidden;
@@ -54,7 +54,7 @@
   transform-style: preserve-3d;
 }
 
-/* Window Sizes - All same */
+
 .left-window,
 .center-window,
 .right-window {
@@ -62,7 +62,7 @@
   height: 280px;
 }
 
-/* Window Images */
+
 .window-image {
   position: absolute;
   top: 0;
@@ -75,25 +75,25 @@
   backface-visibility: hidden;
 }
 
-/* Left window image - 300% width for left position */
+
 .left-window .window-image {
   width: 300%;
   left: 0;
 }
 
-/* Center window image - 300% width for center position */
+
 .center-window .window-image {
   width: 300%;
   left: -100%;
 }
 
-/* Right window image - 300% width for right position */
+
 .right-window .window-image {
   width: 300%;
   left: -200%;
 }
 
-/* Premium 3D effect on scale */
+
 .windows-container {
   animation: smooth3D 0.1s ease-out;
 }
@@ -104,5 +104,17 @@
   }
   to {
     filter: blur(0px);
+  }
+}
+
+/* Desktop default 160x280 already file mein hai — usko chhedne ki zaroorat nahi */
+
+/* Mobile ke liye alag window dimensions (agar chahiye) */
+@media (max-width: 768px) {
+  .left-window,
+  .center-window,
+  .right-window {
+    width: 100px;
+    height: 180px;
   }
 }

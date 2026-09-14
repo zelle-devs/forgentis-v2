@@ -86,7 +86,9 @@ function CursorTrail() {
             midY
           )
 
-          ctx.strokeStyle = `rgba(104, 70, 58, ${alpha * 0.18})`
+// ctx.strokeStyle = `rgba(92, 58, 37, ${alpha * 0.18})`
+
+ctx.strokeStyle = `rgba(10, 30, 43, ${alpha * 0.18})`
           ctx.lineWidth = lineWidth * 4
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
@@ -105,7 +107,9 @@ function CursorTrail() {
             midY
           )
 
-          ctx.strokeStyle = `rgba(148, 104, 84, ${alpha * 0.5})`
+    
+// ctx.strokeStyle = `rgba(138, 90, 59, ${alpha * 0.5})`
+ctx.strokeStyle = `rgba(23, 52, 74, ${alpha * 0.5})`
           ctx.lineWidth = lineWidth * 2
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
@@ -124,7 +128,9 @@ function CursorTrail() {
             midY
           )
 
-          ctx.strokeStyle = `rgba(148, 104, 84, ${alpha * 0.9})`
+    
+// ctx.strokeStyle = `rgba(138, 90, 59, ${alpha * 0.9})`
+ctx.strokeStyle = `rgba(23, 52, 74, ${alpha * 0.9})`
           ctx.lineWidth = lineWidth
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
@@ -143,7 +149,9 @@ function CursorTrail() {
             midY
           )
 
-          ctx.strokeStyle = `rgba(255, 245, 240, ${alpha * 0.55})`
+          
+          // ctx.strokeStyle = `rgba(255, 242, 230, ${alpha * 0.55})`
+          ctx.strokeStyle = `rgba(225, 240, 248, ${alpha * 0.55})`
           ctx.lineWidth = lineWidth * 0.35
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
@@ -172,21 +180,37 @@ function CursorTrail() {
           15
         )
 
-        outerGlow.addColorStop(
-          0,
-          'rgba(201, 160, 142, 0.65)'
-        )
+       
+//         outerGlow.addColorStop(
+//   0,
+//   'rgba(190, 145, 110, 0.65)'
+// )
 
-        outerGlow.addColorStop(
-          0.4,
-          'rgba(148, 104, 84, 0.32)'
-        )
+// outerGlow.addColorStop(
+//   0.4,
+//   'rgba(138, 90, 59, 0.32)'
+// )
 
-        outerGlow.addColorStop(
-          1,
-          'rgba(104, 70, 58, 0)'
-        )
+// outerGlow.addColorStop(
+//   1,
+//   'rgba(92, 58, 37, 0)'
+// )
 
+
+outerGlow.addColorStop(
+  0,
+  'rgba(100, 145, 170, 0.65)'
+)
+
+outerGlow.addColorStop(
+  0.4,
+  'rgba(23, 52, 74, 0.32)'
+)
+
+outerGlow.addColorStop(
+  1,
+  'rgba(10, 30, 43, 0)'
+)
         ctx.beginPath()
         ctx.arc(
           lastPoint.x,
@@ -212,20 +236,36 @@ function CursorTrail() {
           8
         )
 
-        midGlow.addColorStop(
-          0,
-          'rgba(255, 245, 240, 0.95)'
-        )
+//         midGlow.addColorStop(
+//   0,
+//   'rgba(255, 242, 230, 0.95)'
+// )
 
-        midGlow.addColorStop(
-          0.4,
-          'rgba(201, 160, 142, 0.75)'
-        )
+// midGlow.addColorStop(
+//   0.4,
+//   'rgba(190, 145, 110, 0.75)'
+// )
 
-        midGlow.addColorStop(
-          1,
-          'rgba(148, 104, 84, 0.35)'
-        )
+// midGlow.addColorStop(
+//   1,
+//   'rgba(138, 90, 59, 0.35)'
+// )
+
+midGlow.addColorStop(
+  0,
+  'rgba(235, 247, 255, 0.95)'
+)
+
+midGlow.addColorStop(
+  0.4,
+  'rgba(100, 145, 170, 0.75)'
+)
+
+midGlow.addColorStop(
+  1,
+  'rgba(23, 52, 74, 0.35)'
+)
+
 
         ctx.beginPath()
         ctx.arc(
@@ -252,20 +292,35 @@ function CursorTrail() {
           3
         )
 
-        coreDot.addColorStop(
-          0,
-          'rgba(255, 250, 247, 1)'
-        )
+//         coreDot.addColorStop(
+//   0,
+//   'rgba(255, 248, 240, 1)'
+// )
 
-        coreDot.addColorStop(
-          0.6,
-          'rgba(229, 200, 186, 0.95)'
-        )
+// coreDot.addColorStop(
+//   0.6,
+//   'rgba(225, 190, 165, 0.95)'
+// )
 
-        coreDot.addColorStop(
-          1,
-          'rgba(148, 104, 84, 0.65)'
-        )
+// coreDot.addColorStop(
+//   1,
+//   'rgba(138, 90, 59, 0.65)'
+// )
+
+coreDot.addColorStop(
+  0,
+  'rgba(245, 250, 255, 1)'
+)
+
+coreDot.addColorStop(
+  0.6,
+  'rgba(190, 215, 230, 0.95)'
+)
+
+coreDot.addColorStop(
+  1,
+  'rgba(23, 52, 74, 0.65)'
+)
 
         ctx.beginPath()
         ctx.arc(

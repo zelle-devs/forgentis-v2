@@ -74,9 +74,19 @@ function SecondSection({labelText,labelText2,mainText,description}) {
       const charProgress = clamp01(visibleChars - index)
 
       gsap.to(char, {
-        color: charProgress > 0
-          ? `rgba(255, 255, 255, ${0.3 + 0.7 * charProgress})`
-          : 'rgba(157, 160, 161, 0.3)',
+        // color: charProgress > 0
+        //   ? `rgba(255, 255, 255, ${0.3 + 0.7 * charProgress})`
+        //   : 'rgba(157, 160, 161, 0.3)',
+
+        // **********brown********
+  //       color: charProgress > 0
+  // ? `rgba(148, 104, 84, ${0.3 + 0.7 * charProgress})`
+  // : 'rgba(157, 160, 161, 0.3)',
+
+  color: charProgress > 0
+  ? `#f1f1f1, ${0.3 + 0.7 * charProgress})`
+  : 'rgba(157, 160, 161, 0.3)',
+
         opacity: 0.3 + 0.7 * charProgress,
         duration: 0.25,
         ease: 'power2.out',
@@ -99,7 +109,7 @@ function SecondSection({labelText,labelText2,mainText,description}) {
         </div>
         <div className="left-bottom-content">
           <div className="left-image">
-            <img src="/images/object2.webp" alt="Design" />
+            <img src="/images/from_eng_to.png" alt="Design" />
           </div>
         </div>
       </div>

@@ -52,7 +52,8 @@
   --color-steel-light: #A8AD8E;
   --color-steel-medium: #B7B9BA;
   --color-steel-dark: #D9DADA;
-  --color-steel-main: #9DA0A1;
+  /* --color-steel-main: #9DA0A1; */
+  --color-steel-main: #A7ADB1;
   
   /* Electric Blue Scale */
   --color-blue-dark: #0065D5;
@@ -60,6 +61,14 @@
   --color-blue-light: #7EB5F2;
   --color-blue-main2: #0270EA;
   --color-blue-main: #946854;
+   --color-blue-gradient: linear-gradient(
+  110deg,
+  #3E4A52 0%,
+  #A7ADB1 38%,
+  #E8E9E7 52%,
+  #A7ADB1 68%,
+  #3E4A52 100%
+);
   
   /* UI Colors */
   --color-white: #FFFFFF;

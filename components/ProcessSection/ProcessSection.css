@@ -1,4 +1,437 @@
+/* ==========================================
+   BASE — DESKTOP (unchanged)
+   ========================================== */
 .process-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.process-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+.process-counter {
+  position: absolute;
+  top: 40px;
+  left: 45%;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-family-primary);
+  color: var(--color-white);
+  text-shadow: var(--color-shadow-btn);
+}
+
+.process-counter-current {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.process-counter-divider {
+  width: 20px;
+  height: 1px;
+  background: var(--color-steel-main);
+}
+
+.process-counter-total {
+  font-size: var(--font-size-sm);
+  color: var(--color-steel-main);
+}
+
+.process-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.process-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10%;
+  will-change: transform, opacity;
+}
+
+.process-title {
+  font-family: var(--font-family-primary);
+  font-weight: 100;
+  font-size: 90px;
+  color: var(--color-white);
+  text-transform: uppercase;
+  margin: 0 0 24px;
+  max-width: 900px;
+}
+
+.process-title-colored {
+  background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 300;
+}
+
+.process-desc {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-lg);
+  color: var(--color-steel-main);
+  line-height: 1.7;
+  max-width: 620px;
+}
+
+.process-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+.process-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Desktop img — visible on desktop, hidden on mobile */
+.process-card-img-desktop {
+  display: block;
+}
+
+/* Mobile img — hidden on desktop, visible on mobile */
+.process-card-img-mobile {
+  display: none;
+}
+
+.process-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+.process-card-text {
+  position: absolute;
+  max-width: 380px;
+  z-index: 2;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-shadow: var(--text-shadow-btn) !important;
+}
+
+.process-card-text h3 {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-5xl);
+  font-weight: 100;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 12px;
+}
+
+.process-card-text p {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-base);
+  color: var(--color-white);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.process-view-all {
+  margin-top: 24px;
+  padding: 14px 28px;
+  background: transparent;
+  border: 1px solid var(--color-white);
+  color: var(--color-white);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.process-view-all:hover {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+/* ==========================================
+   LARGE SCREENS (≥1440px)
+   ========================================== */
+@media (min-width: 1440px) {
+  .process-title { font-size: 110px; max-width: 1100px; }
+  .process-desc { font-size: var(--font-size-xl); max-width: 750px; }
+  .process-card-text { max-width: 440px; }
+  .process-card-text h3 { font-size: 46px; }
+}
+
+@media (min-width: 1920px) {
+  .process-title { font-size: 130px; max-width: 1300px; }
+  .process-card-text { max-width: 500px; }
+  .process-card-text h3 { font-size: 52px; }
+}
+
+@media (min-width: 2560px) {
+  .process-title { font-size: 160px; max-width: 1600px; }
+  .process-desc { font-size: 24px; max-width: 900px; }
+  .process-card-text { max-width: 620px; padding: 16px; }
+  .process-card-text h3 { font-size: 60px; }
+  .process-card-text p { font-size: 20px; }
+}
+
+/* ==========================================
+   TABLET (≤1024px)
+   ========================================== */
+@media (max-width: 1024px) {
+  .process-counter {
+    top: 30px;
+    left: 40%;
+  }
+
+  .process-title {
+    font-size: clamp(50px, 6vw, 72px);
+    max-width: 700px;
+    margin-bottom: 18px;
+  }
+
+  .process-desc {
+    font-size: 16px;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  .process-card-text {
+    max-width: 320px;
+    padding: 12px;
+  }
+
+  .process-card-text h3 {
+    font-size: clamp(24px, 3vw, 34px);
+    letter-spacing: 1.5px;
+  }
+
+  .process-card-text p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .process-view-all {
+    padding: 12px 22px;
+    font-size: 12px;
+  }
+}
+
+/* ==========================================
+   SMALL TABLET (≤900px)
+   ========================================== */
+@media (max-width: 900px) {
+  .process-counter {
+    left: 35%;
+  }
+
+  .process-title { font-size: clamp(44px, 6vw, 62px); }
+  .process-card-text { max-width: 280px; }
+}
+
+/* ==========================================
+   MOBILE (≤768px) — PREMIUM REDESIGN
+   ========================================== */
+@media (max-width: 768px) {
+  /* Swap images — mobile img visible, desktop hidden */
+  .process-card-img-desktop { display: none; }
+  .process-card-img-mobile { display: block; }
+
+  .process-counter {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 6px;
+    z-index: 200;
+  }
+
+  .process-counter-current { font-size: 14px; font-weight: 600; }
+  .process-counter-divider { width: 14px; }
+  .process-counter-total { font-size: 11px; }
+
+  /* Intro Panel */
+  .process-intro {
+    padding: 0 24px;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .process-title {
+    font-size: clamp(38px, 11vw, 62px);
+    line-height: 0.98;
+    letter-spacing: -1px;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .process-desc {
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 100%;
+    letter-spacing: 0.2px;
+  }
+
+  /* Card text */
+  .process-card-text {
+    max-width: calc(100% - 48px);
+    padding: 14px 16px;
+    backdrop-filter: blur(8px);
+  }
+
+  .process-card-text h3 {
+    font-size: clamp(22px, 6vw, 34px);
+    letter-spacing: 1.2px;
+    margin-bottom: 8px;
+  }
+
+  .process-card-text p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .process-view-all {
+    margin-top: 16px;
+    padding: 10px 18px;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+  }
+
+  /* Image — cover the full panel */
+  .process-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+/* ==========================================
+   SMALL MOBILE (≤480px)
+   ========================================== */
+@media (max-width: 480px) {
+  .process-counter { top: 16px; }
+  .process-counter-current { font-size: 13px; }
+  .process-counter-total { font-size: 10px; }
+
+  .process-intro { padding: 0 20px; }
+
+  .process-title {
+    font-size: clamp(34px, 11.5vw, 52px);
+    line-height: 0.98;
+    letter-spacing: -1.2px;
+  }
+
+  .process-desc {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .process-card-text {
+    max-width: calc(100% - 36px);
+    padding: 12px 14px;
+  }
+
+  .process-card-text h3 {
+    font-size: clamp(20px, 5.5vw, 30px);
+  }
+
+  .process-card-text p {
+    font-size: 12.5px;
+  }
+
+  .process-view-all {
+    padding: 9px 16px;
+    font-size: 10px;
+  }
+}
+
+/* ==========================================
+   EXTRA SMALL (≤380px)
+   ========================================== */
+@media (max-width: 380px) {
+  .process-intro { padding: 0 16px; }
+
+  .process-title {
+    font-size: clamp(30px, 12vw, 46px);
+    line-height: 1;
+  }
+
+  .process-desc { font-size: 12px; line-height: 1.55; }
+
+  .process-card-text {
+    max-width: calc(100% - 32px);
+    padding: 10px 12px;
+  }
+
+  .process-card-text h3 {
+    font-size: clamp(18px, 5.5vw, 26px);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .process-card-text p {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .process-view-all {
+    margin-top: 12px;
+    padding: 8px 14px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+}
+
+/* ==========================================
+   VERY SMALL (≤320px)
+   ========================================== */
+@media (max-width: 320px) {
+  .process-counter { top: 14px; }
+  .process-intro { padding: 0 14px; }
+
+  .process-title { font-size: 28px; line-height: 1; }
+  .process-desc { font-size: 11.5px; }
+
+  .process-card-text {
+    max-width: calc(100% - 28px);
+    padding: 10px;
+  }
+
+  .process-card-text h3 { font-size: 18px; }
+  .process-card-text p { font-size: 11.5px; }
+
+  .process-view-all {
+    padding: 8px 12px;
+    font-size: 9px;
+  }
+}
+
+/* .process-wrapper {
   position: relative;
   width: 100%;
 }
@@ -66,12 +499,14 @@
   font-size: 90px;
   color: var(--color-white);
   text-transform: uppercase;
-  /* letter-spacing: 1px; */
   margin: 0 0 24px;
   max-width: 900px;
 }
 .process-title-colored{
-  color: var(--color-blue-main);
+  background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 300;
 }
 .process-desc {
@@ -109,12 +544,9 @@
   max-width: 380px;
   z-index: 2;
   padding: 10px;
-  /* From https://css.glass */
 background: rgba(255, 255, 255, 0.2);
-/* border-radius: 16px; */
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(5px);
-/* -webkit-backdrop-filter: blur(5px); */
 border: 1px solid rgba(255, 255, 255, 0.3);
 text-shadow: var(--text-shadow-btn)!important;
 }
@@ -165,4 +597,4 @@ text-shadow: var(--text-shadow-btn)!important;
 @media (max-width: 768px) {
   .process-title { font-size: 28px; }
   .process-card-text { max-width: 240px; }
-}
+} */
