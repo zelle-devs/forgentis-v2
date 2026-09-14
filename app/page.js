@@ -862,7 +862,7 @@ if (stageRef.current === STAGE_QUALITY) {
 
           {showSecond && (
             <div ref={secondRef} className="second-section-wrapper" style={slideInWrapperStyle(2)}>
-              <SecondSection scrollProgressRef={scrollProgressRef} labelText={""} labelText2={""} mainText={"FROM ENGINEERING REQUIREMENT TO FINISHED METALWORK."} description={"A great fabrication partner does more than manufacture parts."} />
+              <SecondSection scrollProgressRef={scrollProgressRef} labelText={""} labelText2={""} mainText={"EVERY CONCEPT CAN BE SHAPED IN METAL"} description={"See what happens when your concept meets the right fabrication partner."} />
             </div>
           )}
 
@@ -874,7 +874,7 @@ if (stageRef.current === STAGE_QUALITY) {
 
           {showCapability && (
             <div ref={capabilityRef} className="capability-section-wrapper" style={fixedWrapperStyle(4)}>
-              <CapabilitySection heading_1={"BUILT BEYOND THE "} heading_2={"STANDARD"} paragraph={"We take drawings, specifications and ambitious requirements—and turn them into metalwork built to perform."} scrollProgressRef={scrollProgressRef} POINTS={POINTS} TOTAL_PANELS={TOTAL_PANELS} />
+              <CapabilitySection heading_1={"WHAT SHAPES AN IDEA "} heading_2={"FABRICATED METAL"} paragraph={"The right process turns possibility into something precise, functional and built to last."} scrollProgressRef={scrollProgressRef} POINTS={POINTS} TOTAL_PANELS={TOTAL_PANELS} />
             </div>
           )}
 
