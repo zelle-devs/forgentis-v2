@@ -16,7 +16,7 @@ function ImageSplit({ onComplete }) {
   // Mobile ke liye alag image select karo
   useEffect(() => {
     const isMobile = window.innerWidth <= 768
-    setHeroImage(isMobile ? '/images/hero-mobile.jpg' : '/images/hero.webp')
+    setHeroImage(isMobile ? '/optimize/hero-mobile.png' : '/optimize/hero.png')
   }, [])
 
   useEffect(() => {

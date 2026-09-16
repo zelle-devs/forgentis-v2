@@ -230,7 +230,7 @@ const project_slides = [
 ]
 
 const quality_points = [
-  { title: 'UNDERSTAND IT FIRST.', desc: 'uality starts with understanding the requirement.' },
+  { title: 'UNDERSTAND IT FIRST.', desc: 'Quality starts with understanding the requirement.' },
   { title: 'CONTROL THE PROCESS.', desc: 'Every stage stays coordinated from drawing to production.' },
   { title: 'CHECK WHAT MATTERS.', desc: 'Quality is verified throughout, not just at the end.' },
   { title: 'DELIVER AS EXPECTED.', desc: 'Built Precisely & Delivered.' },
