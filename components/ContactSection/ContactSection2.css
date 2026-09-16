@@ -133,14 +133,18 @@
   font-size: clamp(9rem, 15vw, 17rem);
   font-weight: 100;
   line-height: 1;
-  color: rgba(255, 255, 255, 0.95);
+  /* color: rgba(255, 255, 255, 0.95); */
   text-transform: uppercase;
   display: inline-block;
   will-change: transform;
 }
 
 .colored {
-  color: var(--color-blue-main);
+  /* color: var(--color-blue-main); */
+    background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 300;
 }
 

@@ -66,8 +66,10 @@
 }
 
 .quality-title .accent {
-  color: var(--color-blue-main);
-  font-weight: 300;
+  background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;  font-weight: 300;
 }
 
 /* List */
@@ -92,7 +94,11 @@
 .quality-item-number {
   font-family: var(--font-family-primary);
   font-size: var(--font-size-sm);
-  color: var(--color-blue-main);
+  /* color: var(--color-blue-main); */
+    background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: 1px;
   padding-top: 4px;
   flex-shrink: 0;

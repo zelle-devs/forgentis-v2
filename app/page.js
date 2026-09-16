@@ -52,6 +52,7 @@ const getProcessStep = () => {
   return PROCESS_STEP            // desktop
 }
 const THIRD_STEP = 0.012
+const THIRD_WRAP_SPLIT = 0.35
 const QUALITY_STEP = 0.01
 // Mobile pe Quality faster (content already visible hai)
 const getQualityStep = () => {
@@ -119,29 +120,35 @@ const getTouchMultiplier = () => {
 const POINTS = [
   {
     titleFirst: 'PRECISION',
-    titleSecond: 'IN METAL',
-    coloredPart: 'second',
+    titleSecond: 'AT EVERY DETAIL',
+    coloredPart: 'first',
     images: [
-      { src: '/images/precision1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/precision3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/precision2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
+      // { src: '/images/precision1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+      { src: '/images/precision1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/images/precision2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '70%', left: '4%' },
+    titlePos: { top: '10%', left: '4%' },
   },
   {
-    titleFirst: 'FULL',
-    titleSecond: 'CAPABILITY',
+    titleFirst: 'CAPABILITY',
+    titleSecond: 'AT EVERY SCALE',
     coloredPart: 'second',
-    images: [
-      { src: '/images/capability1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/capability3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/capability2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
+    // images: [
+    //   { src: '/images/capability1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+    //   { src: '/images/capability3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
+    //   { src: '/images/capability2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
+    // ],
+    // titlePos: { top: '70%', left: '4%' },
+      images: [
+      // { src: '/images/precision1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+      { src: '/images/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/images/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '70%', left: '4%' },
+    titlePos: { top: '10%', left: '4%' },
   },
   {
-    titleFirst: 'TOTAL',
-    titleSecond: 'CONTROL',
+    titleFirst: 'CONTROL',
+    titleSecond: 'AT EVERY STAGE',
     coloredPart: 'second',
     images: [
       { src: '/images/control1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
@@ -151,8 +158,20 @@ const POINTS = [
     titlePos: { top: '70%', left: '4%' },
   },
   {
-    titleFirst: 'EXPERT',
-    titleSecond: 'CRAFT',
+    titleFirst: 'COMPLEXITY',
+    titleSecond: 'MADE POSSIBLE',
+    coloredPart: 'second',
+    images: [
+      { src: '/images/craft1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
+      { src: '/images/craft3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/images/craft2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
+    ],
+    titlePos: { top: '70%', left: '4%' },
+  },
+  ,
+  {
+    titleFirst: 'FINISHED',
+    titleSecond: 'WITH PURPOSE',
     coloredPart: 'second',
     images: [
       { src: '/images/craft1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
@@ -214,10 +233,10 @@ const project_slides = [
 ]
 
 const quality_points = [
-  { title: 'GET IT RIGHT.', desc: 'Precision starts with understanding the requirement.' },
-  { title: 'KEEP CONTROL.', desc: 'One coordinated workflow from drawing to delivery.' },
-  { title: 'BUILD WITH CONFIDENCE.', desc: 'Quality checks throughout production.' },
-  { title: 'DELIVER WITH PURPOSE.', desc: 'Because your timeline matters as much as the fabrication.' },
+  { title: 'UNDERSTAND IT FIRST.', desc: 'uality starts with understanding the requirement.' },
+  { title: 'CONTROL THE PROCESS.', desc: 'Every stage stays coordinated from drawing to production.' },
+  { title: 'CHECK WHAT MATTERS.', desc: 'Quality is verified throughout, not just at the end.' },
+  { title: 'DELIVER AS EXPECTED.', desc: 'Built Precisely & Delivered.' },
 ]
 
 export default function Home() {
@@ -582,37 +601,43 @@ if (stageRef.current === STAGE_PROCESS) {
 }
 
     // THIRD
-    if (stageRef.current === STAGE_THIRD) {
-      if (direction > 0) {
-        scrollProgressRef.current = clamp01(scrollProgressRef.current + THIRD_STEP * factor)
-        if (scrollProgressRef.current <= THIRD_SPLIT) {
-          slideParallax(thirdRef, processRef, scrollProgressRef.current / THIRD_SPLIT)
-          dispatch('thirdSlideProgress', scrollProgressRef.current / THIRD_SPLIT)
-        } else {
-          slideParallax(thirdRef, processRef, 1)
-          dispatch('thirdSlideProgress', 1)
-          dispatch('thirdHorizontalProgress', (scrollProgressRef.current - THIRD_SPLIT) / (1 - THIRD_SPLIT))
-        }
-      if (scrollProgressRef.current >= 1) {
-  mountForward(setShowQuality, qualityRef, STAGE_QUALITY)
-}
-      } else {
-        scrollProgressRef.current = Math.max(0, scrollProgressRef.current - THIRD_STEP * factor)
-        if (scrollProgressRef.current <= THIRD_SPLIT) {
-          slideParallax(thirdRef, processRef, scrollProgressRef.current / THIRD_SPLIT)
-          dispatch('thirdSlideProgress', scrollProgressRef.current / THIRD_SPLIT)
-          dispatch('thirdHorizontalProgress', 0)
-        } else {
-          slideParallax(thirdRef, processRef, 1)
-          dispatch('thirdSlideProgress', 1)
-          dispatch('thirdHorizontalProgress', (scrollProgressRef.current - THIRD_SPLIT) / (1 - THIRD_SPLIT))
-        }
-        if (scrollProgressRef.current <= 0) {
-          unmountBackward(setShowThird, processRef, STAGE_PROCESS, () => dispatch('processProgress', 1))
-        }
-      }
-      return
+  if (stageRef.current === STAGE_THIRD) {
+  if (direction > 0) {
+    scrollProgressRef.current = clamp01(scrollProgressRef.current + THIRD_STEP * factor)
+    if (scrollProgressRef.current <= THIRD_SPLIT) {
+      const overallP = scrollProgressRef.current / THIRD_SPLIT
+      const wrapP = Math.min(1, overallP / THIRD_WRAP_SPLIT)
+      const introP = Math.max(0, (overallP - THIRD_WRAP_SPLIT) / (1 - THIRD_WRAP_SPLIT))
+      slideParallax(thirdRef, processRef, wrapP)
+      dispatch('thirdSlideProgress', introP)
+    } else {
+      slideParallax(thirdRef, processRef, 1)
+      dispatch('thirdSlideProgress', 1)
+      dispatch('thirdHorizontalProgress', (scrollProgressRef.current - THIRD_SPLIT) / (1 - THIRD_SPLIT))
     }
+    if (scrollProgressRef.current >= 1) {
+      mountForward(setShowQuality, qualityRef, STAGE_QUALITY)
+    }
+  } else {
+    scrollProgressRef.current = Math.max(0, scrollProgressRef.current - THIRD_STEP * factor)
+    if (scrollProgressRef.current <= THIRD_SPLIT) {
+      const overallP = scrollProgressRef.current / THIRD_SPLIT
+      const wrapP = Math.min(1, overallP / THIRD_WRAP_SPLIT)
+      const introP = Math.max(0, (overallP - THIRD_WRAP_SPLIT) / (1 - THIRD_WRAP_SPLIT))
+      slideParallax(thirdRef, processRef, wrapP)
+      dispatch('thirdSlideProgress', introP)
+      dispatch('thirdHorizontalProgress', 0)
+    } else {
+      slideParallax(thirdRef, processRef, 1)
+      dispatch('thirdSlideProgress', 1)
+      dispatch('thirdHorizontalProgress', (scrollProgressRef.current - THIRD_SPLIT) / (1 - THIRD_SPLIT))
+    }
+    if (scrollProgressRef.current <= 0) {
+      unmountBackward(setShowThird, processRef, STAGE_PROCESS, () => dispatch('processProgress', 1))
+    }
+  }
+  return
+}
 // QUALITY
 if (stageRef.current === STAGE_QUALITY) {
   const isMobileDevice =
@@ -644,6 +669,7 @@ if (stageRef.current === STAGE_QUALITY) {
       if (scrollProgressRef.current <= 0) {
         unmountBackward(setShowQuality, thirdRef, STAGE_THIRD, () => {
           dispatch('thirdHorizontalProgress', 1)
+          dispatch('thirdSlideProgress', 1)
         })
       }
     }
@@ -874,13 +900,13 @@ if (stageRef.current === STAGE_QUALITY) {
 
           {showCapability && (
             <div ref={capabilityRef} className="capability-section-wrapper" style={fixedWrapperStyle(4)}>
-              <CapabilitySection heading_1={"WHAT SHAPES AN IDEA "} heading_2={"FABRICATED METAL"} paragraph={"The right process turns possibility into something precise, functional and built to last."} scrollProgressRef={scrollProgressRef} POINTS={POINTS} TOTAL_PANELS={TOTAL_PANELS} />
+              <CapabilitySection heading_1={"WHAT SHAPES AN IDEA INTO WELL"} heading_2={" FABRICATED METAL"} paragraph={"The right process turns possibility into something precise, functional and built to last."} scrollProgressRef={scrollProgressRef} POINTS={POINTS} TOTAL_PANELS={TOTAL_PANELS} />
             </div>
           )}
 
           {showProcess && (
             <div ref={processRef} className="process-section-wrapper" style={fixedWrapperStyle(5)}>
-              <ProcessSection scrollProgressRef={scrollProgressRef} POINTS={POINTS_PROCESS} TOTAL_ITEMS={TOTAL_ITEMS_PROCESS} heading_part_1={'BUILT TO FABRICATE'} heading_part_2={"EQUIPPED TO DELIVER"} description={"From precision cutting to final finishing, our capabilities are built to handle demanding architectural, commercial and industrial requirements."} />
+              <ProcessSection scrollProgressRef={scrollProgressRef} POINTS={POINTS_PROCESS} TOTAL_ITEMS={TOTAL_ITEMS_PROCESS} heading_part_1={'EVERY PROJECT DEMANDS A'} heading_part_2={"PRECISE PROCESS"} description={"From precision cutting and forming to fabrication and finishing, our capabilities are built around what the final result demands."} />
             </div>
           )}
 
@@ -892,7 +918,7 @@ if (stageRef.current === STAGE_QUALITY) {
 
           {showQuality && (
             <div ref={qualityRef} className="quality-section-wrapper" style={fixedWrapperStyle(7)}>
-              <QualitySection scrollProgressRef={scrollProgressRef} POINTS={quality_points} heading_part_1={"WHEN"} heading_part_2={'"GOOD'} heading_part_3={'ENOUGH"'} heading_part_4={"ISN'T"} />
+              <QualitySection scrollProgressRef={scrollProgressRef} POINTS={quality_points} heading_part_1={"QUALITY"} heading_part_2={'DOESN’T'} heading_part_3={', LEAVE ROOM FOR'} heading_part_4={"“GOOD ENOUGH”"} />
             </div>
           )}
 

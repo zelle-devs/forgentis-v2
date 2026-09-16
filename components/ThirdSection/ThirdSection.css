@@ -136,14 +136,18 @@
   z-index: 10;
   padding: 20px;
   pointer-events: auto;
-  text-shadow: var(--text-shadow-btn) !important;
+  /* text-shadow: var(--text-shadow-btn) !important; */
 }
 
 .slide-category {
   display: block;
   font-family: var(--font-family-secondary);
   font-size: clamp(1.2rem, 2vw, 1.8rem);
-  color: var(--color-blue-main, #3b82f6);
+    background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  /* color: var(--color-blue-main, #3b82f6); */
   text-transform: uppercase;
   font-weight: 600;
 }

@@ -51,21 +51,16 @@ function ThirdSection({
       : null
 
     // 1. Intro → Slider vertical shift
-    const handleSlideProgress = (e) => {
-      const p = e.detail?.progress ?? 0
-      const vh = window.innerHeight
+   const handleSlideProgress = (e) => {
+  const p = e.detail?.progress ?? 0
+  const vh = window.innerHeight
 
-      if (imageScaleX) imageScaleX(1.3 - p * 0.3)
+  if (imageScaleX) imageScaleX(1.3 - p * 0.3)
 
-      const SHIFT_START = 0.3
-      const shiftProgress = Math.max(
-        0,
-        (p - SHIFT_START) / (1 - SHIFT_START)
-      )
-      trackY(-shiftProgress * vh)
+  trackY(-p * vh)
 
-      if (sliderX) sliderX(0)
-    }
+  if (sliderX) sliderX(0)
+}
 
     // 2. Horizontal slider
     const handleHorizontalProgress = (e) => {

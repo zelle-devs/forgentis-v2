@@ -18,7 +18,11 @@
   align-items: center;
   gap: 10px;
   font-family: var(--font-family-primary);
-  color: var(--color-blue-main);
+  /* color: var(--color-blue-main); */
+    background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .capability-counter-current {
@@ -130,6 +134,7 @@
   will-change: transform;
 }
 .capability-point-title {
+  max-width: 600;
   position: absolute;
   z-index: 4;
   font-family: var(--font-family-primary);
