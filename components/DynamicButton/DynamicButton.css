@@ -1,0 +1,171 @@
+/* ============ DYNAMIC BUTTON - FORGENTIS ============ */
+.db-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-normal);
+  border: none;
+  font-family: var(--font-family-primary);
+  padding: 0 24px;
+  text-transform: uppercase;
+}
+
+/* ============ SIZE PRESETS ============ */
+.db-sm {
+  height: 36px;
+}
+.db-sm .db-btn-text {
+  font-size: var(--font-size-xs);
+}
+
+.db-md {
+  height: 50px;
+}
+.db-md .db-btn-text {
+  font-size: var(--font-size-sm);
+}
+
+.db-lg {
+  height: 60px;
+}
+.db-lg .db-btn-text {
+  font-size: var(--font-size-base);
+}
+
+/* ============ SOLID VARIANT ============ */
+.db-solid {
+  background-color: var(--color-blue-main2);
+  color: var(--color-white);
+  border: 2px solid var(--color-blue-main2);
+  box-shadow: 
+    0 10px 20px -15px rgba(2, 112, 234, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.db-solid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, var(--color-blue-main2), var(--color-blue-medium));
+  opacity: 1;
+  transition: all var(--transition-normal);
+  /* border-radius: inherit; */
+}
+
+.db-solid .db-btn-text {
+  color: var(--color-white);
+}
+
+.db-solid:hover::before {
+  opacity: 0;
+}
+
+.db-solid:hover {
+  background-color: var(--color-blue-medium);
+  border-color: var(--color-blue-medium);
+  box-shadow: 
+    0 15px 25px -5px rgba(2, 112, 234, 0.5),
+    0 0 40px rgba(2, 112, 234, 0.3);
+}
+
+/* ============ OUTLINE VARIANT ============ */
+.db-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-blue-main2);
+  color: var(--color-blue-main2);
+}
+
+.db-outline .db-btn-text {
+  color: var(--color-blue-main2);
+}
+
+.db-outline:hover {
+  background-color: var(--color-blue-main2);
+  border-color: var(--color-blue-main2);
+  box-shadow: 
+    0 0 30px rgba(2, 112, 234, 0.3),
+    0 0 60px rgba(2, 112, 234, 0.15);
+}
+
+.db-outline:hover .db-btn-text {
+  color: var(--color-white);
+}
+
+/* ============ DISABLED STATE ============ */
+.db-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.db-btn:disabled:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+.db-btn:disabled::before {
+  opacity: 1;
+}
+
+/* ============ TEXT STYLE ============ */
+.db-btn-text {
+  position: relative;
+  z-index: 1;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 1px;
+  white-space: nowrap;
+  transition: all var(--transition-normal);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .db-md {
+    height: 44px;
+  }
+  .db-lg {
+    height: 50px;
+  }
+}
+
+@media (max-width: 479px) {
+  .db-sm {
+    height: 32px;
+  }
+  .db-md {
+    height: 40px;
+  }
+  .db-lg {
+    height: 46px;
+  }
+  .db-btn {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 350px) {
+  .db-sm {
+    height: 28px;
+  }
+  .db-md {
+    height: 36px;
+  }
+  .db-lg {
+    height: 42px;
+  }
+  .db-btn {
+    padding: 0 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .db-btn,
+  .db-btn::before,
+  .db-btn-text {
+    transition: none !important;
+  }
+}

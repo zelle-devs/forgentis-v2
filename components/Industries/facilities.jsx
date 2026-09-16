@@ -33,7 +33,7 @@ const APPLICATIONS_DATA = [
       'CAPACITY — Infrastructure for demanding work.',
     ],
     image: {
-      src: '/images/precision3.png',
+      src: '/images/precision1.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },

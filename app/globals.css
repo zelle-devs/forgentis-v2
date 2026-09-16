@@ -152,7 +152,7 @@ html.lenis, html.lenis body {
 
 html, body {
   min-height: 100%;
-  overflow-x: clip; /* 'clip' prevents horizontal scrollbars without breaking vertical scroll calculation */
+  overflow-x: hidden;
 }
 html {
   scroll-behavior: smooth;
@@ -520,5 +520,31 @@ select {
     --font-size-7xl: 32px;
     --font-size-8xl: 42px;
     --font-size-special: 30px;
+  }
+}
+
+/* ********* consulation form******* */
+.section-padding {
+  padding-top: var(--section-gap);
+  /* padding-bottom: var(--section-gap); */
+}
+@media (min-width: 1921px) {
+  :root {
+    --section-gap: 160px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --section-gap: 140px;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --section-gap: 130px;
+  }
+}
+@media (min-width: 480px) {
+  :root {
+    --section-gap: 120px;
   }
 }

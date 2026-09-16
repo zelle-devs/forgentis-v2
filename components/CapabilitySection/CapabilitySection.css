@@ -105,6 +105,7 @@
   font-family: var(--font-family-secondary);
   font-size: var(--font-size-lg);
   color: var(--color-steel-main);
+  max-width: 100px;
 }
 
 .colored {
@@ -118,12 +119,6 @@
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55);
   will-change: transform;
 }
-
-/* .capability-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
 .capability-image img {
   width: 100%;
   height: 130%;        /* ← 130% — container se bada, parallax ke liye room */
@@ -401,7 +396,7 @@
 
   .capability-point-desc {
     font-size: 12.5px;
-    max-width: calc(100% - 36px) !important;
+    max-width: 130px!important;
   }
 
   /* Images tighter */

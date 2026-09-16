@@ -92,7 +92,7 @@ const APPLICATIONS_DATA = [
     ],
     footer: 'ONE FABRICATION PARTNER. CONSISTENT RESULTS ACROSS EVERY LOCATION.',
     image: {
-      src: '/images/precision3.png',
+      src: '/images/precision2.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
@@ -112,7 +112,7 @@ const APPLICATIONS_DATA = [
     ],
     footer: 'PVD, brushed stainless and other finishing options allow the final fabrication to complement the design intent.',
     image: {
-      src: '/images/capability3.png',
+      src: '/images/capability2.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },

@@ -18,14 +18,20 @@
   gap: 14px;
   text-align: center;
   padding: 20px;
-  will-change: transform, opacity;
+  /* Hardware acceleration for ultra-smooth blur and scale transitions */
+  will-change: transform, opacity, filter;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .tag_section_cs1 {
   font-family: var(--font-family-primary);
   font-size: 0.8rem;
   letter-spacing: 2px;
-  color: var(--color-blue-main);
+  background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-transform: uppercase;
   font-weight: 500;
 }
@@ -45,7 +51,11 @@
   overflow: hidden;
   vertical-align: bottom;
   position: relative;
-  color: var(--color-blue-main); /* Ya jo brown color variable aapka hai */
+  background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 300;
   text-shadow: 0 0 0px rgba(180, 115, 60, 0);
   will-change: transform, opacity, filter;
 }
@@ -62,7 +72,10 @@
 .statement_section_cs1 {
   font-size: 0.95rem;
   font-weight: 400;
-  color: var(--color-blue-main);
+  background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin-top: 4px;
@@ -128,8 +141,11 @@
   margin-top: 6px;
   padding: 8px 18px;
   background: transparent;
-  color: var(--color-blue-main);
-  border: 1px solid var(--color-blue-main);
+  background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border: 1px solid var(--color-gray-dark);
   cursor: pointer;
   font-size: 0.8rem;
   letter-spacing: 1px;
@@ -137,22 +153,86 @@
 }
 
 .cta_button_cs1:hover {
-  background: var(--color-blue-main);
+  background: linear-gradient(
+    110deg,
+    #3E4A52 0%,
+    #A7ADB1 38%,
+    #E8E9E7 52%,
+    #A7ADB1 68%,
+    #3E4A52 100%
+  );
   color: var(--color-black);
 }
 
-.cap_slide {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  text-align: center;
-  padding: 20px;
-  /* Hardware acceleration for ultra-smooth blur and scale transitions */
-  will-change: transform, opacity, filter;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+/* =====================================================
+   RESPONSIVE OVERRIDES (300px to 768px - Tablets & Mobiles)
+   Desktop layout is completely preserved above 768px
+   ===================================================== */
+@media screen and (max-width: 768px) {
+  .cap_section_1 {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 15px;
+  }
+
+  .cap_slide {
+    padding: 15px 10px;
+    gap: 10px;
+  }
+
+  .tag_section_cs1 {
+    font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+    letter-spacing: 1px;
+  }
+
+  .main_heading_section_cs1 {
+    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
+    line-height: 1.2;
+  }
+
+  .content_section_cs1 {
+    font-size: clamp(0.85rem, 3.5vw, 1.05rem) !important;
+    max-width: 100%;
+    line-height: 1.3;
+  }
+
+  .statement_section_cs1 {
+    font-size: clamp(0.75rem, 3vw, 0.85rem);
+  }
+
+  .badge_cs1 {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .rich_grid_cs1 {
+    grid-template-columns: 1fr; /* Mobile par rich cards single column ho jayengi taake overflow na ho */
+    max-width: 100%;
+    gap: 6px;
+  }
+
+  .rich_card_cs1 {
+    padding: 6px 10px;
+  }
+
+  .rich_card_cs1 strong {
+    font-size: 0.75rem;
+  }
+
+  .rich_card_cs1 small {
+    font-size: 0.65rem;
+  }
+
+  .cta_button_cs1 {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+  }
+}
+
+/* Extra small devices (300px to 480px) */
+@media screen and (max-width: 480px) {
+  .cap_slide {
+    gap: 8px;
+    padding: 10px 5px;
+  }
 }

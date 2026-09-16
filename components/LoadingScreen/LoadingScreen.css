@@ -10,55 +10,97 @@
   justify-content: center;
   z-index: 10;
   overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .loading-content {
   display: flex;
   align-items: center;
-  gap: 10px!important;
+  gap: clamp(12px, 2vw, 24px);
   position: relative;
+  flex-direction: row; /* Side-by-side for desktop/tablets */
 }
 
-/* Logo Image */
+/* Logo Image (Fluid sizing from 300px to 3000px) */
 .loading-logo {
   z-index: 2;
+  flex-shrink: 0;
 }
 
 .logo-image {
-  width: 120px;
-  height: 120px;
+  width: clamp(70px, 9vw, 130px);
+  height: clamp(70px, 9vw, 130px);
   object-fit: cover;
   filter: drop-shadow(0 0 30px rgba(2, 112, 234, 0.5));
 }
 
 /* Text Content */
 .loading-text-content {
-  text-align: left;
+  text-align: center;
 }
 
 .loading-title {
   margin: 0;
-  line-height: 0; /* h1 ka default line-height image ke neeche extra gap na chhode */
+  line-height: 0; 
 }
 
 .loading-title img {
-  width: 280px;      /* apni image ke hisab se adjust karo */
+  width: clamp(150px, 25vw, 300px); 
   height: auto;
   display: block;
 }
 
 .loading-subtitle {
-  font-family: var(--font-family-secondary);
-  font-size: var(--font-size-base);
-  color: var(--color-steel-main);
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  margin: 8px 0 0 0;
-  font-weight: var(--font-weight-light);
+  margin: 10px 0 0 0;
 }
 
-.loading-subtitle img{
-  width: 240px;
+.loading-subtitle img {
+  width: clamp(120px, 20vw, 250px);
   height: auto;
-  margin-left: 5px;
+  margin: 0 auto;
+  /* margin-left: 4px; */
+  display: block;
+}
+
+/* ==========================================
+   MOBILE & SMALL SCREENS (≤ 580px)
+   Stack logo and text vertically for a clean look
+   ========================================== */
+@media (max-width: 580px) {
+  .loading-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px !important;
+  }
+
+  .loading-text-content {
+    text-align: center;
+  }
+
+  .loading-title img {
+    margin: 0 auto;
+  }
+
+  .loading-subtitle img {
+    margin: 0 auto;
+  }
+}
+
+/* ==========================================
+   ULTRA-WIDE SCREENS (≥ 2560px)
+   ========================================== */
+@media (min-width: 2560px) {
+  .logo-image {
+    width: 160px;
+    height: 160px;
+  }
+
+  .loading-title img {
+    width: 380px;
+  }
+
+  .loading-subtitle img {
+    width: 320px;
+  }
 }

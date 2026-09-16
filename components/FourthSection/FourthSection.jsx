@@ -165,7 +165,7 @@ export default function FourthSection() {
       {/* Background Image — same viewBox aspect */}
       <div className="image-container" ref={imageRef}>
         <img
-          src="/images/desire-1.png"
+          src="/optimize/desire-1.png"
           alt="Revealed Section"
           className="revealed-image"
         />

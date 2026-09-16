@@ -124,8 +124,8 @@ const POINTS = [
     coloredPart: 'first',
     images: [
       // { src: '/images/precision1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/precision1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/precision2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+      { src: '/optimize/precision1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/precision2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
   },
@@ -141,8 +141,8 @@ const POINTS = [
     // titlePos: { top: '70%', left: '4%' },
       images: [
       // { src: '/images/precision1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+      { src: '/optimize/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
   },
@@ -151,22 +151,20 @@ const POINTS = [
     titleSecond: 'AT EVERY STAGE',
     coloredPart: 'second',
     images: [
-      { src: '/images/control1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/control3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/control2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
+     { src: '/optimize/control1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/control2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '70%', left: '4%' },
+    titlePos: { top: '10%', left: '4%' },
   },
   {
     titleFirst: 'COMPLEXITY',
     titleSecond: 'MADE POSSIBLE',
     coloredPart: 'second',
     images: [
-      { src: '/images/craft1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/craft3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/craft2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
+      { src: '/optimize/craft1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/craft2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '70%', left: '4%' },
+    titlePos: { top: '10%', left: '4%' },
   },
   ,
   {
@@ -174,23 +172,22 @@ const POINTS = [
     titleSecond: 'WITH PURPOSE',
     coloredPart: 'second',
     images: [
-      { src: '/images/craft1.png', top: '8%', left: '6%', width: '34%', height: '56%', speed: 0.12 },
-      { src: '/images/craft3.png', top: '46%', left: '50%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/craft2.png', top: '-20%', left: '44%', width: '40%', height: '60%', speed: 0.22 },
+     { src: '/optimize/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
-    titlePos: { top: '70%', left: '4%' },
+    titlePos: { top: '10%', left: '4%' },
   },
 ]
 
 const TOTAL_PANELS = POINTS.length + 1
 
 const POINTS_PROCESS = [
-  { title: 'CNC LASER CUTTING', desc: 'Clean, accurate cuts with repeatable precision.', image: '/images/cap1.png',mobileImage: '/images/cap1-mobile.jpg', pos: { top: '70%', left: '2%' },mobilePos: { top: '65%', left: '5%' } },
-  { title: '3D PIPE CUTTING', desc: 'Complex tube and pipe geometries fabricated to specification.', image: '/images/cap2.png',mobileImage: '/images/cap2-mobile.jpg', pos: { top: '70%', left: '75%' } },
-  { title: 'BENDING & FORMING', desc: 'Controlled shaping for precise, consistent results.', image: '/images/cap3.png',mobileImage: '/images/cap3-mobile.jpg', pos: { top: '70%', left: '75%' } },
-  { title: 'MACHINING', desc: 'Precision components produced to your required specifications.', image: '/images/cap4.png',mobileImage: '/images/cap4-mobile.jpg', pos: { top: '20%', left: '5%' } },
-  { title: 'WELDING & ASSEMBLY', desc: 'From individual components to complete fabricated assemblies.', image: '/images/cap5.png',mobileImage: '/images/cap5-mobile.jpg', pos: { top: '65%', left: '5%' } },
-  { title: 'FINISHING', desc: 'PVD, powder coating, brushed and specialty finishes to complete the result.', image: '/images/cap6.png',mobileImage: '/images/cap6-mobile.jpg', pos: { top: '60%', left: '70%' }, button: true },
+  { title: 'CNC LASER CUTTING', desc: 'Clean, accurate cuts with repeatable precision.', image: '/optimize/cap1-mobile.png',mobileImage: '/images/cap1.png', pos: { top: '70%', left: '15%' }, mobilePos: { top: '65%', left: '15%' } },
+  { title: '3D PIPE CUTTING', desc: 'Complex tube and pipe geometries fabricated to specification.', image: '/optimize/cap2-mobile.png',mobileImage: '/optimize/cap2.png', pos: { top: '70%', left: '15%' }, mobilePos: { top: '65%', left: '15%' }  },
+  { title: 'BENDING & FORMING', desc: 'Controlled shaping for precise, consistent results.', image: '/optimize/cap3-mobile.png',mobileImage: '/optimize/cap3.png', pos: { top: '70%', left: '15%' } , mobilePos: { top: '65%', left: '15%' } },
+  { title: 'MACHINING', desc: 'Precision components produced to your required specifications.', image: '/optimize/cap4-mobile.png',mobileImage: '/images/cap4.png', pos: { top: '70%', left: '15%' } , mobilePos: { top: '65%', left: '15%' } },
+  { title: 'WELDING & ASSEMBLY', desc: 'From individual components to complete fabricated assemblies.', image: '/optimize/cap5-mobile.png',mobileImage: '/optimize/cap5.png', pos: { top: '70%', left: '15%' } , mobilePos: { top: '65%', left: '15%' } },
+  { title: 'FINISHING', desc: 'PVD, powder coating, brushed and specialty finishes to complete the result.', image: '/optimize/cap6-mobile.png',mobileImage: '/optimize/cap6.png', pos: { top: '70%', left: '10%' }, button: false , mobilePos: { top: '65%', left: '15%' } },
 ]
 
 const TOTAL_ITEMS_PROCESS = POINTS_PROCESS.length + 1
@@ -198,7 +195,7 @@ const TOTAL_ITEMS_PROCESS = POINTS_PROCESS.length + 1
 const project_slides = [
   {
     id: 1,
-    src: '/images/build1.png',
+    src: '/optimize/build1.png',
     mobileSrc: '/images/build1-mobile.jpg',
     desc: 'ARCHITECTURAL METALWORK',
     title: 'Facades, screens, railings, staircases and feature elements.',
@@ -207,29 +204,29 @@ const project_slides = [
   },
   {
     id: 2,
-    src: '/images/build2.jpeg',
+    src: '/optimize/build2.png',
     mobileSrc: '/images/build2-mobile.jpg',
     desc: 'COMMERCIAL & INTERIOR',
     title: 'Furniture bases, signage, panels and custom interior metalwork.',
     pos: { top: '75%', left: '65%' },
   },
-  {
-    id: 3,
-    src: '/images/build3.jpeg',
-    mobileSrc: '/images/build3-mobile.jpg',
-    desc: 'INDUSTRIAL FABRICATION',
-    title: 'Engineered components, structural assemblies and production parts.',
-    pos: { top: '75%', left: '42%' },
-  },
-  {
-    id: 4,
-    src: '/images/build4.jpeg',
-    mobileSrc: '/images/build4-mobile.jpg',
-    desc: 'CUSTOM FABRICATION',
-    title: 'Complex requirements transformed into practical, precisely fabricated solutions.',
-    pos: { top: '20%', left: '1%' },
-    button: true,
-  },
+  // {
+  //   id: 3,
+  //   src: '/images/build3.jpeg',
+  //   mobileSrc: '/images/build3-mobile.jpg',
+  //   desc: 'INDUSTRIAL FABRICATION',
+  //   title: 'Engineered components, structural assemblies and production parts.',
+  //   pos: { top: '75%', left: '42%' },
+  // },
+  // {
+  //   id: 4,
+  //   src: '/images/build4.jpeg',
+  //   mobileSrc: '/images/build4-mobile.jpg',
+  //   desc: 'CUSTOM FABRICATION',
+  //   title: 'Complex requirements transformed into practical, precisely fabricated solutions.',
+  //   pos: { top: '20%', left: '1%' },
+  //   button: true,
+  // },
 ]
 
 const quality_points = [
@@ -377,22 +374,33 @@ export default function Home() {
     const prevBodyOverscroll = document.body.style.overscrollBehavior
     const prevBodyPosition = document.body.style.position
 
-    document.documentElement.style.overflow = 'hidden'
-    document.body.style.overflow = 'hidden'
-    document.body.style.overscrollBehavior = 'none'
-    // Mobile pe bhi body fixed — pull-to-refresh rok
-    document.body.style.position = 'fixed'
-    document.body.style.width = '100%'
-    document.body.style.height = '100%'
+    // document.documentElement.style.overflow = 'hidden'
+    // document.body.style.overflow = 'hidden'
+    // document.body.style.overscrollBehavior = 'none'
+    // // Mobile pe bhi body fixed — pull-to-refresh rok
+    // document.body.style.position = 'fixed'
+    // document.body.style.width = '100%'
+    // document.body.style.height = '100%'
 
+    document.documentElement.style.overflow = 'hidden'
+document.body.style.overflow = 'hidden'
+document.body.style.overscrollBehavior = 'none'
+// position: fixed hata diya — click events block hote the
+
+    // return () => {
+    //   document.documentElement.style.overflow = prevHtmlOverflow
+    //   document.body.style.overflow = prevBodyOverflow
+    //   document.body.style.overscrollBehavior = prevBodyOverscroll
+    //   document.body.style.position = prevBodyPosition
+    //   document.body.style.width = ''
+    //   document.body.style.height = ''
+    // }
     return () => {
-      document.documentElement.style.overflow = prevHtmlOverflow
-      document.body.style.overflow = prevBodyOverflow
-      document.body.style.overscrollBehavior = prevBodyOverscroll
-      document.body.style.position = prevBodyPosition
-      document.body.style.width = ''
-      document.body.style.height = ''
-    }
+  document.documentElement.style.overflow = prevHtmlOverflow
+  document.body.style.overflow = prevBodyOverflow
+  document.body.style.overscrollBehavior = prevBodyOverscroll
+  // position, width, height cleanup hata diya
+}
   }, [])
 
   // Transition helpers
@@ -866,18 +874,30 @@ if (stageRef.current === STAGE_QUALITY) {
   }, [])
 
   return (
+    // <main
+    //   className="main-container"
+    //   style={{
+    //     position: 'relative',
+    //     width: '100%',
+    //     maxWidth: '100vw',
+    //     height: '100dvh',
+    //     overflow: 'hidden',
+    //     overscrollBehavior: 'none',
+    //     touchAction: 'none', // Mobile pe browser default touch rok
+    //   }}
+    // >
     <main
-      className="main-container"
-      style={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        overscrollBehavior: 'none',
-        touchAction: 'none', // Mobile pe browser default touch rok
-      }}
-    >
+  className="main-container"
+  style={{
+    position: 'relative',
+    width: '100%',
+    maxWidth: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    overscrollBehavior: 'none',
+    // touchAction hata diya — mobile pe click events block ho rahe the
+  }}
+>
       {!loading && <NavContent />}
 
       {showHero && (
@@ -918,7 +938,7 @@ if (stageRef.current === STAGE_QUALITY) {
 
           {showQuality && (
             <div ref={qualityRef} className="quality-section-wrapper" style={fixedWrapperStyle(7)}>
-              <QualitySection scrollProgressRef={scrollProgressRef} POINTS={quality_points} heading_part_1={"QUALITY"} heading_part_2={'DOESN’T'} heading_part_3={', LEAVE ROOM FOR'} heading_part_4={"“GOOD ENOUGH”"} />
+              <QualitySection scrollProgressRef={scrollProgressRef} POINTS={quality_points} heading_part_1={"QUALITY DOESN’T"} heading_part_2={''} heading_part_3={', LEAVE ROOM FOR'} heading_part_4={"“GOOD ENOUGH”"} />
             </div>
           )}
 
