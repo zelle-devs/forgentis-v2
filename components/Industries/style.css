@@ -263,15 +263,15 @@
 }
 
 .app_action_btn:hover {
-  background: linear-gradient(
+  /* background: linear-gradient(
     110deg,
     #3E4A52 0%,
     #A7ADB1 38%,
     #E8E9E7 52%,
     #A7ADB1 68%,
     #3E4A52 100%
-  );
-  color: #000;
+  ); */
+  color: #000!important;
   box-shadow: 0 0 18px rgba(68, 135, 197, 0.4);
 }
 

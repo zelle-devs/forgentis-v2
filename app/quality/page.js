@@ -22,7 +22,7 @@ const STAGE_FINAL = 5
 // Scroll Step sizes per stage (desktop baseline)
 const HERO_STEP = 0.08
 const CAPABILITY_1_STEP = 0.008
-const RESOURCE_STEP = 0.015
+const RESOURCE_STEP = 0.006
 const PROCESS_STEP = 0.012
 const CAPABILITY_2_STEP = 0.008
 const FINAL_STEP = 0.025

@@ -1,10 +1,13 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { usePathname } from 'next/navigation'
 import gsap from 'gsap'
 import './NavContent.css'
 
+/* ============================================
+   CONSTANTS
+   ============================================ */
 const CHAPTERS = [
   'HERO',
   'INTRO',
@@ -18,52 +21,14 @@ const CHAPTERS = [
 
 const TOTAL_CHAPTERS = CHAPTERS.length
 
-const PAGE_BUTTONS = {
-  '/': [
-    // { label: 'MEET FORGENTIS', href: '/about' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/about': [
-    // { label: 'EXPLORE OUR WORK', href: '/works' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/works': [
-    // { label: 'VIEW CAPABILITIES', href: '/capabilities' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/capabilities': [
-    // { label: 'VIEW OUR WORK', href: '/works' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/industries': [
-    // { label: 'VIEW OUR WORK', href: '/works' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/quality': [
-    // { label: 'EXPLORE FACILITIES', href: '/facilities' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/facilities': [
-    // { label: 'OUR CAPABILITIES', href: '/capabilities' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/contact': [
-    // { label: 'MEET FORGENTIS', href: '/about' },
-    { label: 'START A PROJECT', href: '/consultation' },
-  ],
-  '/consultation': [
-    // { label: 'MEET FORGENTIS', href: '/about' },
-    // { label: 'VIEW OUR WORK', href: '/works' },
-  ],
-}
-
-const DEFAULT_BUTTONS = [
-  { label: 'MEET FORGENTIS', href: '/about' },
-  { label: 'START A PROJECT', href: '/capabilities' },
-  { label: 'START A PROJECT', href: '/contact' },
+const CHAPTER_MENU = [
+  { label: 'ABOUT', href: '/about' },
+  { label: 'CAPABILITIES', href: '/capabilities' },
+  { label: 'INDUSTRIES', href: '/industries' },
+  { label: 'QUALITY', href: '/quality' },
+  { label: 'FACILITIES', href: '/facilities' },
 ]
 
-// ✅ NEW: Desktop navigation tabs
 const NAV_TABS = [
   { label: 'ABOUT', href: '/about' },
   { label: 'CAPABILITIES', href: '/capabilities' },
@@ -72,17 +37,37 @@ const NAV_TABS = [
   { label: 'FACILITIES', href: '/facilities' },
 ]
 
+const PAGE_BUTTONS = {
+  '/': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/about': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/works': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/capabilities': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/industries': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/quality': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/facilities': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/contact': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/consultation': [],
+}
+
+const DEFAULT_BUTTONS = [
+  { label: 'MEET FORGENTIS', href: '/about' },
+  { label: 'START A PROJECT', href: '/capabilities' },
+  { label: 'START A PROJECT', href: '/contact' },
+]
+
+/* ============================================
+   COMPONENT
+   ============================================ */
 function NavContent() {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const isAboutPage = pathname === '/about'
+  const pageButtons = PAGE_BUTTONS[pathname] ?? DEFAULT_BUTTONS
 
-  const pageButtons = PAGE_BUTTONS[pathname] || DEFAULT_BUTTONS
-
+  /* ---------- Refs ---------- */
   const navRef = useRef(null)
   const logoRef = useRef(null)
   const headingRef = useRef(null)
-  const titleRef = useRef(null)
   const buttonRefs = useRef([])
   const mobileButtonsRef = useRef(null)
 
@@ -93,112 +78,140 @@ function NavContent() {
   const footerWrapperRef = useRef(null)
   const scrollProgressRef = useRef(0)
 
+  /* ---------- State ---------- */
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeChapter, setActiveChapter] = useState(0)
   const [chapterProgress, setChapterProgress] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
-  // ===== Mobile detection =====
+  /* ============================================
+     MOBILE DETECTION (debounced)
+     ============================================ */
   useEffect(() => {
+    let raf = null
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  useEffect(() => {
-    if (headingRef.current) {
-      const text = headingRef.current.textContent
-      headingRef.current.innerHTML = ''
-
-      const words = text.split(' ')
-
-      words.forEach((word, wordIndex) => {
-        const wordSpan = document.createElement('span')
-        wordSpan.className = 'word'
-        wordSpan.style.display = 'inline-block'
-        wordSpan.style.whiteSpace = 'nowrap'
-
-        word.split('').forEach((char) => {
-          const charSpan = document.createElement('span')
-          charSpan.textContent = char
-          charSpan.className = 'char'
-          charSpan.style.display = 'inline-block'
-          wordSpan.appendChild(charSpan)
-        })
-
-        headingRef.current.appendChild(wordSpan)
-
-        if (wordIndex < words.length - 1) {
-          headingRef.current.appendChild(document.createTextNode(' '))
-        }
+      if (raf) cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        setIsMobile(window.innerWidth <= 768)
       })
     }
+    checkMobile()
+    window.addEventListener('resize', checkMobile, { passive: true })
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  /* ============================================
+     SPLIT HEADING INTO CHARS
+     ============================================ */
+  useEffect(() => {
+    const el = headingRef.current
+    if (!el) return
+
+    const text = el.textContent || ''
+    el.innerHTML = ''
+
+    const words = text.split(' ')
+    words.forEach((word, wordIndex) => {
+      const wordSpan = document.createElement('span')
+      wordSpan.className = 'word'
+
+      word.split('').forEach((char) => {
+        const charSpan = document.createElement('span')
+        charSpan.textContent = char
+        charSpan.className = 'char'
+        wordSpan.appendChild(charSpan)
+      })
+
+      el.appendChild(wordSpan)
+      if (wordIndex < words.length - 1) {
+        el.appendChild(document.createTextNode(' '))
+      }
+    })
+  }, [pathname, isAboutPage])
+
+  /* ============================================
+     ENTRY ANIMATION
+     ============================================ */
+  useEffect(() => {
+    const heading = headingRef.current
+    const logo = logoRef.current
+    const buttons = buttonRefs.current.filter(Boolean)
+    const mobileButtons = mobileButtonsRef.current
 
     if (!isHomePage) {
-      if (headingRef.current) gsap.set(headingRef.current, { opacity: 0, display: 'none' })
-      if (logoRef.current) gsap.set(logoRef.current, { scale: 1, opacity: 1, rotate: 0 })
-      if (buttonRefs.current.length) gsap.set(buttonRefs.current, { scale: 1, opacity: 1 })
-      if (mobileButtonsRef.current) gsap.set(mobileButtonsRef.current, { opacity: 1, visibility: 'visible' })
+      if (heading) gsap.set(heading, { opacity: 0, display: 'none' })
+      if (logo) gsap.set(logo, { scale: 1, opacity: 1, rotate: 0 })
+      if (buttons.length) gsap.set(buttons, { scale: 1, opacity: 1 })
+      if (mobileButtons)
+        gsap.set(mobileButtons, { opacity: 1, visibility: 'visible' })
       return
     }
 
-    const timeline = gsap.timeline({ delay: 1.55 })
-
-    const mobileButtonEls = mobileButtonsRef.current
-      ? Array.from(mobileButtonsRef.current.children)
+    const mobileButtonEls = mobileButtons
+      ? Array.from(mobileButtons.children)
       : []
 
-    if (mobileButtonsRef.current) {
-      gsap.set(mobileButtonsRef.current, { visibility: 'visible' })
+    if (mobileButtons) {
+      gsap.set(mobileButtons, { visibility: 'visible' })
     }
 
-    timeline
-  // 1️⃣ Logo — first
-  .fromTo(
-    logoRef.current,
-    { scale: 0, opacity: 0, y: 0, rotate: -180 },
-    {
-      scale: 1, opacity: 1, y: 0, rotate: 0,
-      duration: 0.6, ease: 'back.out(2.5)',
-    }
-  )
-  // 2️⃣ Nav Tabs — staggered fade + slide from top (NEW)
-  .fromTo(
-    '.nav-tab',
-    { y: -20, opacity: 0 },
-    {
-      y: 0, opacity: 1,
-      duration: 0.5,
-      ease: 'power3.out',
-      stagger: 0.08,
-    },
-    '-=0.35'
-  )
-  // 3️⃣ Heading chars
-  .fromTo(
-    '.nav-heading .char',
-    { y: 80, opacity: 0, scale: 0.3, rotateX: -90 },
-    {
-      y: 0, opacity: 1, scale: 1, rotateX: 0,
-      duration: 1, ease: 'back.out(2)', stagger: 0.025,
-    },
-    '-=0.15'
-  )
-  // 4️⃣ Desktop buttons — last
-  .fromTo(
-    buttonRefs.current,
-    { scale: 0, opacity: 0, y: 0 },
-    {
-      scale: 1, opacity: 1, y: 0,
-      duration: 0.6, ease: 'back.out(2.5)',
-    },
-    '-=0.5'
-  )
+    const tl = gsap.timeline({ delay: 1.55 })
+
+    tl.fromTo(
+      logo,
+      { scale: 0, opacity: 0, y: 0, rotate: -180 },
+      {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        rotate: 0,
+        duration: 0.6,
+        ease: 'back.out(2.5)',
+      }
+    )
       .fromTo(
-        mobileButtonsRef.current,
+        '.nav-tab',
+        { y: -20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power3.out',
+          stagger: 0.08,
+        },
+        '-=0.35'
+      )
+      .fromTo(
+        '.nav-heading .char',
+        { y: 80, opacity: 0, scale: 0.3, rotateX: -90 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          rotateX: 0,
+          duration: 1,
+          ease: 'back.out(2)',
+          stagger: 0.025,
+        },
+        '-=0.15'
+      )
+      .fromTo(
+        buttons,
+        { scale: 0, opacity: 0, y: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'back.out(2.5)',
+        },
+        '-=0.5'
+      )
+      .fromTo(
+        mobileButtons,
         { opacity: 0 },
         { opacity: 1, duration: 0.01 },
         '-=0.55'
@@ -207,50 +220,49 @@ function NavContent() {
         mobileButtonEls,
         { scale: 0, opacity: 0, y: 40 },
         {
-          scale: 1, opacity: 1, y: 0,
-          duration: 0.7, ease: 'back.out(2.5)', stagger: 0.12,
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'back.out(2.5)',
+          stagger: 0.12,
         },
         '-=0.55'
       )
 
-    return () => timeline.kill()
+    return () => tl.kill()
   }, [pathname, isHomePage, isMobile])
 
-  // ===== Hero scroll progress =====
+  /* ============================================
+     SCROLL PROGRESS HANDLER (home page)
+     ============================================ */
   useEffect(() => {
-  if (!isHomePage) {
-    // ✅ Non-home pages: logo/tabs/buttons already at top via CSS — no shift needed
-    // Just ensure heading is hidden and hamburger visible
-    if (logoRef.current) {
-      gsap.set(logoRef.current, { y: 0, scale: 1, opacity: 1, rotate: 0 })
+    if (!isHomePage) {
+      if (logoRef.current)
+        gsap.set(logoRef.current, { y: 0, scale: 1, opacity: 1, rotate: 0 })
+      const buttons = buttonRefs.current.filter(Boolean)
+      if (buttons.length) gsap.set(buttons, { y: 0, scale: 1, opacity: 1 })
+      if (hamburgerRef.current)
+        gsap.set(hamburgerRef.current, {
+          y: 0,
+          opacity: 1,
+          x: 0,
+          pointerEvents: 'auto',
+        })
+      if (headingRef.current)
+        gsap.set(headingRef.current, { opacity: 0, display: 'none' })
+      if (mobileButtonsRef.current)
+        gsap.set(mobileButtonsRef.current, { opacity: 0, display: 'none' })
+      if (footerWrapperRef.current)
+        gsap.set(footerWrapperRef.current, { opacity: isMobile ? 0 : 1 })
+      return
     }
-    if (buttonRefs.current.length) {
-      gsap.set(buttonRefs.current, { y: 0, scale: 1, opacity: 1 })
-    }
-    if (hamburgerRef.current) {
-      gsap.set(hamburgerRef.current, {
-        y: 0, opacity: 1, x: 0, pointerEvents: 'auto',
-      })
-    }
-    if (headingRef.current) {
-      gsap.set(headingRef.current, { opacity: 0, display: 'none' })
-    }
-    if (mobileButtonsRef.current) {
-      gsap.set(mobileButtonsRef.current, { opacity: 0, display: 'none' })
-    }
-    if (footerWrapperRef.current) {
-      gsap.set(footerWrapperRef.current, { opacity: isMobile ? 0 : 1 })
-    }
-    return
-  }
 
     const handleScrollProgress = (e) => {
       const progress = e.detail.progress
       scrollProgressRef.current = progress
 
-      // ✅ Logo / Buttons / Hamburger stay fixed at top — no Y movement
-
-      // Title fade (heading only)
+      /* Heading fade */
       if (headingRef.current) {
         const fadeStart = isMobile ? 0.1 : 0.5
         const fadeDuration = isMobile ? 0.4 : 0.5
@@ -270,15 +282,12 @@ function NavContent() {
         })
 
         if (isMobile) {
-          if (fadeProgress >= 1) {
-            headingRef.current.style.visibility = 'hidden'
-          } else {
-            headingRef.current.style.visibility = 'visible'
-          }
+          headingRef.current.style.visibility =
+            fadeProgress >= 1 ? 'hidden' : 'visible'
         }
       }
 
-      // Mobile buttons fade
+      /* Mobile buttons fade */
       if (isMobile && mobileButtonsRef.current) {
         const fadeStart = 0.1
         const fadeDuration = 0.4
@@ -296,51 +305,60 @@ function NavContent() {
           ease: 'none',
         })
 
-        if (fadeProgress >= 1) {
-          mobileButtonsRef.current.style.visibility = 'hidden'
-        } else {
-          mobileButtonsRef.current.style.visibility = 'visible'
-        }
+        mobileButtonsRef.current.style.visibility =
+          fadeProgress >= 1 ? 'hidden' : 'visible'
       }
 
-      // Hamburger visibility
+      /* Hamburger */
       if (hamburgerRef.current) {
         if (isMobile) {
           gsap.to(hamburgerRef.current, {
-            opacity: 1, x: 0, duration: 0.3,
-            ease: 'power2.out', pointerEvents: 'auto',
+            opacity: 1,
+            x: 0,
+            duration: 0.3,
+            ease: 'power2.out',
+            pointerEvents: 'auto',
           })
         } else if (progress >= 0.5) {
           gsap.to(hamburgerRef.current, {
-            opacity: 1, x: 0, duration: 0.3,
-            ease: 'power2.out', pointerEvents: 'auto',
+            opacity: 1,
+            x: 0,
+            duration: 0.3,
+            ease: 'power2.out',
+            pointerEvents: 'auto',
           })
         } else {
           gsap.to(hamburgerRef.current, {
-            opacity: 0, x: 20, duration: 0.3,
-            ease: 'power2.out', pointerEvents: 'none',
+            opacity: 0,
+            x: 20,
+            duration: 0.3,
+            ease: 'power2.out',
+            pointerEvents: 'none',
           })
         }
       }
 
-      // Footer — desktop only
+      /* Footer — desktop */
       if (footerWrapperRef.current && !isMobile) {
-        const footerOpacity = progress >= 0.5 ? 1 : 0
         gsap.to(footerWrapperRef.current, {
-          opacity: footerOpacity, duration: 0.4, ease: 'power2.out',
+          opacity: progress >= 0.5 ? 1 : 0,
+          duration: 0.4,
+          ease: 'power2.out',
         })
       }
     }
 
     window.addEventListener('scrollProgress', handleScrollProgress)
-    return () => window.removeEventListener('scrollProgress', handleScrollProgress)
+    return () =>
+      window.removeEventListener('scrollProgress', handleScrollProgress)
   }, [isHomePage, isMobile])
 
-  // ===== Stage change + per-chapter progress =====
+  /* ============================================
+     STAGE CHANGE + STAGE PROGRESS
+     ============================================ */
   useEffect(() => {
     const handleStageChange = (e) => {
-      const { stage } = e.detail
-      setActiveChapter(stage)
+      setActiveChapter(e.detail.stage)
     }
 
     const handleStageProgress = (e) => {
@@ -348,33 +366,53 @@ function NavContent() {
       setActiveChapter(stage)
       setChapterProgress(progress)
 
-      const isLastChapter = stage === TOTAL_CHAPTERS - 1
-      const isFullyAtEnd = isLastChapter && progress >= 0.95
+      const isLast = stage === TOTAL_CHAPTERS - 1
+      const atEnd = isLast && progress >= 0.95
 
-      if (isFullyAtEnd) {
-        if (chaptersRef.current) {
-          gsap.to(chaptersRef.current, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.out' })
-        }
-        if (progressLineRef.current?.parentElement) {
-          gsap.to(progressLineRef.current.parentElement, { opacity: 0, duration: 0.4, ease: 'power2.out' })
-        }
-        if (backToTopRef.current) {
-          gsap.to(backToTopRef.current, {
-            opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', pointerEvents: 'auto',
+      if (atEnd) {
+        if (chaptersRef.current)
+          gsap.to(chaptersRef.current, {
+            opacity: 0,
+            y: 20,
+            duration: 0.4,
+            ease: 'power2.out',
           })
-        }
+        if (progressLineRef.current?.parentElement)
+          gsap.to(progressLineRef.current.parentElement, {
+            opacity: 0,
+            duration: 0.4,
+            ease: 'power2.out',
+          })
+        if (backToTopRef.current)
+          gsap.to(backToTopRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: 'power2.out',
+            pointerEvents: 'auto',
+          })
       } else {
-        if (chaptersRef.current) {
-          gsap.to(chaptersRef.current, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' })
-        }
-        if (progressLineRef.current?.parentElement) {
-          gsap.to(progressLineRef.current.parentElement, { opacity: 1, duration: 0.4, ease: 'power2.out' })
-        }
-        if (backToTopRef.current) {
-          gsap.to(backToTopRef.current, {
-            opacity: 0, y: 20, duration: 0.4, ease: 'power2.out', pointerEvents: 'none',
+        if (chaptersRef.current)
+          gsap.to(chaptersRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: 'power2.out',
           })
-        }
+        if (progressLineRef.current?.parentElement)
+          gsap.to(progressLineRef.current.parentElement, {
+            opacity: 1,
+            duration: 0.4,
+            ease: 'power2.out',
+          })
+        if (backToTopRef.current)
+          gsap.to(backToTopRef.current, {
+            opacity: 0,
+            y: 20,
+            duration: 0.4,
+            ease: 'power2.out',
+            pointerEvents: 'none',
+          })
       }
     }
 
@@ -387,7 +425,9 @@ function NavContent() {
     }
   }, [])
 
-  // ===== Overall progress line update =====
+  /* ============================================
+     OVERALL PROGRESS LINE
+     ============================================ */
   useEffect(() => {
     if (!progressLineRef.current) return
     const overall = (activeChapter + chapterProgress) / TOTAL_CHAPTERS
@@ -398,6 +438,9 @@ function NavContent() {
     })
   }, [activeChapter, chapterProgress])
 
+  /* ============================================
+     SIDEBAR OPEN ANIMATION
+     ============================================ */
   useEffect(() => {
     if (menuOpen) {
       gsap.fromTo(
@@ -408,7 +451,9 @@ function NavContent() {
     }
   }, [menuOpen])
 
-  // Sidebar smooth scroll
+  /* ============================================
+     SIDEBAR SMOOTH SCROLL
+     ============================================ */
   useEffect(() => {
     if (!menuOpen) return
 
@@ -436,7 +481,10 @@ function NavContent() {
       e.stopPropagation()
       e.preventDefault()
       const maxScroll = sidebar.scrollHeight - sidebar.clientHeight
-      targetScroll = Math.max(0, Math.min(maxScroll, targetScroll + e.deltaY))
+      targetScroll = Math.max(
+        0,
+        Math.min(maxScroll, targetScroll + e.deltaY)
+      )
       if (!rafId) {
         currentScroll = sidebar.scrollTop
         rafId = requestAnimationFrame(smoothScroll)
@@ -460,7 +508,10 @@ function NavContent() {
     }
   }, [menuOpen])
 
-  const toggleMenu = () => {
+  /* ============================================
+     HANDLERS
+     ============================================ */
+  const toggleMenu = useCallback(() => {
     if (menuOpen) {
       gsap.to('.nav-sidebar', {
         x: '100%',
@@ -471,52 +522,59 @@ function NavContent() {
     } else {
       setMenuOpen(true)
     }
-  }
+  }, [menuOpen])
 
-  const handleChapterClick = (stageIndex) => {
+  const handleChapterClick = useCallback((stageIndex) => {
     window.dispatchEvent(
       new CustomEvent('travelToStage', { detail: { stage: stageIndex } })
     )
-  }
+  }, [])
 
-const handleBackToTop = () => {
-  window.dispatchEvent(
-    new CustomEvent('travelToStage', {
-      detail: { stage: 0, instant: true },
-    })
+  const handleBackToTop = useCallback(() => {
+    window.dispatchEvent(
+      new CustomEvent('travelToStage', {
+        detail: { stage: 0, instant: true },
+      })
+    )
+  }, [])
+
+  const navigateTo = useCallback((href) => {
+    window.location.href = href
+  }, [])
+
+  const headingText = useMemo(
+    () =>
+      isAboutPage
+        ? 'BUILT ON PRECISION. DRIVEN BY PURPOSE'
+        : 'we shape what builds',
+    [isAboutPage]
   )
-}
 
-  const CHAPTER_MENU = [
-    { label: 'ABOUT', href: '/about' },
-    { label: 'CAPABILITIES', href: '/capabilities' },
-    { label: 'INDUSTRIES', href: '/industries' },
-    { label: 'QUALITY', href: '/quality' },
-    { label: 'FACILITIES', href: '/facilities' },
-  ]
-
+  /* ============================================
+     RENDER
+     ============================================ */
   return (
     <>
       <div ref={navRef} className="nav-content">
-        {/* ✅ TOP ROW: logo + tabs + buttons */}
+        {/* TOP ROW */}
         <div className="nav-top-row">
-          {/* Logo */}
           <div
-            onClick={() => { window.location.href = '/' }}
+            onClick={() => navigateTo('/')}
             ref={logoRef}
             className="nav-logo"
           >
-            <img src="/images/logo.webp" alt="Logo" />
+            <img src="/images/logo.webp" alt="Forgentis Logo" />
           </div>
 
-          {/* ✅ Desktop Nav Tabs */}
           {!isMobile && (
-            <nav className="nav-tabs">
+            <nav className="nav-tabs" aria-label="Primary">
               {NAV_TABS.map((tab) => (
                 <a
                   key={tab.label}
                   href={tab.href}
-                  className={`nav-tab ${pathname === tab.href ? 'active' : ''}`}
+                  className={`nav-tab ${
+                    pathname === tab.href ? 'active' : ''
+                  }`}
                 >
                   <span className="nav-tab-label">{tab.label}</span>
                   <span className="nav-tab-line" />
@@ -525,14 +583,15 @@ const handleBackToTop = () => {
             </nav>
           )}
 
-          {/* Right group — buttons + hamburger */}
           <div className="nav-right-group">
             {pageButtons.map((button, index) => (
               <button
                 key={`${pathname}-${button.label}-${index}`}
-                ref={(el) => { buttonRefs.current[index] = el }}
+                ref={(el) => {
+                  buttonRefs.current[index] = el
+                }}
                 className="nav-button nav-button-desktop"
-                onClick={() => { window.location.href = button.href }}
+                onClick={() => navigateTo(button.href)}
               >
                 {button.label}
               </button>
@@ -541,30 +600,34 @@ const handleBackToTop = () => {
             <button
               ref={hamburgerRef}
               className={`nav-hamburger ${menuOpen ? 'active' : ''}`}
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
               style={{
-                opacity: isMobile ? 1 : (isHomePage ? 0 : 1),
-                pointerEvents: isMobile ? 'auto' : (isHomePage ? 'none' : 'auto'),
+                opacity: isMobile ? 1 : isHomePage ? 0 : 1,
+                pointerEvents: isMobile
+                  ? 'auto'
+                  : isHomePage
+                  ? 'none'
+                  : 'auto',
                 transform: isMobile
                   ? 'translateX(0)'
-                  : (isHomePage ? 'translateX(20px)' : 'translateX(0)'),
+                  : isHomePage
+                  ? 'translateX(20px)'
+                  : 'translateX(0)',
               }}
               onClick={toggleMenu}
             >
-              <span></span>
-              <span></span>
-              <span></span>
+              <span />
+              <span />
+              <span />
             </button>
           </div>
         </div>
 
-        {/* ✅ CENTER: heading only */}
+        {/* CENTER */}
         <div className="nav-center">
           <div className="nav-heading">
-            <h1 ref={headingRef}>
-              {isAboutPage
-                ? 'BUILT ON PRECISION. DRIVEN BY PURPOSE'
-                : 'we shape what builds'}
-            </h1>
+            <h1 ref={headingRef}>{headingText}</h1>
           </div>
 
           {isMobile && (
@@ -577,7 +640,7 @@ const handleBackToTop = () => {
                 <button
                   key={`mob-btn-${index}`}
                   className="nav-mobile-btn"
-                  onClick={() => { window.location.href = button.href }}
+                  onClick={() => navigateTo(button.href)}
                 >
                   {button.label}
                 </button>
@@ -586,7 +649,7 @@ const handleBackToTop = () => {
           )}
         </div>
 
-        {/* ✅ BOTTOM SPACER — keeps heading vertically centered */}
+        {/* BOTTOM SPACER */}
         <div className="nav-bottom-spacer" />
       </div>
 
@@ -601,9 +664,15 @@ const handleBackToTop = () => {
             {CHAPTERS.map((ch, i) => (
               <div
                 key={ch}
-                className={`chapter-item ${i === activeChapter ? 'active' : ''}`}
+                className={`chapter-item ${
+                  i === activeChapter ? 'active' : ''
+                }`}
                 onClick={() => handleChapterClick(i)}
-                style={{ cursor: 'pointer' }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) =>
+                  e.key === 'Enter' && handleChapterClick(i)
+                }
               >
                 <span className="chapter-label">{ch}</span>
                 <span className="chapter-dot" />
@@ -612,14 +681,16 @@ const handleBackToTop = () => {
           </div>
 
           <div className="progress-line-container">
-            <div ref={progressLineRef} className="progress-line"></div>
+            <div ref={progressLineRef} className="progress-line" />
           </div>
 
           <button
             ref={backToTopRef}
             className="back-to-top-btn"
             style={{
-              opacity: 0, pointerEvents: 'none', transform: 'translateY(20px)',
+              opacity: 0,
+              pointerEvents: 'none',
+              transform: 'translateY(20px)',
             }}
             onClick={handleBackToTop}
           >
@@ -628,11 +699,16 @@ const handleBackToTop = () => {
         </div>
       )}
 
+      {/* SIDEBAR */}
       {menuOpen && (
         <div className="nav-sidebar">
-          <button className="sidebar-close" onClick={toggleMenu}>
-            <span></span>
-            <span></span>
+          <button
+            className="sidebar-close"
+            onClick={toggleMenu}
+            aria-label="Close menu"
+          >
+            <span />
+            <span />
           </button>
 
           <nav className="sidebar-nav">
@@ -640,9 +716,16 @@ const handleBackToTop = () => {
               <div key={item.label} className="sidebar-chapter">
                 <div
                   className="sidebar-chapter-header"
-                  onClick={() => { window.location.href = item.href }}
+                  onClick={() => navigateTo(item.href)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) =>
+                    e.key === 'Enter' && navigateTo(item.href)
+                  }
                 >
-                  <span className="sidebar-chapter-title">{item.label}</span>
+                  <span className="sidebar-chapter-title">
+                    {item.label}
+                  </span>
                 </div>
               </div>
             ))}
@@ -654,7 +737,7 @@ const handleBackToTop = () => {
                 <button
                   key={`sidebar-mob-btn-${index}`}
                   className="sidebar-mobile-btn"
-                  onClick={() => { window.location.href = button.href }}
+                  onClick={() => navigateTo(button.href)}
                 >
                   {button.label}
                 </button>
@@ -663,13 +746,16 @@ const handleBackToTop = () => {
           )}
 
           <div className="sidebar-footer">
-            <div className="sidebar-footer-col">
+            {/* <div className="sidebar-footer-col">
               <span className="sidebar-footer-label">Phone</span>
-              <a href="tel:+922111254111" className="sidebar-footer-value">
+              <a
+                href="tel:+922111254111"
+                className="sidebar-footer-value"
+              >
                 +92 21 111 254 111
                 <span className="sidebar-footer-sub">(whatsapp)</span>
               </a>
-            </div>
+            </div> */}
 
             <div className="sidebar-footer-col">
               <span className="sidebar-footer-label">Mail</span>
@@ -684,15 +770,19 @@ const handleBackToTop = () => {
             <div className="sidebar-footer-col">
               <span className="sidebar-footer-label">Socials</span>
               <div className="sidebar-socials">
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Linkedin
                 </a>
               </div>
             </div>
 
             <div className="sidebar-footer-bottom">
-              <a href="/privacy">Privacy Policy</a>
-              <span>©2026 Forgentis Fabrication</span>
+              <span>© 2026 Forgentis Fabrications. All Rights Reserved.</span>
+              <span>Designed and Managed by <a href="https://zellesolutions.com/" target='_blank'>Zelle Solutions Pvt. Ltd.</a></span>
             </div>
           </div>
         </div>
@@ -702,6 +792,712 @@ const handleBackToTop = () => {
 }
 
 export default NavContent
+
+
+// 'use client'
+
+// import { useEffect, useRef, useState } from 'react'
+// import { usePathname } from 'next/navigation'
+// import gsap from 'gsap'
+// import './NavContent.css'
+
+// const CHAPTERS = [
+//   'HERO',
+//   'INTRO',
+//   'SHOWCASE',
+//   'CAPABILITY',
+//   'PROCESS',
+//   'PROJECTS',
+//   'QUALITY',
+//   'CONTACT',
+// ]
+
+// const TOTAL_CHAPTERS = CHAPTERS.length
+
+// const PAGE_BUTTONS = {
+//   '/': [
+//     // { label: 'MEET FORGENTIS', href: '/about' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/about': [
+//     // { label: 'EXPLORE OUR WORK', href: '/works' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/works': [
+//     // { label: 'VIEW CAPABILITIES', href: '/capabilities' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/capabilities': [
+//     // { label: 'VIEW OUR WORK', href: '/works' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/industries': [
+//     // { label: 'VIEW OUR WORK', href: '/works' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/quality': [
+//     // { label: 'EXPLORE FACILITIES', href: '/facilities' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/facilities': [
+//     // { label: 'OUR CAPABILITIES', href: '/capabilities' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/contact': [
+//     // { label: 'MEET FORGENTIS', href: '/about' },
+//     { label: 'START A PROJECT', href: '/consultation' },
+//   ],
+//   '/consultation': [
+//     // { label: 'MEET FORGENTIS', href: '/about' },
+//     // { label: 'VIEW OUR WORK', href: '/works' },
+//   ],
+// }
+
+// const DEFAULT_BUTTONS = [
+//   { label: 'MEET FORGENTIS', href: '/about' },
+//   { label: 'START A PROJECT', href: '/capabilities' },
+//   { label: 'START A PROJECT', href: '/contact' },
+// ]
+
+// // ✅ NEW: Desktop navigation tabs
+// const NAV_TABS = [
+//   { label: 'ABOUT', href: '/about' },
+//   { label: 'CAPABILITIES', href: '/capabilities' },
+//   { label: 'INDUSTRIES', href: '/industries' },
+//   { label: 'QUALITY', href: '/quality' },
+//   { label: 'FACILITIES', href: '/facilities' },
+// ]
+
+// function NavContent() {
+//   const pathname = usePathname()
+//   const isHomePage = pathname === '/'
+//   const isAboutPage = pathname === '/about'
+
+//   const pageButtons = PAGE_BUTTONS[pathname] || DEFAULT_BUTTONS
+
+//   const navRef = useRef(null)
+//   const logoRef = useRef(null)
+//   const headingRef = useRef(null)
+//   const titleRef = useRef(null)
+//   const buttonRefs = useRef([])
+//   const mobileButtonsRef = useRef(null)
+
+//   const chaptersRef = useRef(null)
+//   const progressLineRef = useRef(null)
+//   const hamburgerRef = useRef(null)
+//   const backToTopRef = useRef(null)
+//   const footerWrapperRef = useRef(null)
+//   const scrollProgressRef = useRef(0)
+
+//   const [menuOpen, setMenuOpen] = useState(false)
+//   const [activeChapter, setActiveChapter] = useState(0)
+//   const [chapterProgress, setChapterProgress] = useState(0)
+//   const [isMobile, setIsMobile] = useState(false)
+
+//   // ===== Mobile detection =====
+//   useEffect(() => {
+//     const checkMobile = () => {
+//       setIsMobile(window.innerWidth <= 768)
+//     }
+//     checkMobile()
+//     window.addEventListener('resize', checkMobile)
+//     return () => window.removeEventListener('resize', checkMobile)
+//   }, [])
+
+//   useEffect(() => {
+//     if (headingRef.current) {
+//       const text = headingRef.current.textContent
+//       headingRef.current.innerHTML = ''
+
+//       const words = text.split(' ')
+
+//       words.forEach((word, wordIndex) => {
+//         const wordSpan = document.createElement('span')
+//         wordSpan.className = 'word'
+//         wordSpan.style.display = 'inline-block'
+//         wordSpan.style.whiteSpace = 'nowrap'
+
+//         word.split('').forEach((char) => {
+//           const charSpan = document.createElement('span')
+//           charSpan.textContent = char
+//           charSpan.className = 'char'
+//           charSpan.style.display = 'inline-block'
+//           wordSpan.appendChild(charSpan)
+//         })
+
+//         headingRef.current.appendChild(wordSpan)
+
+//         if (wordIndex < words.length - 1) {
+//           headingRef.current.appendChild(document.createTextNode(' '))
+//         }
+//       })
+//     }
+
+//     if (!isHomePage) {
+//       if (headingRef.current) gsap.set(headingRef.current, { opacity: 0, display: 'none' })
+//       if (logoRef.current) gsap.set(logoRef.current, { scale: 1, opacity: 1, rotate: 0 })
+//       if (buttonRefs.current.length) gsap.set(buttonRefs.current, { scale: 1, opacity: 1 })
+//       if (mobileButtonsRef.current) gsap.set(mobileButtonsRef.current, { opacity: 1, visibility: 'visible' })
+//       return
+//     }
+
+//     const timeline = gsap.timeline({ delay: 1.55 })
+
+//     const mobileButtonEls = mobileButtonsRef.current
+//       ? Array.from(mobileButtonsRef.current.children)
+//       : []
+
+//     if (mobileButtonsRef.current) {
+//       gsap.set(mobileButtonsRef.current, { visibility: 'visible' })
+//     }
+
+//     timeline
+//   // 1️⃣ Logo — first
+//   .fromTo(
+//     logoRef.current,
+//     { scale: 0, opacity: 0, y: 0, rotate: -180 },
+//     {
+//       scale: 1, opacity: 1, y: 0, rotate: 0,
+//       duration: 0.6, ease: 'back.out(2.5)',
+//     }
+//   )
+//   // 2️⃣ Nav Tabs — staggered fade + slide from top (NEW)
+//   .fromTo(
+//     '.nav-tab',
+//     { y: -20, opacity: 0 },
+//     {
+//       y: 0, opacity: 1,
+//       duration: 0.5,
+//       ease: 'power3.out',
+//       stagger: 0.08,
+//     },
+//     '-=0.35'
+//   )
+//   // 3️⃣ Heading chars
+//   .fromTo(
+//     '.nav-heading .char',
+//     { y: 80, opacity: 0, scale: 0.3, rotateX: -90 },
+//     {
+//       y: 0, opacity: 1, scale: 1, rotateX: 0,
+//       duration: 1, ease: 'back.out(2)', stagger: 0.025,
+//     },
+//     '-=0.15'
+//   )
+//   // 4️⃣ Desktop buttons — last
+//   .fromTo(
+//     buttonRefs.current,
+//     { scale: 0, opacity: 0, y: 0 },
+//     {
+//       scale: 1, opacity: 1, y: 0,
+//       duration: 0.6, ease: 'back.out(2.5)',
+//     },
+//     '-=0.5'
+//   )
+//       .fromTo(
+//         mobileButtonsRef.current,
+//         { opacity: 0 },
+//         { opacity: 1, duration: 0.01 },
+//         '-=0.55'
+//       )
+//       .fromTo(
+//         mobileButtonEls,
+//         { scale: 0, opacity: 0, y: 40 },
+//         {
+//           scale: 1, opacity: 1, y: 0,
+//           duration: 0.7, ease: 'back.out(2.5)', stagger: 0.12,
+//         },
+//         '-=0.55'
+//       )
+
+//     return () => timeline.kill()
+//   }, [pathname, isHomePage, isMobile])
+
+//   // ===== Hero scroll progress =====
+//   useEffect(() => {
+//   if (!isHomePage) {
+//     // ✅ Non-home pages: logo/tabs/buttons already at top via CSS — no shift needed
+//     // Just ensure heading is hidden and hamburger visible
+//     if (logoRef.current) {
+//       gsap.set(logoRef.current, { y: 0, scale: 1, opacity: 1, rotate: 0 })
+//     }
+//     if (buttonRefs.current.length) {
+//       gsap.set(buttonRefs.current, { y: 0, scale: 1, opacity: 1 })
+//     }
+//     if (hamburgerRef.current) {
+//       gsap.set(hamburgerRef.current, {
+//         y: 0, opacity: 1, x: 0, pointerEvents: 'auto',
+//       })
+//     }
+//     if (headingRef.current) {
+//       gsap.set(headingRef.current, { opacity: 0, display: 'none' })
+//     }
+//     if (mobileButtonsRef.current) {
+//       gsap.set(mobileButtonsRef.current, { opacity: 0, display: 'none' })
+//     }
+//     if (footerWrapperRef.current) {
+//       gsap.set(footerWrapperRef.current, { opacity: isMobile ? 0 : 1 })
+//     }
+//     return
+//   }
+
+//     const handleScrollProgress = (e) => {
+//       const progress = e.detail.progress
+//       scrollProgressRef.current = progress
+
+//       // ✅ Logo / Buttons / Hamburger stay fixed at top — no Y movement
+
+//       // Title fade (heading only)
+//       if (headingRef.current) {
+//         const fadeStart = isMobile ? 0.1 : 0.5
+//         const fadeDuration = isMobile ? 0.4 : 0.5
+//         const yShift = isMobile ? -260 : -80
+
+//         const fadeProgress = Math.max(
+//           0,
+//           Math.min(1, (progress - fadeStart) / fadeDuration)
+//         )
+
+//         gsap.to(headingRef.current, {
+//           opacity: 1 - fadeProgress,
+//           y: fadeProgress * yShift,
+//           scale: 1 - fadeProgress * 0.3,
+//           duration: 0.1,
+//           ease: 'none',
+//         })
+
+//         if (isMobile) {
+//           if (fadeProgress >= 1) {
+//             headingRef.current.style.visibility = 'hidden'
+//           } else {
+//             headingRef.current.style.visibility = 'visible'
+//           }
+//         }
+//       }
+
+//       // Mobile buttons fade
+//       if (isMobile && mobileButtonsRef.current) {
+//         const fadeStart = 0.1
+//         const fadeDuration = 0.4
+//         const yShift = -260
+
+//         const fadeProgress = Math.max(
+//           0,
+//           Math.min(1, (progress - fadeStart) / fadeDuration)
+//         )
+
+//         gsap.to(mobileButtonsRef.current, {
+//           opacity: 1 - fadeProgress,
+//           y: fadeProgress * yShift,
+//           duration: 0.1,
+//           ease: 'none',
+//         })
+
+//         if (fadeProgress >= 1) {
+//           mobileButtonsRef.current.style.visibility = 'hidden'
+//         } else {
+//           mobileButtonsRef.current.style.visibility = 'visible'
+//         }
+//       }
+
+//       // Hamburger visibility
+//       if (hamburgerRef.current) {
+//         if (isMobile) {
+//           gsap.to(hamburgerRef.current, {
+//             opacity: 1, x: 0, duration: 0.3,
+//             ease: 'power2.out', pointerEvents: 'auto',
+//           })
+//         } else if (progress >= 0.5) {
+//           gsap.to(hamburgerRef.current, {
+//             opacity: 1, x: 0, duration: 0.3,
+//             ease: 'power2.out', pointerEvents: 'auto',
+//           })
+//         } else {
+//           gsap.to(hamburgerRef.current, {
+//             opacity: 0, x: 20, duration: 0.3,
+//             ease: 'power2.out', pointerEvents: 'none',
+//           })
+//         }
+//       }
+
+//       // Footer — desktop only
+//       if (footerWrapperRef.current && !isMobile) {
+//         const footerOpacity = progress >= 0.5 ? 1 : 0
+//         gsap.to(footerWrapperRef.current, {
+//           opacity: footerOpacity, duration: 0.4, ease: 'power2.out',
+//         })
+//       }
+//     }
+
+//     window.addEventListener('scrollProgress', handleScrollProgress)
+//     return () => window.removeEventListener('scrollProgress', handleScrollProgress)
+//   }, [isHomePage, isMobile])
+
+//   // ===== Stage change + per-chapter progress =====
+//   useEffect(() => {
+//     const handleStageChange = (e) => {
+//       const { stage } = e.detail
+//       setActiveChapter(stage)
+//     }
+
+//     const handleStageProgress = (e) => {
+//       const { stage, progress } = e.detail
+//       setActiveChapter(stage)
+//       setChapterProgress(progress)
+
+//       const isLastChapter = stage === TOTAL_CHAPTERS - 1
+//       const isFullyAtEnd = isLastChapter && progress >= 0.95
+
+//       if (isFullyAtEnd) {
+//         if (chaptersRef.current) {
+//           gsap.to(chaptersRef.current, { opacity: 0, y: 20, duration: 0.4, ease: 'power2.out' })
+//         }
+//         if (progressLineRef.current?.parentElement) {
+//           gsap.to(progressLineRef.current.parentElement, { opacity: 0, duration: 0.4, ease: 'power2.out' })
+//         }
+//         if (backToTopRef.current) {
+//           gsap.to(backToTopRef.current, {
+//             opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', pointerEvents: 'auto',
+//           })
+//         }
+//       } else {
+//         if (chaptersRef.current) {
+//           gsap.to(chaptersRef.current, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' })
+//         }
+//         if (progressLineRef.current?.parentElement) {
+//           gsap.to(progressLineRef.current.parentElement, { opacity: 1, duration: 0.4, ease: 'power2.out' })
+//         }
+//         if (backToTopRef.current) {
+//           gsap.to(backToTopRef.current, {
+//             opacity: 0, y: 20, duration: 0.4, ease: 'power2.out', pointerEvents: 'none',
+//           })
+//         }
+//       }
+//     }
+
+//     window.addEventListener('stageChange', handleStageChange)
+//     window.addEventListener('stageProgress', handleStageProgress)
+
+//     return () => {
+//       window.removeEventListener('stageChange', handleStageChange)
+//       window.removeEventListener('stageProgress', handleStageProgress)
+//     }
+//   }, [])
+
+//   // ===== Overall progress line update =====
+//   useEffect(() => {
+//     if (!progressLineRef.current) return
+//     const overall = (activeChapter + chapterProgress) / TOTAL_CHAPTERS
+//     gsap.to(progressLineRef.current, {
+//       scaleX: Math.max(0.02, overall),
+//       duration: 0.15,
+//       ease: 'power2.out',
+//     })
+//   }, [activeChapter, chapterProgress])
+
+//   useEffect(() => {
+//     if (menuOpen) {
+//       gsap.fromTo(
+//         '.nav-sidebar',
+//         { x: '100%' },
+//         { x: '0%', duration: 0.6, ease: 'power3.inOut' }
+//       )
+//     }
+//   }, [menuOpen])
+
+//   // Sidebar smooth scroll
+//   useEffect(() => {
+//     if (!menuOpen) return
+
+//     const sidebar = document.querySelector('.nav-sidebar')
+//     if (!sidebar) return
+
+//     let targetScroll = sidebar.scrollTop
+//     let currentScroll = sidebar.scrollTop
+//     let rafId = null
+
+//     const smoothScroll = () => {
+//       currentScroll += (targetScroll - currentScroll) * 0.12
+//       sidebar.scrollTop = currentScroll
+
+//       if (Math.abs(targetScroll - currentScroll) > 0.5) {
+//         rafId = requestAnimationFrame(smoothScroll)
+//       } else {
+//         sidebar.scrollTop = targetScroll
+//         currentScroll = targetScroll
+//         rafId = null
+//       }
+//     }
+
+//     const handleSidebarWheel = (e) => {
+//       e.stopPropagation()
+//       e.preventDefault()
+//       const maxScroll = sidebar.scrollHeight - sidebar.clientHeight
+//       targetScroll = Math.max(0, Math.min(maxScroll, targetScroll + e.deltaY))
+//       if (!rafId) {
+//         currentScroll = sidebar.scrollTop
+//         rafId = requestAnimationFrame(smoothScroll)
+//       }
+//     }
+
+//     const handleScroll = () => {
+//       if (!rafId) {
+//         targetScroll = sidebar.scrollTop
+//         currentScroll = sidebar.scrollTop
+//       }
+//     }
+
+//     sidebar.addEventListener('wheel', handleSidebarWheel, { passive: false })
+//     sidebar.addEventListener('scroll', handleScroll)
+
+//     return () => {
+//       sidebar.removeEventListener('wheel', handleSidebarWheel)
+//       sidebar.removeEventListener('scroll', handleScroll)
+//       if (rafId) cancelAnimationFrame(rafId)
+//     }
+//   }, [menuOpen])
+
+//   const toggleMenu = () => {
+//     if (menuOpen) {
+//       gsap.to('.nav-sidebar', {
+//         x: '100%',
+//         duration: 0.6,
+//         ease: 'power3.inOut',
+//         onComplete: () => setMenuOpen(false),
+//       })
+//     } else {
+//       setMenuOpen(true)
+//     }
+//   }
+
+//   const handleChapterClick = (stageIndex) => {
+//     window.dispatchEvent(
+//       new CustomEvent('travelToStage', { detail: { stage: stageIndex } })
+//     )
+//   }
+
+// const handleBackToTop = () => {
+//   window.dispatchEvent(
+//     new CustomEvent('travelToStage', {
+//       detail: { stage: 0, instant: true },
+//     })
+//   )
+// }
+
+//   const CHAPTER_MENU = [
+//     { label: 'ABOUT', href: '/about' },
+//     { label: 'CAPABILITIES', href: '/capabilities' },
+//     { label: 'INDUSTRIES', href: '/industries' },
+//     { label: 'QUALITY', href: '/quality' },
+//     { label: 'FACILITIES', href: '/facilities' },
+//   ]
+
+//   return (
+//     <>
+//       <div ref={navRef} className="nav-content">
+//         {/* ✅ TOP ROW: logo + tabs + buttons */}
+//         <div className="nav-top-row">
+//           {/* Logo */}
+//           <div
+//             onClick={() => { window.location.href = '/' }}
+//             ref={logoRef}
+//             className="nav-logo"
+//           >
+//             <img src="/images/logo.webp" alt="Logo" />
+//           </div>
+
+//           {/* ✅ Desktop Nav Tabs */}
+//           {!isMobile && (
+//             <nav className="nav-tabs">
+//               {NAV_TABS.map((tab) => (
+//                 <a
+//                   key={tab.label}
+//                   href={tab.href}
+//                   className={`nav-tab ${pathname === tab.href ? 'active' : ''}`}
+//                 >
+//                   <span className="nav-tab-label">{tab.label}</span>
+//                   <span className="nav-tab-line" />
+//                 </a>
+//               ))}
+//             </nav>
+//           )}
+
+//           {/* Right group — buttons + hamburger */}
+//           <div className="nav-right-group">
+//             {pageButtons.map((button, index) => (
+//               <button
+//                 key={`${pathname}-${button.label}-${index}`}
+//                 ref={(el) => { buttonRefs.current[index] = el }}
+//                 className="nav-button nav-button-desktop"
+//                 onClick={() => { window.location.href = button.href }}
+//               >
+//                 {button.label}
+//               </button>
+//             ))}
+
+//             <button
+//               ref={hamburgerRef}
+//               className={`nav-hamburger ${menuOpen ? 'active' : ''}`}
+//               style={{
+//                 opacity: isMobile ? 1 : (isHomePage ? 0 : 1),
+//                 pointerEvents: isMobile ? 'auto' : (isHomePage ? 'none' : 'auto'),
+//                 transform: isMobile
+//                   ? 'translateX(0)'
+//                   : (isHomePage ? 'translateX(20px)' : 'translateX(0)'),
+//               }}
+//               onClick={toggleMenu}
+//             >
+//               <span></span>
+//               <span></span>
+//               <span></span>
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* ✅ CENTER: heading only */}
+//         <div className="nav-center">
+//           <div className="nav-heading">
+//             <h1 ref={headingRef}>
+//               {isAboutPage
+//                 ? 'BUILT ON PRECISION. DRIVEN BY PURPOSE'
+//                 : 'we shape what builds'}
+//             </h1>
+//           </div>
+
+//           {isMobile && (
+//             <div
+//               className="nav-mobile-buttons"
+//               ref={mobileButtonsRef}
+//               style={{ opacity: 0, visibility: 'hidden' }}
+//             >
+//               {pageButtons.map((button, index) => (
+//                 <button
+//                   key={`mob-btn-${index}`}
+//                   className="nav-mobile-btn"
+//                   onClick={() => { window.location.href = button.href }}
+//                 >
+//                   {button.label}
+//                 </button>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+
+//         {/* ✅ BOTTOM SPACER — keeps heading vertically centered */}
+//         <div className="nav-bottom-spacer" />
+//       </div>
+
+//       {/* Footer — desktop only */}
+//       {isHomePage && !isMobile && (
+//         <div
+//           ref={footerWrapperRef}
+//           className="nav-footer-wrapper"
+//           style={{ opacity: 0 }}
+//         >
+//           <div ref={chaptersRef} className="nav-chapters">
+//             {CHAPTERS.map((ch, i) => (
+//               <div
+//                 key={ch}
+//                 className={`chapter-item ${i === activeChapter ? 'active' : ''}`}
+//                 onClick={() => handleChapterClick(i)}
+//                 style={{ cursor: 'pointer' }}
+//               >
+//                 <span className="chapter-label">{ch}</span>
+//                 <span className="chapter-dot" />
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="progress-line-container">
+//             <div ref={progressLineRef} className="progress-line"></div>
+//           </div>
+
+//           <button
+//             ref={backToTopRef}
+//             className="back-to-top-btn"
+//             style={{
+//               opacity: 0, pointerEvents: 'none', transform: 'translateY(20px)',
+//             }}
+//             onClick={handleBackToTop}
+//           >
+//             BACK TO TOP ↑
+//           </button>
+//         </div>
+//       )}
+
+//       {menuOpen && (
+//         <div className="nav-sidebar">
+//           <button className="sidebar-close" onClick={toggleMenu}>
+//             <span></span>
+//             <span></span>
+//           </button>
+
+//           <nav className="sidebar-nav">
+//             {CHAPTER_MENU.map((item) => (
+//               <div key={item.label} className="sidebar-chapter">
+//                 <div
+//                   className="sidebar-chapter-header"
+//                   onClick={() => { window.location.href = item.href }}
+//                 >
+//                   <span className="sidebar-chapter-title">{item.label}</span>
+//                 </div>
+//               </div>
+//             ))}
+//           </nav>
+
+//           {isMobile && (
+//             <div className="sidebar-mobile-buttons">
+//               {pageButtons.map((button, index) => (
+//                 <button
+//                   key={`sidebar-mob-btn-${index}`}
+//                   className="sidebar-mobile-btn"
+//                   onClick={() => { window.location.href = button.href }}
+//                 >
+//                   {button.label}
+//                 </button>
+//               ))}
+//             </div>
+//           )}
+
+//           <div className="sidebar-footer">
+//             <div className="sidebar-footer-col">
+//               <span className="sidebar-footer-label">Phone</span>
+//               <a href="tel:+922111254111" className="sidebar-footer-value">
+//                 +92 21 111 254 111
+//                 <span className="sidebar-footer-sub">(whatsapp)</span>
+//               </a>
+//             </div>
+
+//             <div className="sidebar-footer-col">
+//               <span className="sidebar-footer-label">Mail</span>
+//               <a
+//                 href="mailto:info@forgentisfabrication.com"
+//                 className="sidebar-footer-value"
+//               >
+//                 info@forgentisfabrication.com
+//               </a>
+//             </div>
+
+//             <div className="sidebar-footer-col">
+//               <span className="sidebar-footer-label">Socials</span>
+//               <div className="sidebar-socials">
+//                 <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+//                   Linkedin
+//                 </a>
+//               </div>
+//             </div>
+
+//             <div className="sidebar-footer-bottom">
+//               <a href="/privacy">Privacy Policy</a>
+//               <span>©2026 Forgentis Fabrication</span>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   )
+// }
+
+// export default NavContent
 
 
 // 'use client'

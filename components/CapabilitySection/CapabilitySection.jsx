@@ -230,13 +230,20 @@ function CapabilitySection({
               })}
 
               {/* Point Title */}
-              <h2
-                className="capability-point-title"
-                style={{
-                  top: isMobile ? '52%' : point.titlePos.top,
-                  left: isMobile ? '6%' : point.titlePos.left,
-                }}
-              >
+             {/* Point Title */}
+<h2
+  className="capability-point-title"
+  style={{
+    top: isMobile
+      ? point.mobileTitlePos?.top || '52%'
+      : point.titlePos.top,
+    left: isMobile
+      ? point.mobileTitlePos?.left || '6%'
+      : point.titlePos.left,
+    right: isMobile ? point.mobileTitlePos?.right : undefined,
+    bottom: isMobile ? point.mobileTitlePos?.bottom : undefined,
+  }}
+>
                 <span className={isEven ? 'highlight-white' : 'highlight-blue'}>
                   {point.titleFirst}
                 </span>{' '}
@@ -246,59 +253,57 @@ function CapabilitySection({
               </h2>
 
               {/* Parallax Description */}
-              {point.description && (
-                <p
-                  ref={(el) => (descRefs.current[pIndex] = el)}
-                  className="capability-point-desc"
-                  style={{
-                    position: 'absolute',
-                    top: isMobile
-                      ? '72%'
-                      : point.descPos?.top ||
-                        `calc(${point.titlePos.top} + 8%)`,
-                    left: isMobile
-                      ? '6%'
-                      : point.descPos?.left || point.titlePos.left,
-                    maxWidth: isMobile
-                      ? '85%'
-                      : point.descPos?.maxWidth || '400px',
-                    ...(!isMobile &&
-                      point.descPos?.right && { right: point.descPos.right }),
-                    ...(!isMobile &&
-                      point.descPos?.bottom && { bottom: point.descPos.bottom }),
-                  }}
-                >
-                  {point.description}
-                </p>
-              )}
-
+           {point.description && (
+  <p
+    ref={(el) => (descRefs.current[pIndex] = el)}
+    className="capability-point-desc"
+    style={{
+      position: 'absolute',
+      top: isMobile
+        ? point.mobileDescPos?.top || '72%'
+        : point.descPos?.top || `calc(${point.titlePos.top} + 8%)`,
+      left: isMobile
+        ? point.mobileDescPos?.left || '6%'
+        : point.descPos?.left || point.titlePos.left,
+      maxWidth: isMobile
+        ? point.mobileDescPos?.maxWidth || '85%'
+        : point.descPos?.maxWidth || '400px',
+      ...(!isMobile && point.descPos?.right && { right: point.descPos.right }),
+      ...(!isMobile && point.descPos?.bottom && { bottom: point.descPos.bottom }),
+      ...(isMobile && point.mobileDescPos?.right && { right: point.mobileDescPos.right }),
+      ...(isMobile && point.mobileDescPos?.bottom && { bottom: point.mobileDescPos.bottom }),
+    }}
+  >
+    {point.description}
+  </p>
+)}
               {/* Dynamic Action Button */}
               {point.button && (
-                <button
-                  type="button"
-                  ref={(el) => (btnRefs.current[pIndex] = el)}
-                  className={`capability-point-btn ${
-                    point.button.className || ''
-                  }`}
-                  onClick={point.button.onClick}
-                  style={{
-                    position: 'absolute',
-                    top: isMobile ? '86%' : point.button.pos?.top,
-                    left: isMobile ? '6%' : point.button.pos?.left,
-                    ...(!isMobile &&
-                      point.button.pos?.right && {
-                        right: point.button.pos.right,
-                      }),
-                    ...(!isMobile &&
-                      point.button.pos?.bottom && {
-                        bottom: point.button.pos.bottom,
-                      }),
-                    zIndex: 10,
-                  }}
-                >
-                  {point.button.label}
-                </button>
-              )}
+  <button
+    type="button"
+    ref={(el) => (btnRefs.current[pIndex] = el)}
+    className={`capability-point-btn ${
+      point.button.className || ''
+    }`}
+    onClick={point.button.onClick}
+    style={{
+      position: 'absolute',
+      top: isMobile
+        ? point.button.mobilePos?.top || '86%'
+        : point.button.pos?.top,
+      left: isMobile
+        ? point.button.mobilePos?.left || '6%'
+        : point.button.pos?.left,
+      ...(!isMobile && point.button.pos?.right && { right: point.button.pos.right }),
+      ...(!isMobile && point.button.pos?.bottom && { bottom: point.button.pos.bottom }),
+      ...(isMobile && point.button.mobilePos?.right && { right: point.button.mobilePos.right }),
+      ...(isMobile && point.button.mobilePos?.bottom && { bottom: point.button.mobilePos.bottom }),
+      zIndex: 10,
+    }}
+  >
+    {point.button.label}
+  </button>
+)}
             </div>
           )
         })}
