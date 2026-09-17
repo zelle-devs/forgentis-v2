@@ -479,11 +479,13 @@ function NavContent() {
     )
   }
 
-  const handleBackToTop = () => {
-    window.dispatchEvent(
-      new CustomEvent('travelToStage', { detail: { stage: 0 } })
-    )
-  }
+const handleBackToTop = () => {
+  window.dispatchEvent(
+    new CustomEvent('travelToStage', {
+      detail: { stage: 0, instant: true },
+    })
+  )
+}
 
   const CHAPTER_MENU = [
     { label: 'ABOUT', href: '/about' },

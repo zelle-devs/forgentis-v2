@@ -127,11 +127,16 @@ backdrop-filter: blur(4.8px);
   align-items: flex-start;
   padding: 6px 0;
   font-family: var(--font-family-primary);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: var(--font-weight-medium);
   letter-spacing: 2.2px;
   text-transform: uppercase;
   color: var(--color-steel-main);
+   /* background: var(--color-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; */
+  font-weight: 300;
   text-decoration: none;
   transition: color var(--transition-normal);
   cursor: pointer;
@@ -225,7 +230,7 @@ backdrop-filter: blur(4.8px);
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 30px;
   perspective: 1000px;
   will-change: transform, opacity;
 }
@@ -644,7 +649,7 @@ backdrop-filter: blur(4.8px);
     margin-left: 32px;
   }
   .nav-tab {
-    font-size: 10px;
+    font-size: 13px;
     letter-spacing: 1.8px;
   }
 
@@ -683,6 +688,7 @@ backdrop-filter: blur(4.8px);
     width: 100% !important;
     position: relative;
     gap: 0 !important;
+    padding: 4px 10px;
   }
 
   /* Logo — top-left */
@@ -903,7 +909,7 @@ backdrop-filter: blur(4.8px);
     line-height: 0.95 !important;
   }
 
-  .nav-right-group { top: 0; right: 0; }
+  .nav-right-group { top: 7; right: 0; }
 
   .nav-hamburger { width: 40px !important; height: 40px !important; }
   .nav-hamburger span { width: 22px !important; }
@@ -933,7 +939,7 @@ backdrop-filter: blur(4.8px);
     margin-left: 72px;
   }
   .nav-tab {
-    font-size: 13px;
+    font-size: 16px;
     letter-spacing: 2.4px;
   }
 }

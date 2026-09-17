@@ -230,7 +230,7 @@ const project_slides = [
 ]
 
 const quality_points = [
-  { title: 'UNDERSTAND IT FIRST.', desc: 'uality starts with understanding the requirement.' },
+  { title: 'UNDERSTAND IT FIRST.', desc: 'Quality starts with understanding the requirement.' },
   { title: 'CONTROL THE PROCESS.', desc: 'Every stage stays coordinated from drawing to production.' },
   { title: 'CHECK WHAT MATTERS.', desc: 'Quality is verified throughout, not just at the end.' },
   { title: 'DELIVER AS EXPECTED.', desc: 'Built Precisely & Delivered.' },
@@ -297,75 +297,150 @@ export default function Home() {
   useEffect(() => { loadingRef.current = loading }, [loading])
 
   // Stage travel
-  useEffect(() => {
-    const handleTravelToStage = (e) => {
-      const targetStage = e.detail.stage
-      if (isTransitioning.current) return
-      if (stageRef.current === targetStage) return
+useEffect(() => {
+  const handleTravelToStage = (e) => {
+    const targetStage = e.detail.stage
+    const isInstant = e.detail.instant === true
 
-      const STAGE_STEPS = {
-        [STAGE_HERO]: HERO_STEP,
-        [STAGE_SECOND]: SECOND_STEP,
-        [STAGE_FOURTH]: FOURTH_STEP,
-        [STAGE_CAPABILITY]: CAPABILITY_STEP,
-        [STAGE_PROCESS]: PROCESS_STEP,
-        [STAGE_THIRD]: THIRD_STEP,
-        [STAGE_QUALITY]: QUALITY_STEP,
-        [STAGE_CONTACT]: CONTACT_STEP,
+    if (isTransitioning.current) return
+    if (stageRef.current === targetStage) return
+
+    // ✅ INSTANT MODE — Back to Top ke liye
+    if (isInstant) {
+      isTransitioning.current = true
+
+      // Saare sections unmount karo, sirf Hero rakho
+      setShowSecond(false)
+      setShowFourth(false)
+      setShowCapability(false)
+      setShowProcess(false)
+      setShowThird(false)
+      setShowQuality(false)
+      setShowContact(false)
+      setShowHero(true)
+
+      // Refs reset
+      stageRef.current = targetStage
+      scrollProgressRef.current = 0
+
+      // Har section ko fresh state pe wapas lao
+      if (heroRef.current) {
+        gsap.set(heroRef.current, { y: '0%', scale: 1, opacity: 1 })
+      }
+      if (secondRef.current) {
+        gsap.set(secondRef.current, { y: '100%', scale: 1, opacity: 1 })
+      }
+      if (fourthRef.current) {
+        gsap.set(fourthRef.current, { y: '0%', scale: 1, opacity: 1 })
+      }
+      if (capabilityRef.current) {
+        gsap.set(capabilityRef.current, { y: '0%', scale: 1, opacity: 1 })
+      }
+      if (processRef.current) {
+        gsap.set(processRef.current, { y: '0%', scale: 1, opacity: 1 })
+      }
+      if (thirdRef.current) {
+        gsap.set(thirdRef.current, { y: '0%', scale: 1, opacity: 1 })
+      }
+      if (qualityRef.current) {
+        gsap.set(qualityRef.current, { y: '0%', scale: 1, opacity: 1 })
+      }
+      if (contactRef.current) {
+        gsap.set(contactRef.current, { y: '0%', scale: 1, opacity: 1 })
       }
 
-      const direction = targetStage > stageRef.current ? 1 : -1
+      // Progress line reset
+      dispatch('scrollProgress', 0)
+      dispatch('secondTextProgress', 0)
+      dispatch('fourthShapeProgress', 0)
+      dispatch('fourthImageProgress', 0)
+      dispatch('capabilityProgress', 0)
+      dispatch('processProgress', 0)
+      dispatch('thirdSlideProgress', 0)
+      dispatch('thirdHorizontalProgress', 0)
+      dispatch('qualityProgress', 0)
+      dispatch('contactProgress', 0)
 
-      const dispatchStageChange = () => {
+      // Stage change events
+      window.dispatchEvent(new CustomEvent('stageChange', {
+        detail: { stage: STAGE_HERO, progress: 0 }
+      }))
+      window.dispatchEvent(new CustomEvent('stageProgress', {
+        detail: { stage: STAGE_HERO, progress: 0 }
+      }))
+
+      // Reset flag next frame
+      requestAnimationFrame(() => {
+        isTransitioning.current = false
+      })
+
+      return
+    }
+
+    // ===== NORMAL MODE — step-by-step travel =====
+    const STAGE_STEPS = {
+      [STAGE_HERO]: HERO_STEP,
+      [STAGE_SECOND]: SECOND_STEP,
+      [STAGE_FOURTH]: FOURTH_STEP,
+      [STAGE_CAPABILITY]: CAPABILITY_STEP,
+      [STAGE_PROCESS]: PROCESS_STEP,
+      [STAGE_THIRD]: THIRD_STEP,
+      [STAGE_QUALITY]: QUALITY_STEP,
+      [STAGE_CONTACT]: CONTACT_STEP,
+    }
+
+    const direction = targetStage > stageRef.current ? 1 : -1
+
+    const dispatchStageChange = () => {
+      window.dispatchEvent(new CustomEvent('stageChange', {
+        detail: { stage: stageRef.current, progress: scrollProgressRef.current }
+      }))
+      window.dispatchEvent(new CustomEvent('stageProgress', {
+        detail: { stage: stageRef.current, progress: scrollProgressRef.current }
+      }))
+    }
+
+    const advanceOneLeg = () => {
+      if (stageRef.current === targetStage) {
+        if (direction > 0) scrollProgressRef.current = 0
+        else scrollProgressRef.current = 1
+        dispatchStageChange()
+        return
+      }
+
+      const step = STAGE_STEPS[stageRef.current] || 0.015
+      const factor = 1.8
+
+      if (direction > 0) {
+        scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
+      } else {
+        scrollProgressRef.current = clamp01(scrollProgressRef.current - step * factor)
+      }
+
+      handleScrollStepRef.current?.(direction, factor)
+
+      if (stageRef.current !== lastStageRef.current) {
+        lastStageRef.current = stageRef.current
         window.dispatchEvent(new CustomEvent('stageChange', {
           detail: { stage: stageRef.current, progress: scrollProgressRef.current }
         }))
-        window.dispatchEvent(new CustomEvent('stageProgress', {
-          detail: { stage: stageRef.current, progress: scrollProgressRef.current }
-        }))
       }
 
-      const advanceOneLeg = () => {
-        if (stageRef.current === targetStage) {
-          if (direction > 0) scrollProgressRef.current = 0
-          else scrollProgressRef.current = 1
-          dispatchStageChange()
-          return
-        }
-
-        const step = STAGE_STEPS[stageRef.current] || 0.015
-        const factor = 1.8
-
-        if (direction > 0) {
-          scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
-        } else {
-          scrollProgressRef.current = clamp01(scrollProgressRef.current - step * factor)
-        }
-
-        handleScrollStepRef.current?.(direction, factor)
-
-        if (stageRef.current !== lastStageRef.current) {
-          lastStageRef.current = stageRef.current
-          window.dispatchEvent(new CustomEvent('stageChange', {
-            detail: { stage: stageRef.current, progress: scrollProgressRef.current }
-          }))
-        }
-
-        if (stageRef.current !== targetStage) {
-          requestAnimationFrame(advanceOneLeg)
-        } else {
-          if (direction > 0) scrollProgressRef.current = 0
-          else scrollProgressRef.current = 1
-          dispatchStageChange()
-        }
+      if (stageRef.current !== targetStage) {
+        requestAnimationFrame(advanceOneLeg)
+      } else {
+        if (direction > 0) scrollProgressRef.current = 0
+        else scrollProgressRef.current = 1
+        dispatchStageChange()
       }
-
-      requestAnimationFrame(advanceOneLeg)
     }
 
-    window.addEventListener('travelToStage', handleTravelToStage)
-    return () => window.removeEventListener('travelToStage', handleTravelToStage)
-  }, [])
+    requestAnimationFrame(advanceOneLeg)
+  }
+
+  window.addEventListener('travelToStage', handleTravelToStage)
+  return () => window.removeEventListener('travelToStage', handleTravelToStage)
+}, [])
 
   // Real browser/page scroll kabhi trigger na ho
   useEffect(() => {
