@@ -182,7 +182,7 @@
    ========================================== */
 @media (min-width: 1440px) {
   .capability-main-title { font-size: 100px; max-width: 900px; }
-  .capability-point-title { font-size: 88px; }
+  .capability-point-title { font-size: 72px; }
   .capability-main-desc { font-size: var(--font-size-xl); }
 }
 

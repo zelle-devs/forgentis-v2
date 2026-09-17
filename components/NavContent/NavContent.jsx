@@ -546,7 +546,7 @@ function NavContent() {
     () =>
       isAboutPage
         ? 'BUILT ON PRECISION. DRIVEN BY PURPOSE'
-        : 'we shape what builds',
+        : '',
     [isAboutPage]
   )
 
@@ -746,16 +746,17 @@ function NavContent() {
           )}
 
           <div className="sidebar-footer">
-            {/* <div className="sidebar-footer-col">
+            <div className="sidebar-footer-col">
               <span className="sidebar-footer-label">Phone</span>
               <a
-                href="tel:+922111254111"
+                href="tel:+923105317868"
                 className="sidebar-footer-value"
               >
-                +92 21 111 254 111
-                <span className="sidebar-footer-sub">(whatsapp)</span>
+                +92 310 5317868 
               </a>
-            </div> */}
+            </div>
+
+           
 
             <div className="sidebar-footer-col">
               <span className="sidebar-footer-label">Mail</span>
@@ -766,6 +767,8 @@ function NavContent() {
                 info@forgentisfabrication.com
               </a>
             </div>
+
+
 
             <div className="sidebar-footer-col">
               <span className="sidebar-footer-label">Socials</span>
@@ -779,9 +782,20 @@ function NavContent() {
                 </a>
               </div>
             </div>
+             <div className="sidebar-footer-col">
+              <span className="sidebar-footer-label">Address</span>
+              {/* <a
+                href="mailto:info@forgentisfabrication.com"
+                className="sidebar-footer-value"
+              >
+                info@forgentisfabrication.com
+              </a> */}
+              House # 22/10 Commercial B-Area, Liaquatabad Town, Dak Khana, Karachi ,Pakistan.
+
+            </div>
 
             <div className="sidebar-footer-bottom">
-              <span>© 2026 Forgentis Fabrications. All Rights Reserved.</span>
+              <span>© 2026 Forgentis Fabrication. All Rights Reserved.</span>
               <span>Designed and Managed by <a href="https://zellesolutions.com/" target='_blank'>Zelle Solutions Pvt. Ltd.</a></span>
             </div>
           </div>

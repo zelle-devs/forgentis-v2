@@ -690,9 +690,9 @@ export default function AboutPage() {
                 scrollProgressRef={scrollProgressRef}
                 POINTS={quality_points}
                 heading_part_1={'WHEN'}
-                heading_part_2={'DIFFERENCE'}
-                heading_part_3={'MEANS'}
-                heading_part_4={'BETTER'}
+                heading_part_2={''}
+                heading_part_3={'DIFFERENCE'}
+                heading_part_4={'MEANS BETTER'}
               />
             </div>
           )}

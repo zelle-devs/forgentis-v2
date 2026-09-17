@@ -2,8 +2,8 @@ import './globals.css'
 import GlobalEffects from './globalEffects/globalEffects'
 
 export const metadata = {
-  title: 'Forgentis - Digital Excellence',
-  description: 'Premium Digital Experience',
+  title: 'Forgentis Fabrication - Built on Precision',
+  description: 'Built on Precision',
    icons: {
     icon: '/optimize/favicon-f.png',
   },

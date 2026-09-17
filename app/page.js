@@ -199,19 +199,27 @@ const TOTAL_ITEMS_PROCESS = POINTS_PROCESS.length + 1
 const project_slides = [
   {
     id: 1,
-    src: '/optimize/build1.png',
-    mobileSrc: '/images/build1-mobile.jpg',
-    desc: 'ARCHITECTURAL METALWORK',
-    title: 'Facades, screens, railings, staircases and feature elements.',
-    pos: { top: '15%', left: '5%' },
+    src: '/images/vlektra.png',
+    mobileSrc: '/images/vlektra_mob.png',
+    desc: 'VLEKTRA Precision Fabrication',
+    title: 'Custom-fabricated components, precisely cut, formed, finished, and assembled to specification.',
+    pos: { bottom: '10%', left: '5%' },
   },
   {
     id: 2,
-    src: '/optimize/build2.png',
-    mobileSrc: '/images/build2-mobile.jpg',
-    desc: 'COMMERCIAL & INTERIOR',
-    title: 'Furniture bases, signage, panels and custom interior metalwork.',
-    pos: { top: '75%', left: '65%' },
+    src: '/images/kings.png',
+    mobileSrc: '/images/kings_mob.png',
+    desc: 'KINGS GROUP Architectural Metalwork',
+    title: 'Custom laser-cut panels and decorative metal elements, fabricated to project specifications and ready for installation.',
+     pos: { top: '12%', left: '53%' },
+  },
+  {
+    id: 3,
+    src: '/images/shams.png',
+    mobileSrc: '/images/shams_mob.png',
+    desc: 'SHAMS POWER Solar Components',
+    title: 'Custom-fabricated metal components developed to meet specific solar installation requirements.',
+      pos: { bottom: '0%', left: '58%' },
   },
 ]
 
@@ -1028,7 +1036,9 @@ export default function Home() {
       {showHero && (
         <>
           <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
-            <HeroSection />
+            <HeroSection 
+               headline={<>WE SHAPE <br/> WHAT <span>BUILDS</span></>}
+            />
           </div>
 
           {showSecond && (
@@ -1119,10 +1129,10 @@ export default function Home() {
               <QualitySection
                 scrollProgressRef={scrollProgressRef}
                 POINTS={quality_points}
-                heading_part_1={'QUALITY DOESN’T'}
+                heading_part_1={"WHEN “GOOD " }
                 heading_part_2={''}
-                heading_part_3={', LEAVE ROOM FOR'}
-                heading_part_4={'“GOOD ENOUGH”'}
+                heading_part_3={"ENOUGH” ISN'T."}
+                heading_part_4={""}
               />
             </div>
           )}

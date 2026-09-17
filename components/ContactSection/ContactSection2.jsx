@@ -124,7 +124,7 @@ function ContactSection2() {
 
       {/* Bottom Footer */}
       <div className="contact-footer">
-<span className="contact-tagline">© 2026 Forgentis Fabrications. All Rights Reserved.</span>
+<span className="contact-tagline">© 2026 Forgentis Fabrication. All Rights Reserved.</span>
 <span className="contact-brand">
   Designed and Managed by{' '}
   <a

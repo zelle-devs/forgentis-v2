@@ -872,7 +872,7 @@
 
   /* Mobile buttons */
   .nav-mobile-buttons {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 12px;
