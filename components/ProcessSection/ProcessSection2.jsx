@@ -6,9 +6,16 @@
 // function ProcessSection2({
 //   scrollProgressRef,
 //   POINTS = [],
+//   heading_part_1 = '',
+//   heading_part_2 = '',
+//   description = '',
 // }) {
 //   const cardRefs = useRef([])
 //   const paneRefs = useRef([])
+//   const titleOverlayRef = useRef(null)
+//   const titleRef = useRef(null)
+//   const descRef = useRef(null)
+//   const sectionContentRef = useRef(null)
 //   const [activeIndex, setActiveIndex] = useState(0)
 //   const [isMobile, setIsMobile] = useState(false)
 
@@ -22,15 +29,21 @@
 //     return () => window.removeEventListener('resize', checkMobile)
 //   }, [])
 
-//   // ===== Initial GSAP setup — Clean Start (1st image fully open, rest collapsed) =====
+//   // ===== Initial GSAP setup — 1st image settled, rest stacked below with tilt =====
 //   useEffect(() => {
 //     cardRefs.current.forEach((el, i) => {
 //       if (!el) return
 //       if (i === 0) {
-//         gsap.set(el, { clipPath: 'inset(0% 0% 0% 0%)', zIndex: 1 })
+//         gsap.set(el, { y: '0%', x: '0%', rotate: 0, scale: 1, zIndex: 1 })
 //       } else {
-//         // Baaki sabhi images bilkul center se collapsed shuru hongi taake pehli entry par koi overlap na ho
-//         gsap.set(el, { clipPath: 'inset(50% 50% 50% 50%)', zIndex: i + 1 })
+//         const tiltDir = i % 2 === 1 ? 1 : -1
+//         gsap.set(el, {
+//           y: '130%',
+//           x: `${tiltDir * 5}%`,
+//           rotate: tiltDir * 10,
+//           scale: 0.95,
+//           zIndex: i + 1,
+//         })
 //       }
 //     })
 //   }, [POINTS.length])
@@ -45,46 +58,112 @@
 //         return
 //       }
 
-//       const rawProgress = scrollProgressRef.current // 0 → 1
+//       const rawProgress = scrollProgressRef.current
 //       const progress = Math.max(0, Math.min(1, rawProgress))
-//       const value = progress * (totalItems - 1)
 
-//       // 1. Square Center-out Image Reveal Animation
+//       // ✅ Buffer — mobile pe bada (title zyada der visible)
+//       const buffer = isMobile ? 0.35 : 0.25
+
+//       // ─── TITLE OVERLAY ─────────────────────────────────
+//       if (titleOverlayRef.current && titleRef.current && descRef.current) {
+//         const titleFadeStart = buffer * 0.75
+//         const titleFadeEnd = buffer * 1.0
+
+//         let titleOpacity = 1
+//         let titleY = 0
+
+//         if (progress <= titleFadeStart) {
+//           titleOpacity = 1
+//           titleY = 0
+//         } else if (progress >= titleFadeEnd) {
+//           titleOpacity = 0
+//           titleY = -60
+//         } else {
+//           const t = (progress - titleFadeStart) / (titleFadeEnd - titleFadeStart)
+//           titleOpacity = 1 - t
+//           titleY = -60 * t
+//         }
+
+//         gsap.set(titleOverlayRef.current, {
+//           opacity: titleOpacity,
+//           visibility: titleOpacity <= 0.01 ? 'hidden' : 'visible',
+//           pointerEvents: titleOpacity > 0.5 ? 'auto' : 'none',
+//         })
+//         gsap.set(titleRef.current, { y: titleY })
+//         gsap.set(descRef.current, { y: titleY * 0.5 })
+//       }
+
+//       // ─── SECTION CONTENT REVEAL ───────────────────────
+//       if (sectionContentRef.current) {
+//         const contentFadeStart = buffer * 0.85
+//         const contentFadeEnd = buffer * 1.1
+
+//         let contentOpacity = 0
+//         if (progress <= contentFadeStart) contentOpacity = 0
+//         else if (progress >= contentFadeEnd) contentOpacity = 1
+//         else {
+//           contentOpacity =
+//             (progress - contentFadeStart) / (contentFadeEnd - contentFadeStart)
+//         }
+
+//         gsap.set(sectionContentRef.current, {
+//           opacity: contentOpacity,
+//           visibility: contentOpacity <= 0.01 ? 'hidden' : 'visible',
+//         })
+//       }
+
+//       // ─── CARDS ───────────────────────────────────────
+//       const adjustedProgress =
+//         progress < buffer ? 0 : (progress - buffer) / (1 - buffer)
+//       const value = adjustedProgress * (totalItems - 1)
+
+//       // Mobile pe card translate kam
+//       const cardY = isMobile ? 100 : 130
+
 //       POINTS.forEach((_, i) => {
 //         if (i === 0) return
 //         const el = cardRefs.current[i]
 //         if (!el) return
 
 //         const cardProgress = Math.max(0, Math.min(1, value - (i - 1)))
-//         const topBottom = (1 - cardProgress) * 50
-//         const leftRight = (1 - cardProgress) * 50
+//         const tiltDir = i % 2 === 1 ? 1 : -1
+
+//         const y = (1 - cardProgress) * cardY
+//         const x = (1 - cardProgress) * tiltDir * 5
+//         const rotate = (1 - cardProgress) * tiltDir * 10
+//         const scale = 0.95 + cardProgress * 0.05
 
 //         gsap.set(el, {
-//           clipPath: `inset(${topBottom}% ${leftRight}% ${topBottom}% ${leftRight}%)`,
+//           y: `${y}%`,
+//           x: `${x}%`,
+//           rotate,
+//           scale,
 //           zIndex: i + 1,
 //           overwrite: 'auto',
 //         })
 //       })
 
-//       // 2. Smooth Continuous Text Panes Sliding with increased gap multiplier (150% distance)
+//       // ─── TEXT PANES ──────────────────────────────────
+//       // Mobile pe translate kam + fade smooth (ek time pe ek pane)
+//       const paneTranslate = isMobile ? 85 : 150
+//       const paneFadeMultiplier = isMobile ? 0.7 : 1.2
+
 //       POINTS.forEach((_, i) => {
 //         const paneEl = paneRefs.current[i]
 //         if (!paneEl) return
 
-//         const distance = i - value 
-//         // 150% shift denge taake har point ke beech mein ample vertical spacing/gap rahe
-//         const translateY = distance * 150 
-//         const opacity = Math.max(0, 1 - Math.abs(distance) * 1.2)
+//         const distance = i - value
+//         const translateY = distance * paneTranslate + 15
+//         const opacity = Math.max(0, 1 - Math.abs(distance) * paneFadeMultiplier)
 
 //         gsap.set(paneEl, {
 //           yPercent: translateY,
 //           opacity: opacity > 0.05 ? opacity : 0,
 //           pointerEvents: Math.abs(distance) < 0.4 ? 'auto' : 'none',
-//           overwrite: 'auto'
+//           overwrite: 'auto',
 //         })
 //       })
 
-//       // Discrete active index tracking
 //       const discreteIndex = Math.min(
 //         totalItems - 1,
 //         Math.max(0, Math.floor(value + 0.15))
@@ -98,7 +177,7 @@
 //     return () => {
 //       if (rafId) cancelAnimationFrame(rafId)
 //     }
-//   }, [scrollProgressRef, POINTS, totalItems])
+//   }, [scrollProgressRef, POINTS, totalItems, isMobile])
 
 //   const currentActivePoint = POINTS[activeIndex] || POINTS[0]
 //   const currentBgImg = isMobile
@@ -108,78 +187,96 @@
 //   return (
 //     <div className="process-wrapper-main">
 //       {/* Background Blurred Glassy Backdrop */}
-//       <div 
+//       <div
 //         className="process-glass-backdrop"
 //         style={{ backgroundImage: `url(${currentBgImg})` }}
 //       />
 //       <div className="process-backdrop-overlay" />
 
-//       <div className="process-section">
-//         {/* ===== LEFT: Square Center-out Reveal Image Container ===== */}
-//         <div className="process-image-container">
-//           {POINTS.map((point, i) => {
-//             const currentImg = isMobile
-//               ? point.mobileImage || point.image
-//               : point.image
+//       {/* ===== MAIN TITLE OVERLAY ===== */}
+//       <div ref={titleOverlayRef} className="process-title-overlay">
+//         <h2 ref={titleRef} className="process-main-title">
+//           <span className="process-title-line">{heading_part_1}</span>
+//           {heading_part_2 && (
+//             <span className="process-title-line process-title-line--accent">
+//               {heading_part_2}
+//             </span>
+//           )}
+//         </h2>
+//         {description && (
+//           <p ref={descRef} className="process-main-desc">
+//             {description}
+//           </p>
+//         )}
+//       </div>
 
-//             return (
-//               <div
-//                 key={point.title || i}
-//                 ref={(el) => (cardRefs.current[i] = el)}
-//                 className="process-card"
-//               >
-//                 <img
-//                   src={currentImg}
-//                   alt={point.title || 'Process Image'}
-//                   className="process-card-img"
-//                 />
-//                 <div className="process-card-overlay" />
-//               </div>
-//             )
-//           })}
-//         </div>
-
-//         {/* ===== RIGHT: Robust Vertical Sliding Content Stack ===== */}
-//         <div className="process-content-container">
-//           <div className="process-text-viewport">
+//       {/* ===== ACTUAL SECTION CONTENT ===== */}
+//       <div ref={sectionContentRef} className="process-section-content">
+//         <div className="process-section">
+//           <div className="process-image-container">
 //             {POINTS.map((point, i) => {
-//               const showBtn = point.showButton !== false && point.buttonText
+//               const currentImg = isMobile
+//                 ? point.mobileImage || point.image
+//                 : point.image
 
 //               return (
 //                 <div
-//                   key={point.title + '-text-' + i}
-//                   ref={(el) => (paneRefs.current[i] = el)}
-//                   className="process-text-pane"
+//                   key={point.title || i}
+//                   ref={(el) => (cardRefs.current[i] = el)}
+//                   className="process-card"
 //                 >
-//                   <div className="process-counter">
-//                     <span className="process-counter-current">
-//                       {String(i + 1).padStart(2, '0')}
-//                     </span>
-//                     <span className="process-counter-divider" />
-//                     <span className="process-counter-total">
-//                       {String(totalItems).padStart(2, '0')}
-//                     </span>
-//                   </div>
-
-//                   <h3 className="process-item-title">{point.title}</h3>
-//                   <p className="process-item-desc">{point.desc}</p>
-                  
-//                   {showBtn && (
-//                     <a
-//                       href={point.buttonUrl || '#'}
-//                       className="process-cta-btn"
-//                       onClick={(e) => {
-//                         if (!point.buttonUrl || point.buttonUrl === '#') {
-//                           e.preventDefault()
-//                         }
-//                       }}
-//                     >
-//                       {point.buttonText}
-//                     </a>
-//                   )}
+//                   <img
+//                     src={currentImg}
+//                     alt={point.title || 'Process Image'}
+//                     className="process-card-img"
+//                   />
+//                   <div className="process-card-overlay" />
 //                 </div>
 //               )
 //             })}
+//           </div>
+
+//           <div className="process-content-container">
+//             <div className="process-text-viewport">
+//               {POINTS.map((point, i) => {
+//                 const showBtn = point.showButton !== false && point.buttonText
+
+//                 return (
+//                   <div
+//                     key={point.title + '-text-' + i}
+//                     ref={(el) => (paneRefs.current[i] = el)}
+//                     className="process-text-pane"
+//                   >
+//                     <div className="process-counter">
+//                       <span className="process-counter-current">
+//                         {String(i + 1).padStart(2, '0')}
+//                       </span>
+//                       <span className="process-counter-divider" />
+//                       <span className="process-counter-total">
+//                         {String(totalItems).padStart(2, '0')}
+//                       </span>
+//                     </div>
+
+//                     <h3 className="process-item-title">{point.title}</h3>
+//                     <p className="process-item-desc">{point.desc}</p>
+
+//                     {showBtn && (
+//                       <a
+//                         href={point.buttonUrl || '#'}
+//                         className="process-cta-btn"
+//                         onClick={(e) => {
+//                           if (!point.buttonUrl || point.buttonUrl === '#') {
+//                             e.preventDefault()
+//                           }
+//                         }}
+//                       >
+//                         {point.buttonText}
+//                       </a>
+//                     )}
+//                   </div>
+//                 )
+//               })}
+//             </div>
 //           </div>
 //         </div>
 //       </div>
@@ -197,9 +294,16 @@ import './ProcessSection2.css'
 function ProcessSection2({
   scrollProgressRef,
   POINTS = [],
+  heading_part_1 = '',
+  heading_part_2 = '',
+  description = '',
 }) {
   const cardRefs = useRef([])
   const paneRefs = useRef([])
+  const titleOverlayRef = useRef(null)
+  const titleRef = useRef(null)
+  const descRef = useRef(null)
+  const sectionContentRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -213,88 +317,26 @@ function ProcessSection2({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // ===== Initial GSAP setup — Clean Start (1st image fully open, rest collapsed) =====
+  // ===== Initial GSAP setup =====
   useEffect(() => {
     cardRefs.current.forEach((el, i) => {
       if (!el) return
       if (i === 0) {
-        gsap.set(el, { clipPath: 'inset(0% 0% 0% 0%)', zIndex: 1 })
+        gsap.set(el, { y: '0%', x: '0%', rotate: 0, scale: 1, zIndex: 1 })
       } else {
-        gsap.set(el, { clipPath: 'inset(50% 50% 50% 50%)', zIndex: i + 1 })
+        const tiltDir = i % 2 === 1 ? 1 : -1
+        gsap.set(el, {
+          y: '130%',
+          x: `${tiltDir * 5}%`,
+          rotate: tiltDir * 10,
+          scale: 0.95,
+          zIndex: i + 1,
+        })
       }
     })
   }, [POINTS.length])
 
-  // ===== Sync with page.js scrollProgressRef with safe entry buffer =====
-  // useEffect(() => {
-  //   let rafId = null
-
-  //   const updateProcessAnimations = () => {
-  //     if (!scrollProgressRef || !scrollProgressRef.current) {
-  //       rafId = requestAnimationFrame(updateProcessAnimations)
-  //       return
-  //     }
-
-  //     const rawProgress = scrollProgressRef.current // 0 → 1
-  //     const progress = Math.max(0, Math.min(1, rawProgress))
-
-  //     // 🛑 BUFFER / LOCK FIX: 
-  //     // Jab tak user scroll ko thoda andar nahi le jata (e.g., first 8% of section), 
-  //     // tab tak value strictly 0 rahegi taake 1st point 100% stable aur visible rahe.
-  //     const adjustedProgress = progress < 0.08 ? 0 : (progress - 0.08) / (1 - 0.08)
-  //     const value = adjustedProgress * (totalItems - 1)
-
-  //     // 1. Square Center-out Image Reveal Animation
-  //     POINTS.forEach((_, i) => {
-  //       if (i === 0) return
-  //       const el = cardRefs.current[i]
-  //       if (!el) return
-
-  //       const cardProgress = Math.max(0, Math.min(1, value - (i - 1)))
-  //       const topBottom = (1 - cardProgress) * 50
-  //       const leftRight = (1 - cardProgress) * 50
-
-  //       gsap.set(el, {
-  //         clipPath: `inset(${topBottom}% ${leftRight}% ${topBottom}% ${leftRight}%)`,
-  //         zIndex: i + 1,
-  //         overwrite: 'auto',
-  //       })
-  //     })
-
-  //     // 2. Smooth Continuous Text Panes Sliding with increased gap multiplier
-  //     POINTS.forEach((_, i) => {
-  //       const paneEl = paneRefs.current[i]
-  //       if (!paneEl) return
-
-  //       const distance = i - value 
-  //       const translateY = distance * 150 
-  //       const opacity = Math.max(0, 1 - Math.abs(distance) * 1.2)
-
-  //       gsap.set(paneEl, {
-  //         yPercent: translateY,
-  //         opacity: opacity > 0.05 ? opacity : 0,
-  //         pointerEvents: Math.abs(distance) < 0.4 ? 'auto' : 'none',
-  //         overwrite: 'auto'
-  //       })
-  //     })
-
-  //     // Discrete active index tracking
-  //     const discreteIndex = Math.min(
-  //       totalItems - 1,
-  //       Math.max(0, Math.floor(value + 0.15))
-  //     )
-  //     setActiveIndex((prev) => (prev !== discreteIndex ? discreteIndex : prev))
-
-  //     rafId = requestAnimationFrame(updateProcessAnimations)
-  //   }
-
-  //   rafId = requestAnimationFrame(updateProcessAnimations)
-  //   return () => {
-  //     if (rafId) cancelAnimationFrame(rafId)
-  //   }
-  // }, [scrollProgressRef, POINTS, totalItems])
-
-  // ===== Sync with page.js scrollProgressRef with enhanced entry buffer =====
+  // ===== Sync with page.js scrollProgressRef =====
   useEffect(() => {
     let rafId = null
 
@@ -304,52 +346,116 @@ function ProcessSection2({
         return
       }
 
-      const rawProgress = scrollProgressRef.current // 0 → 1
+      const rawProgress = scrollProgressRef.current
       const progress = Math.max(0, Math.min(1, rawProgress))
 
-      // Enhanced buffer threshold to keep 1st point fully visible on entry
-      const buffer = 0.15
-      const adjustedProgress = progress < buffer ? 0 : (progress - buffer) / (1 - buffer)
+      // ✅ Buffer — mobile pe bada (title zyada der visible)
+      const buffer = isMobile ? 0.35 : 0.25
+
+      // ─── TITLE OVERLAY ─────────────────────────────────
+      if (titleOverlayRef.current && titleRef.current && descRef.current) {
+        const titleFadeStart = buffer * 0.75
+        const titleFadeEnd = buffer * 1.0
+
+        let titleOpacity = 1
+        let titleY = 0
+
+        if (progress <= titleFadeStart) {
+          titleOpacity = 1
+          titleY = 0
+        } else if (progress >= titleFadeEnd) {
+          titleOpacity = 0
+          titleY = -60
+        } else {
+          const t = (progress - titleFadeStart) / (titleFadeEnd - titleFadeStart)
+          titleOpacity = 1 - t
+          titleY = -60 * t
+        }
+
+        gsap.set(titleOverlayRef.current, {
+          opacity: titleOpacity,
+          visibility: titleOpacity <= 0.01 ? 'hidden' : 'visible',
+          pointerEvents: titleOpacity > 0.5 ? 'auto' : 'none',
+        })
+        gsap.set(titleRef.current, { y: titleY })
+        gsap.set(descRef.current, { y: titleY * 0.5 })
+      }
+
+      // ─── SECTION CONTENT REVEAL ───────────────────────
+      if (sectionContentRef.current) {
+        const contentFadeStart = buffer * 0.85
+        const contentFadeEnd = buffer * 1.1
+
+        let contentOpacity = 0
+        if (progress <= contentFadeStart) contentOpacity = 0
+        else if (progress >= contentFadeEnd) contentOpacity = 1
+        else {
+          contentOpacity =
+            (progress - contentFadeStart) / (contentFadeEnd - contentFadeStart)
+        }
+
+        gsap.set(sectionContentRef.current, {
+          opacity: contentOpacity,
+          visibility: contentOpacity <= 0.01 ? 'hidden' : 'visible',
+        })
+      }
+
+      // ─── CARDS ───────────────────────────────────────
+      const adjustedProgress =
+        progress < buffer ? 0 : (progress - buffer) / (1 - buffer)
       const value = adjustedProgress * (totalItems - 1)
 
-      // 1. Square Center-out Image Reveal Animation
+      // Card translate — same on both (sync with pane)
+      const cardY = 130
+
       POINTS.forEach((_, i) => {
         if (i === 0) return
         const el = cardRefs.current[i]
         if (!el) return
 
         const cardProgress = Math.max(0, Math.min(1, value - (i - 1)))
-        const topBottom = (1 - cardProgress) * 50
-        const leftRight = (1 - cardProgress) * 50
+        const tiltDir = i % 2 === 1 ? 1 : -1
+
+        const y = (1 - cardProgress) * cardY
+        const x = (1 - cardProgress) * tiltDir * 5
+        const rotate = (1 - cardProgress) * tiltDir * 10
+        const scale = 0.95 + cardProgress * 0.05
 
         gsap.set(el, {
-          clipPath: `inset(${topBottom}% ${leftRight}% ${topBottom}% ${leftRight}%)`,
+          y: `${y}%`,
+          x: `${x}%`,
+          rotate,
+          scale,
           zIndex: i + 1,
           overwrite: 'auto',
         })
       })
 
-      // 2. Smooth Continuous Text Panes Sliding with increased gap multiplier
+      // ─── TEXT PANES ──────────────────────────────────
+      // Mobile: translate zyada (gap) + fade strict (sirf ek pane visible)
+      const paneTranslate = isMobile ? 120 : 150
+      const paneFadeMultiplier = isMobile ? 2.2 : 1.2
+
       POINTS.forEach((_, i) => {
         const paneEl = paneRefs.current[i]
         if (!paneEl) return
 
-        const distance = i - value 
-        const translateY = distance * 150 
-        const opacity = Math.max(0, 1 - Math.abs(distance) * 1.2)
+        const distance = i - value
+        const translateY = distance * paneTranslate + 15
+        const opacity = Math.max(0, 1 - Math.abs(distance) * paneFadeMultiplier)
 
         gsap.set(paneEl, {
           yPercent: translateY,
           opacity: opacity > 0.05 ? opacity : 0,
           pointerEvents: Math.abs(distance) < 0.4 ? 'auto' : 'none',
-          overwrite: 'auto'
+          overwrite: 'auto',
         })
       })
 
-      // Discrete active index tracking
+      // Round instead of floor+0.15 — mid-point pe change
       const discreteIndex = Math.min(
         totalItems - 1,
-        Math.max(0, Math.floor(value + 0.15))
+        Math.max(0, Math.round(value))
       )
       setActiveIndex((prev) => (prev !== discreteIndex ? discreteIndex : prev))
 
@@ -360,7 +466,7 @@ function ProcessSection2({
     return () => {
       if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [scrollProgressRef, POINTS, totalItems])
+  }, [scrollProgressRef, POINTS, totalItems, isMobile])
 
   const currentActivePoint = POINTS[activeIndex] || POINTS[0]
   const currentBgImg = isMobile
@@ -370,78 +476,96 @@ function ProcessSection2({
   return (
     <div className="process-wrapper-main">
       {/* Background Blurred Glassy Backdrop */}
-      <div 
+      <div
         className="process-glass-backdrop"
         style={{ backgroundImage: `url(${currentBgImg})` }}
       />
       <div className="process-backdrop-overlay" />
 
-      <div className="process-section">
-        {/* ===== LEFT: Square Center-out Reveal Image Container ===== */}
-        <div className="process-image-container">
-          {POINTS.map((point, i) => {
-            const currentImg = isMobile
-              ? point.mobileImage || point.image
-              : point.image
+      {/* ===== MAIN TITLE OVERLAY ===== */}
+      <div ref={titleOverlayRef} className="process-title-overlay">
+        <h2 ref={titleRef} className="process-main-title">
+          <span className="process-title-line">{heading_part_1}</span>
+          {heading_part_2 && (
+            <span className="process-title-line process-title-line--accent">
+              {heading_part_2}
+            </span>
+          )}
+        </h2>
+        {description && (
+          <p ref={descRef} className="process-main-desc">
+            {description}
+          </p>
+        )}
+      </div>
 
-            return (
-              <div
-                key={point.title || i}
-                ref={(el) => (cardRefs.current[i] = el)}
-                className="process-card"
-              >
-                <img
-                  src={currentImg}
-                  alt={point.title || 'Process Image'}
-                  className="process-card-img"
-                />
-                <div className="process-card-overlay" />
-              </div>
-            )
-          })}
-        </div>
-
-        {/* ===== RIGHT: Robust Vertical Sliding Content Stack ===== */}
-        <div className="process-content-container">
-          <div className="process-text-viewport">
+      {/* ===== ACTUAL SECTION CONTENT ===== */}
+      <div ref={sectionContentRef} className="process-section-content">
+        <div className="process-section">
+          <div className="process-image-container">
             {POINTS.map((point, i) => {
-              const showBtn = point.showButton !== false && point.buttonText
+              const currentImg = isMobile
+                ? point.mobileImage || point.image
+                : point.image
 
               return (
                 <div
-                  key={point.title + '-text-' + i}
-                  ref={(el) => (paneRefs.current[i] = el)}
-                  className="process-text-pane"
+                  key={point.title || i}
+                  ref={(el) => (cardRefs.current[i] = el)}
+                  className="process-card"
                 >
-                  <div className="process-counter">
-                    <span className="process-counter-current">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span className="process-counter-divider" />
-                    <span className="process-counter-total">
-                      {String(totalItems).padStart(2, '0')}
-                    </span>
-                  </div>
-
-                  <h3 className="process-item-title">{point.title}</h3>
-                  <p className="process-item-desc">{point.desc}</p>
-                  
-                  {showBtn && (
-                    <a
-                      href={point.buttonUrl || '#'}
-                      className="process-cta-btn"
-                      onClick={(e) => {
-                        if (!point.buttonUrl || point.buttonUrl === '#') {
-                          e.preventDefault()
-                        }
-                      }}
-                    >
-                      {point.buttonText}
-                    </a>
-                  )}
+                  <img
+                    src={currentImg}
+                    alt={point.title || 'Process Image'}
+                    className="process-card-img"
+                  />
+                  <div className="process-card-overlay" />
                 </div>
               )
             })}
+          </div>
+
+          <div className="process-content-container">
+            <div className="process-text-viewport">
+              {POINTS.map((point, i) => {
+                const showBtn = point.showButton !== false && point.buttonText
+
+                return (
+                  <div
+                    key={point.title + '-text-' + i}
+                    ref={(el) => (paneRefs.current[i] = el)}
+                    className="process-text-pane"
+                  >
+                    <div className="process-counter">
+                      <span className="process-counter-current">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span className="process-counter-divider" />
+                      <span className="process-counter-total">
+                        {String(totalItems).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    <h3 className="process-item-title">{point.title}</h3>
+                    <p className="process-item-desc">{point.desc}</p>
+
+                    {showBtn && (
+                      <a
+                        href={point.buttonUrl || '#'}
+                        className="process-cta-btn"
+                        onClick={(e) => {
+                          if (!point.buttonUrl || point.buttonUrl === '#') {
+                            e.preventDefault()
+                          }
+                        }}
+                      >
+                        {point.buttonText}
+                      </a>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -451,8 +575,6 @@ function ProcessSection2({
 
 export default ProcessSection2
 
-
-
 // 'use client'
 // import { useEffect, useRef, useState } from 'react'
 // import gsap from 'gsap'
@@ -461,8 +583,16 @@ export default ProcessSection2
 // function ProcessSection2({
 //   scrollProgressRef,
 //   POINTS = [],
+//   heading_part_1 = '',
+//   heading_part_2 = '',
+//   description = '',
 // }) {
 //   const cardRefs = useRef([])
+//   const paneRefs = useRef([])
+//   const titleOverlayRef = useRef(null)
+//   const titleRef = useRef(null)
+//   const descRef = useRef(null)
+//   const sectionContentRef = useRef(null)
 //   const [activeIndex, setActiveIndex] = useState(0)
 //   const [isMobile, setIsMobile] = useState(false)
 
@@ -476,14 +606,21 @@ export default ProcessSection2
 //     return () => window.removeEventListener('resize', checkMobile)
 //   }, [])
 
-//   // ===== Initial GSAP setup — Square inset reveal from center =====
+//   // ===== Initial GSAP setup — 1st image settled, rest stacked below with tilt =====
 //   useEffect(() => {
 //     cardRefs.current.forEach((el, i) => {
 //       if (!el) return
 //       if (i === 0) {
-//         gsap.set(el, { clipPath: 'inset(0% 0% 0% 0%)', zIndex: 1 })
+//         gsap.set(el, { y: '0%', x: '0%', rotate: 0, scale: 1, zIndex: 1 })
 //       } else {
-//         gsap.set(el, { clipPath: 'inset(50% 50% 50% 50%)', zIndex: i + 1 })
+//         const tiltDir = i % 2 === 1 ? 1 : -1
+//         gsap.set(el, {
+//           y: '130%',
+//           x: `${tiltDir * 5}%`,
+//           rotate: tiltDir * 10,
+//           scale: 0.95,
+//           zIndex: i + 1,
+//         })
 //       }
 //     })
 //   }, [POINTS.length])
@@ -498,30 +635,108 @@ export default ProcessSection2
 //         return
 //       }
 
-//       const rawProgress = scrollProgressRef.current // 0 → 1
+//       const rawProgress = scrollProgressRef.current
 //       const progress = Math.max(0, Math.min(1, rawProgress))
-//       const value = progress * (totalItems - 1)
 
-//       // Square Center-out Reveal using strict inset mapping
+//       // ✅ Buffer — is andar sirf title dikhega, cards still
+//       const buffer = 0.25
+
+//       // ─── TITLE OVERLAY ─────────────────────────────────
+//       // 0 → buffer*0.55       : title fully visible (solid black bg)
+//       // buffer*0.55 → buffer  : title fade out
+//       // buffer → 1            : title hidden
+//       if (titleOverlayRef.current && titleRef.current && descRef.current) {
+//         const titleFadeStart = buffer * 0.75
+//         const titleFadeEnd = buffer * 1.0
+
+//         let titleOpacity = 1
+//         let titleY = 0
+
+//         if (progress <= titleFadeStart) {
+//           titleOpacity = 1
+//           titleY = 0
+//         } else if (progress >= titleFadeEnd) {
+//           titleOpacity = 0
+//           titleY = -60
+//         } else {
+//           const t = (progress - titleFadeStart) / (titleFadeEnd - titleFadeStart)
+//           titleOpacity = 1 - t
+//           titleY = -60 * t
+//         }
+
+//         gsap.set(titleOverlayRef.current, {
+//           opacity: titleOpacity,
+//           visibility: titleOpacity <= 0.01 ? 'hidden' : 'visible',
+//           pointerEvents: titleOpacity > 0.5 ? 'auto' : 'none',
+//         })
+//         gsap.set(titleRef.current, { y: titleY })
+//         gsap.set(descRef.current, { y: titleY * 0.5 })
+//       }
+
+//       // ─── SECTION CONTENT REVEAL ───────────────────────
+//       // Title fade hone ke baad hi cards/text dikhao (fade-in)
+//       if (sectionContentRef.current) {
+//         const contentFadeStart = buffer * 0.85
+//         const contentFadeEnd = buffer * 1.1
+
+//         let contentOpacity = 0
+//         if (progress <= contentFadeStart) contentOpacity = 0
+//         else if (progress >= contentFadeEnd) contentOpacity = 1
+//         else {
+//           contentOpacity =
+//             (progress - contentFadeStart) / (contentFadeEnd - contentFadeStart)
+//         }
+
+//         gsap.set(sectionContentRef.current, {
+//           opacity: contentOpacity,
+//           visibility: contentOpacity <= 0.01 ? 'hidden' : 'visible',
+//         })
+//       }
+
+//       // ─── CARDS (same as before) ───────────────────────
+//       const adjustedProgress =
+//         progress < buffer ? 0 : (progress - buffer) / (1 - buffer)
+//       const value = adjustedProgress * (totalItems - 1)
+
 //       POINTS.forEach((_, i) => {
 //         if (i === 0) return
 //         const el = cardRefs.current[i]
 //         if (!el) return
 
-//         // Har card ka reveal apne specific scroll window mein strictly complete hoga
 //         const cardProgress = Math.max(0, Math.min(1, value - (i - 1)))
-//         const topBottom = (1 - cardProgress) * 50
-//         const leftRight = (1 - cardProgress) * 50
+//         const tiltDir = i % 2 === 1 ? 1 : -1
+
+//         const y = (1 - cardProgress) * 130
+//         const x = (1 - cardProgress) * tiltDir * 5
+//         const rotate = (1 - cardProgress) * tiltDir * 10
+//         const scale = 0.95 + cardProgress * 0.05
 
 //         gsap.set(el, {
-//           clipPath: `inset(${topBottom}% ${leftRight}% ${topBottom}% ${leftRight}%)`,
+//           y: `${y}%`,
+//           x: `${x}%`,
+//           rotate,
+//           scale,
 //           zIndex: i + 1,
 //           overwrite: 'auto',
 //         })
 //       })
 
-//       // Strict discrete active index tracking: 
-//       // Text aur active index tab hi change hoga jab image ka inset reveal pora (ya near complete) ho jaye
+//       POINTS.forEach((_, i) => {
+//         const paneEl = paneRefs.current[i]
+//         if (!paneEl) return
+
+//         const distance = i - value
+//         const translateY = distance * 150 + 15
+//         const opacity = Math.max(0, 1 - Math.abs(distance) * 1.2)
+
+//         gsap.set(paneEl, {
+//           yPercent: translateY,
+//           opacity: opacity > 0.05 ? opacity : 0,
+//           pointerEvents: Math.abs(distance) < 0.4 ? 'auto' : 'none',
+//           overwrite: 'auto',
+//         })
+//       })
+
 //       const discreteIndex = Math.min(
 //         totalItems - 1,
 //         Math.max(0, Math.floor(value + 0.15))
@@ -545,87 +760,96 @@ export default ProcessSection2
 //   return (
 //     <div className="process-wrapper-main">
 //       {/* Background Blurred Glassy Backdrop */}
-//       <div 
+//       <div
 //         className="process-glass-backdrop"
 //         style={{ backgroundImage: `url(${currentBgImg})` }}
 //       />
 //       <div className="process-backdrop-overlay" />
 
-//       <div className="process-section">
-//         {/* ===== LEFT: Square Center-out Reveal Image Container ===== */}
-//         <div className="process-image-container">
-//           {POINTS.map((point, i) => {
-//             const currentImg = isMobile
-//               ? point.mobileImage || point.image
-//               : point.image
-
-//             return (
-//               <div
-//                 key={point.title || i}
-//                 ref={(el) => (cardRefs.current[i] = el)}
-//                 className="process-card"
-//               >
-//                 <img
-//                   src={currentImg}
-//                   alt={point.title || 'Process Image'}
-//                   className="process-card-img"
-//                 />
-//                 <div className="process-card-overlay" />
-//               </div>
-//             )
-//           })}
-//         </div>
-
-//         {/* ===== RIGHT: Robust Vertical Sliding Content Stack ===== */}
-//         <div className="process-content-container">
-//           {/* Counter */}
-//           <div className="process-counter">
-//             <span className="process-counter-current">
-//               {String(activeIndex + 1).padStart(2, '0')}
+//       {/* ===== MAIN TITLE OVERLAY — solid black, scroll par fade ===== */}
+//       <div ref={titleOverlayRef} className="process-title-overlay">
+//         <h2 ref={titleRef} className="process-main-title">
+//           <span className="process-title-line">{heading_part_1}</span>
+//           {heading_part_2 && (
+//             <span className="process-title-line process-title-line--accent">
+//               {heading_part_2}
 //             </span>
-//             <span className="process-counter-divider" />
-//             <span className="process-counter-total">
-//               {String(totalItems).padStart(2, '0')}
-//             </span>
-//           </div>
+//           )}
+//         </h2>
+//         {description && (
+//           <p ref={descRef} className="process-main-desc">
+//             {description}
+//           </p>
+//         )}
+//       </div>
 
-//           {/* Text stack viewport with precise index mapping */}
-//           <div className="process-text-viewport">
+//       {/* ===== ACTUAL SECTION CONTENT — title fade ke baad reveal ===== */}
+//       <div ref={sectionContentRef} className="process-section-content">
+//         <div className="process-section">
+//           <div className="process-image-container">
 //             {POINTS.map((point, i) => {
-//               let positionClass = 'process-pane-next'
-//               if (i === activeIndex) {
-//                 positionClass = 'process-pane-active'
-//               } else if (i < activeIndex) {
-//                 positionClass = 'process-pane-prev'
-//               }
-
-//               // Check if button should be shown for this specific point
-//               const showBtn = point.showButton !== false && point.buttonText
+//               const currentImg = isMobile
+//                 ? point.mobileImage || point.image
+//                 : point.image
 
 //               return (
 //                 <div
-//                   key={point.title + '-text-' + i}
-//                   className={`process-text-pane ${positionClass}`}
+//                   key={point.title || i}
+//                   ref={(el) => (cardRefs.current[i] = el)}
+//                   className="process-card"
 //                 >
-//                   <h3 className="process-item-title">{point.title}</h3>
-//                   <p className="process-item-desc">{point.desc}</p>
-                  
-//                   {showBtn && (
-//                     <a
-//                       href={point.buttonUrl || '#'}
-//                       className="process-cta-btn"
-//                       onClick={(e) => {
-//                         if (!point.buttonUrl || point.buttonUrl === '#') {
-//                           e.preventDefault()
-//                         }
-//                       }}
-//                     >
-//                       {point.buttonText}
-//                     </a>
-//                   )}
+//                   <img
+//                     src={currentImg}
+//                     alt={point.title || 'Process Image'}
+//                     className="process-card-img"
+//                   />
+//                   <div className="process-card-overlay" />
 //                 </div>
 //               )
 //             })}
+//           </div>
+
+//           <div className="process-content-container">
+//             <div className="process-text-viewport">
+//               {POINTS.map((point, i) => {
+//                 const showBtn = point.showButton !== false && point.buttonText
+
+//                 return (
+//                   <div
+//                     key={point.title + '-text-' + i}
+//                     ref={(el) => (paneRefs.current[i] = el)}
+//                     className="process-text-pane"
+//                   >
+//                     <div className="process-counter">
+//                       <span className="process-counter-current">
+//                         {String(i + 1).padStart(2, '0')}
+//                       </span>
+//                       <span className="process-counter-divider" />
+//                       <span className="process-counter-total">
+//                         {String(totalItems).padStart(2, '0')}
+//                       </span>
+//                     </div>
+
+//                     <h3 className="process-item-title">{point.title}</h3>
+//                     <p className="process-item-desc">{point.desc}</p>
+
+//                     {showBtn && (
+//                       <a
+//                         href={point.buttonUrl || '#'}
+//                         className="process-cta-btn"
+//                         onClick={(e) => {
+//                           if (!point.buttonUrl || point.buttonUrl === '#') {
+//                             e.preventDefault()
+//                           }
+//                         }}
+//                       >
+//                         {point.buttonText}
+//                       </a>
+//                     )}
+//                   </div>
+//                 )
+//               })}
+//             </div>
 //           </div>
 //         </div>
 //       </div>

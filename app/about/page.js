@@ -1,57 +1,39 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import LoadingScreen from '@/components/LoadingScreen/LoadingScreen'
 import HeroSection from '@/components/HeroSection/HeroSection'
 import SecondSection from '@/components/SecondSection/SecondSection'
 import CapabilitySection from '@/components/CapabilitySection/CapabilitySection'
 import QualitySection from '@/components/QualitySection/QualitySection'
 import ContactSection2 from '@/components/ContactSection/ContactSection2'
-import CursorTrail from '@/components/CursorTrail/CursorTrail'
 import NavContent from '@/components/NavContent/NavContent'
 
+// ------------------------------------------------------------
+// ALL SCROLL CONFIG FROM CENTRAL FILE — no hardcoded numbers
+// ------------------------------------------------------------
+import {
+  SPLITS,
+  INPUT_CONFIG,
+  TRAVEL_CONFIG,
+  MOBILE_SLIDE_STEP,
+  getStep,
+  getHeroStep,
+  getQualityStep,
+  getTouchMultiplier,
+  isMobileViewport,
+} from '@/app/config/aboutScrollConfig'
+
+// ----- Stage constants -----
 const STAGE_HERO = 0
 const STAGE_SECOND = 1
 const STAGE_CAPABILITY = 2
 const STAGE_QUALITY = 3
 const STAGE_CONTACT = 4
 
-const HERO_STEP = 0.08
-// Mobile pe Hero slow
-const getHeroStep = () => {
-  if (typeof window === 'undefined') return HERO_STEP
-  const w = window.innerWidth
-  if (w <= 480) return 0.030
-  if (w <= 768) return 0.035
-  if (w <= 1024) return 0.055
-  return HERO_STEP
-}
-
-const SECOND_STEP = 0.015
-// Mobile pe Second faster
-const getSecondStep = () => {
-  if (typeof window === 'undefined') return SECOND_STEP
-  return window.innerWidth <= 768 ? 0.022 : SECOND_STEP
-}
-
-const CAPABILITY_STEP = 0.008
-
-const QUALITY_STEP = 0.01
-// Mobile pe Quality faster
-const getQualityStep = () => {
-  if (typeof window === 'undefined') return QUALITY_STEP
-  const w = window.innerWidth
-  if (w <= 480) return 0.014
-  if (w <= 768) return 0.016
-  if (w <= 1024) return 0.018
-  return QUALITY_STEP
-}
-
-const CONTACT_STEP = 0.015
-
-const CAPABILITY_SPLIT = 0.4
-const QUALITY_SPLIT = 0.25
-const CONTACT_SPLIT = 0.4
+// ----- Split shortcuts (pulled from config) -----
+const CAPABILITY_SPLIT = SPLITS.capability
+const QUALITY_SPLIT = SPLITS.quality
+const CONTACT_SPLIT = SPLITS.contact
 
 const clamp01 = (v) => Math.max(0, Math.min(1, v))
 const dispatch = (name, progress) => {
@@ -69,29 +51,10 @@ const fixedWrapperStyle = (z) => ({
   willChange: 'transform, opacity',
 })
 
-// ---------------------------------------------------------------------------
-// Device helpers — touch detection
-// ---------------------------------------------------------------------------
-const isTouchDevice = () => {
-  if (typeof window === 'undefined') return false
-  return (
-    'ontouchstart' in window ||
-    navigator.maxTouchPoints > 0 ||
-    navigator.msMaxTouchPoints > 0
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Touch sensitivity — mobile me zyada, tablet me medium
-// ---------------------------------------------------------------------------
-const getTouchMultiplier = () => {
-  if (typeof window === 'undefined') return 1.2
-  const w = window.innerWidth
-  if (w < 480) return 1.6
-  if (w < 768) return 1.4
-  if (w < 1024) return 1.2
-  return 1.0
-}
+const slideInWrapperStyle = (z) => ({
+  ...fixedWrapperStyle(z),
+  transform: 'translateY(100%)',
+})
 
 const POINTS = [
   {
@@ -100,8 +63,8 @@ const POINTS = [
     coloredPart: 'second',
     description: 'Because small inaccuracies can become major problems on site.',
     images: [
-      { src: '/images/precision1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/precision2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+      { src: '/optimize/about/review-the-drawing1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/about/review-the-drawing2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
@@ -114,8 +77,8 @@ const POINTS = [
     coloredPart: 'second',
     description: 'Because quality is easier to maintain when the process is properly managed.',
     images: [
-      { src: '/images/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+      { src: '/optimize/about/Understand-Specification1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/about/Understand-Specification2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
@@ -128,8 +91,8 @@ const POINTS = [
     coloredPart: 'second',
     description: 'Procuring and staging certified grade metals prior to production.',
     images: [
-      { src: '/images/control1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/control3.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+      { src: '/optimize/about/Plan-The-Material1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/about/Plan-The-Material2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
@@ -142,8 +105,8 @@ const POINTS = [
     coloredPart: 'second',
     description: 'Procuring and staging certified grade metals prior to production.',
     images: [
-      { src: '/images/control1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-      { src: '/images/control3.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+      { src: '/optimize/about/Consider-Fabrication-Process1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+      { src: '/optimize/about/Consider-Fabrication-Process2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
@@ -159,7 +122,6 @@ const quality_points = [
   { title: 'CAPABILITY THAT SCALES', desc: 'Equipped to handle individual components, assemblies and larger fabrication requirements.' },
   { title: 'ONE POINT OF CONTACT', desc: 'A coordinated workflow from initial requirement through delivery.' },
   { title: 'QUALITY YOU CAN VERIFY', desc: 'Controlled processes and inspection at every critical stage.' },
-  // { title: 'A PARTNER, NOT JUST A SUPPLIER', desc: 'We work alongside your team to understand the requirement and deliver the right fabrication solution.' },
 ]
 
 export default function AboutPage() {
@@ -211,14 +173,17 @@ export default function AboutPage() {
     }
 
     window.addEventListener('globalLoadingComplete', handleGlobalLoadingComplete)
-    return () => window.removeEventListener('globalLoadingComplete', handleGlobalLoadingComplete)
+    return () =>
+      window.removeEventListener('globalLoadingComplete', handleGlobalLoadingComplete)
   }, [])
 
   useEffect(() => {
     loadingRef.current = loading
   }, [loading])
 
-  // Stage travel
+  // ==========================================================================
+  // Stage travel (nav / keyboard instant navigation)
+  // ==========================================================================
   useEffect(() => {
     const handleTravelToStage = (e) => {
       const targetStage = e.detail.stage
@@ -226,11 +191,11 @@ export default function AboutPage() {
       if (stageRef.current === targetStage) return
 
       const STAGE_STEPS = {
-        [STAGE_HERO]: HERO_STEP,
-        [STAGE_SECOND]: SECOND_STEP,
-        [STAGE_CAPABILITY]: CAPABILITY_STEP,
-        [STAGE_QUALITY]: QUALITY_STEP,
-        [STAGE_CONTACT]: CONTACT_STEP,
+        [STAGE_HERO]:       getHeroStep(),
+        [STAGE_SECOND]:     getStep('second'),
+        [STAGE_CAPABILITY]: getStep('capability'),
+        [STAGE_QUALITY]:    getQualityStep(),
+        [STAGE_CONTACT]:    getStep('contact'),
       }
 
       const direction = targetStage > stageRef.current ? 1 : -1
@@ -256,8 +221,8 @@ export default function AboutPage() {
           return
         }
 
-        const step = STAGE_STEPS[stageRef.current] || 0.015
-        const factor = 1.8
+        const step = STAGE_STEPS[stageRef.current] || TRAVEL_CONFIG.fallbackStep
+        const factor = TRAVEL_CONFIG.legFactor
 
         if (direction > 0) {
           scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
@@ -292,7 +257,9 @@ export default function AboutPage() {
     return () => window.removeEventListener('travelToStage', handleTravelToStage)
   }, [])
 
+  // ==========================================================================
   // Lock browser scroll
+  // ==========================================================================
   useEffect(() => {
     const prevHtmlOverflow = document.documentElement.style.overflow
     const prevBodyOverflow = document.body.style.overflow
@@ -316,12 +283,17 @@ export default function AboutPage() {
     }
   }, [])
 
+  // ==========================================================================
   // Transition helpers
+  // ==========================================================================
   const slideParallax = (overRef, underRef, progress) => {
+    const isMobileDevice = isMobileViewport()
+    const dur = isMobileDevice ? 0.05 : 0.1 // mobile par tez
+
     if (overRef?.current) {
       gsap.to(overRef.current, {
         y: `${(1 - progress) * 100}%`,
-        duration: 0.1,
+        duration: dur,
         ease: 'power2.out',
         overwrite: 'auto',
       })
@@ -330,7 +302,7 @@ export default function AboutPage() {
       gsap.to(underRef.current, {
         y: `${-8 * progress}%`,
         scale: 1 - 0.03 * progress,
-        duration: 0.1,
+        duration: dur,
         ease: 'power2.out',
         overwrite: 'auto',
       })
@@ -351,7 +323,13 @@ export default function AboutPage() {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (ref?.current) gsap.set(ref.current, { y: '100%' })
-        isTransitioning.current = false
+        // Mobile par thoda extra settle time
+        setTimeout(
+          () => {
+            isTransitioning.current = false
+          },
+          isMobileViewport() ? 80 : 0
+        )
       })
     })
   }
@@ -368,7 +346,9 @@ export default function AboutPage() {
     })
   }
 
-  // Core step
+  // ==========================================================================
+  // Core scroll step handler
+  // ==========================================================================
   const handleScrollStep = (direction, factor) => {
     if (loadingRef.current || isTransitioning.current) return
 
@@ -391,7 +371,7 @@ export default function AboutPage() {
 
     // SECOND -> CAPABILITY
     if (stageRef.current === STAGE_SECOND) {
-      const step = getSecondStep()
+      const step = getStep('second')
 
       if (direction > 0) {
         scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
@@ -405,7 +385,9 @@ export default function AboutPage() {
         slideParallax(secondRef, heroRef, scrollProgressRef.current)
         dispatch('secondTextProgress', scrollProgressRef.current)
         if (scrollProgressRef.current <= 0) {
-          unmountBackward(setShowSecond, heroRef, STAGE_HERO, () => dispatch('scrollProgress', 1))
+          unmountBackward(setShowSecond, heroRef, STAGE_HERO, () =>
+            dispatch('scrollProgress', 1)
+          )
         }
       }
       return
@@ -413,24 +395,32 @@ export default function AboutPage() {
 
     // CAPABILITY -> QUALITY
     if (stageRef.current === STAGE_CAPABILITY) {
+      const step = getStep('capability')
+
       if (direction > 0) {
-        scrollProgressRef.current = clamp01(scrollProgressRef.current + CAPABILITY_STEP * factor)
+        scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
         if (scrollProgressRef.current <= CAPABILITY_SPLIT) {
           slideParallax(capabilityRef, secondRef, scrollProgressRef.current / CAPABILITY_SPLIT)
         } else {
           slideParallax(capabilityRef, secondRef, 1)
-          dispatch('capabilityProgress', (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT))
+          dispatch(
+            'capabilityProgress',
+            (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT)
+          )
         }
         if (scrollProgressRef.current >= 1) {
           mountForward(setShowQuality, qualityRef, STAGE_QUALITY)
         }
       } else {
-        scrollProgressRef.current = Math.max(0, scrollProgressRef.current - CAPABILITY_STEP * factor)
+        scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
         if (scrollProgressRef.current <= CAPABILITY_SPLIT) {
           slideParallax(capabilityRef, secondRef, scrollProgressRef.current / CAPABILITY_SPLIT)
           dispatch('capabilityProgress', 0)
         } else {
-          dispatch('capabilityProgress', (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT))
+          dispatch(
+            'capabilityProgress',
+            (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT)
+          )
         }
         if (scrollProgressRef.current <= 0) {
           unmountBackward(setShowCapability, secondRef, STAGE_SECOND, () => {
@@ -441,8 +431,36 @@ export default function AboutPage() {
       return
     }
 
-    // QUALITY
+    // ==========================================================
+    // QUALITY — MOBILE par simple slide (Home jaisa)
+    //          DESKTOP par fade transition (jaisa abhi hai)
+    // ==========================================================
     if (stageRef.current === STAGE_QUALITY) {
+      const isMobileDevice = isMobileViewport()
+
+      if (isMobileDevice) {
+        const step = MOBILE_SLIDE_STEP
+
+        if (direction > 0) {
+          scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
+          slideParallax(qualityRef, capabilityRef, scrollProgressRef.current)
+          dispatch('qualityProgress', 1)
+          if (scrollProgressRef.current >= 1) {
+            mountForward(setShowContact, contactRef, STAGE_CONTACT)
+          }
+        } else {
+          scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
+          slideParallax(qualityRef, capabilityRef, scrollProgressRef.current)
+          dispatch('qualityProgress', 1)
+          if (scrollProgressRef.current <= 0) {
+            unmountBackward(setShowQuality, capabilityRef, STAGE_CAPABILITY, () => {
+              dispatch('capabilityProgress', 1)
+            })
+          }
+        }
+        return
+      }
+
       const step = getQualityStep()
 
       if (direction > 0) {
@@ -451,7 +469,10 @@ export default function AboutPage() {
           slideParallax(qualityRef, capabilityRef, scrollProgressRef.current / QUALITY_SPLIT)
         } else {
           slideParallax(qualityRef, capabilityRef, 1)
-          dispatch('qualityProgress', (scrollProgressRef.current - QUALITY_SPLIT) / (1 - QUALITY_SPLIT))
+          dispatch(
+            'qualityProgress',
+            (scrollProgressRef.current - QUALITY_SPLIT) / (1 - QUALITY_SPLIT)
+          )
         }
         if (scrollProgressRef.current >= 1) {
           mountForward(setShowContact, contactRef, STAGE_CONTACT)
@@ -462,35 +483,79 @@ export default function AboutPage() {
           slideParallax(qualityRef, capabilityRef, scrollProgressRef.current / QUALITY_SPLIT)
           dispatch('qualityProgress', 0)
         } else {
-          dispatch('qualityProgress', (scrollProgressRef.current - QUALITY_SPLIT) / (1 - QUALITY_SPLIT))
+          dispatch(
+            'qualityProgress',
+            (scrollProgressRef.current - QUALITY_SPLIT) / (1 - QUALITY_SPLIT)
+          )
         }
         if (scrollProgressRef.current <= 0) {
-          unmountBackward(setShowQuality, capabilityRef, STAGE_CAPABILITY, () => dispatch('capabilityProgress', 1))
+          unmountBackward(setShowQuality, capabilityRef, STAGE_CAPABILITY, () =>
+            dispatch('capabilityProgress', 1)
+          )
         }
       }
       return
     }
 
-    // CONTACT (LAST)
+    // ==========================================================
+    // CONTACT — MOBILE par simple slide (Home jaisa)
+    //           DESKTOP par fade transition (jaisa abhi hai)
+    // ==========================================================
     if (stageRef.current === STAGE_CONTACT) {
+      const isMobileDevice = isMobileViewport()
+
+      if (isMobileDevice) {
+        const step = MOBILE_SLIDE_STEP
+
+        if (direction > 0) {
+          scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
+          slideParallax(contactRef, qualityRef, scrollProgressRef.current)
+          dispatch('contactProgress', 1)
+        } else {
+          scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
+          slideParallax(contactRef, qualityRef, scrollProgressRef.current)
+          dispatch('contactProgress', 1)
+
+          if (scrollProgressRef.current <= 0) {
+            unmountBackward(setShowContact, qualityRef, STAGE_QUALITY, () => {
+              dispatch('qualityProgress', 1)
+            })
+          }
+        }
+        return
+      }
+
+      const step = getStep('contact')
+
       if (direction > 0) {
-        scrollProgressRef.current = clamp01(scrollProgressRef.current + CONTACT_STEP * factor)
+        scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
         if (scrollProgressRef.current <= CONTACT_SPLIT) {
           slideParallax(contactRef, qualityRef, scrollProgressRef.current / CONTACT_SPLIT)
         } else {
           slideParallax(contactRef, qualityRef, 1)
-          dispatch('contactProgress', (scrollProgressRef.current - CONTACT_SPLIT) / (1 - CONTACT_SPLIT))
+          dispatch(
+            'contactProgress',
+            (scrollProgressRef.current - CONTACT_SPLIT) / (1 - CONTACT_SPLIT)
+          )
         }
       } else {
         if (scrollProgressRef.current > CONTACT_SPLIT) {
-          scrollProgressRef.current = Math.max(CONTACT_SPLIT, scrollProgressRef.current - CONTACT_STEP * factor)
-          dispatch('contactProgress', (scrollProgressRef.current - CONTACT_SPLIT) / (1 - CONTACT_SPLIT))
+          scrollProgressRef.current = Math.max(
+            CONTACT_SPLIT,
+            scrollProgressRef.current - step * factor
+          )
+          dispatch(
+            'contactProgress',
+            (scrollProgressRef.current - CONTACT_SPLIT) / (1 - CONTACT_SPLIT)
+          )
         } else if (scrollProgressRef.current > 0) {
-          scrollProgressRef.current = Math.max(0, scrollProgressRef.current - CONTACT_STEP * factor)
+          scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
           slideParallax(contactRef, qualityRef, scrollProgressRef.current / CONTACT_SPLIT)
           dispatch('contactProgress', 0)
           if (scrollProgressRef.current <= 0) {
-            unmountBackward(setShowContact, qualityRef, STAGE_QUALITY, () => dispatch('qualityProgress', 1))
+            unmountBackward(setShowContact, qualityRef, STAGE_QUALITY, () =>
+              dispatch('qualityProgress', 1)
+            )
           }
         }
       }
@@ -498,9 +563,9 @@ export default function AboutPage() {
     }
   }
 
-  // ---------------------------------------------------------------------
+  // ==========================================================================
   // Wheel + Touch + Keyboard listeners
-  // ---------------------------------------------------------------------
+  // ==========================================================================
   useEffect(() => {
     // ---- Wheel ----
     const handleWheel = (e) => {
@@ -530,7 +595,9 @@ export default function AboutPage() {
       touchLastYRef.current = currentY
 
       const multiplier = getTouchMultiplier()
-      wheelAccumRef.current += deltaY * multiplier * 2.5
+      const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
+
+      wheelAccumRef.current += touchDelta
 
       if (e.cancelable) e.preventDefault()
     }
@@ -555,10 +622,14 @@ export default function AboutPage() {
         handleScrollStep(-1, 1)
       } else if (key === 'Home') {
         e.preventDefault()
-        window.dispatchEvent(new CustomEvent('travelToStage', { detail: { stage: STAGE_HERO } }))
+        window.dispatchEvent(
+          new CustomEvent('travelToStage', { detail: { stage: STAGE_HERO } })
+        )
       } else if (key === 'End') {
         e.preventDefault()
-        window.dispatchEvent(new CustomEvent('travelToStage', { detail: { stage: STAGE_CONTACT } }))
+        window.dispatchEvent(
+          new CustomEvent('travelToStage', { detail: { stage: STAGE_CONTACT } })
+        )
       }
     }
 
@@ -566,14 +637,28 @@ export default function AboutPage() {
     const tick = () => {
       if (isTransitioning.current) {
         wheelAccumRef.current = 0
-      } else if (Math.abs(wheelAccumRef.current) > 0.5) {
+      } else if (Math.abs(wheelAccumRef.current) > INPUT_CONFIG.wheelDeadZone) {
         const raw = wheelAccumRef.current
         const direction = raw > 0 ? 1 : -1
-        const magnitude = Math.min(Math.abs(raw), 120)
-        const factor = Math.max(0.2, Math.min(1.6, magnitude / 55))
+
+        // MOBILE/TABLET: factor ko 1.0 par lock karo (Capability jaisa smooth)
+        const isMobileDevice = isMobileViewport()
+        let factor
+        if (isMobileDevice) {
+          factor = 1.0
+        } else {
+          const magnitude = Math.min(Math.abs(raw), INPUT_CONFIG.wheelMagnitudeCap)
+          factor = Math.max(
+            INPUT_CONFIG.wheelFactorMin,
+            Math.min(INPUT_CONFIG.wheelFactorMax, magnitude / INPUT_CONFIG.wheelFactorDivisor)
+          )
+        }
+
         handleScrollStep(direction, factor)
-        wheelAccumRef.current -= raw * 0.55
-        if (Math.abs(wheelAccumRef.current) < 0.5) wheelAccumRef.current = 0
+        wheelAccumRef.current -= raw * INPUT_CONFIG.wheelDecay
+        if (Math.abs(wheelAccumRef.current) < INPUT_CONFIG.wheelDeadZone) {
+          wheelAccumRef.current = 0
+        }
       }
 
       if (stageRef.current !== lastStageRef.current) {
@@ -615,7 +700,9 @@ export default function AboutPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // ==========================================================================
   // Resize handling
+  // ==========================================================================
   useEffect(() => {
     let resizeTimer = null
     const handleResize = () => {
@@ -633,6 +720,9 @@ export default function AboutPage() {
     }
   }, [])
 
+  // ==========================================================================
+  // Render
+  // ==========================================================================
   return (
     <main
       className="main-container"
@@ -660,7 +750,11 @@ export default function AboutPage() {
           </div>
 
           {showSecond && (
-            <div ref={secondRef} className="second-section-wrapper" style={fixedWrapperStyle(2)}>
+            <div
+              ref={secondRef}
+              className="second-section-wrapper"
+              style={slideInWrapperStyle(2)}
+            >
               <SecondSection
                 scrollProgressRef={scrollProgressRef}
                 labelText={'Our Story'}
@@ -672,7 +766,11 @@ export default function AboutPage() {
           )}
 
           {showCapability && (
-            <div ref={capabilityRef} className="capability-section-wrapper" style={fixedWrapperStyle(3)}>
+            <div
+              ref={capabilityRef}
+              className="capability-section-wrapper"
+              style={fixedWrapperStyle(3)}
+            >
               <CapabilitySection
                 heading_1={'GOOD FABRICATION STARTS'}
                 heading_2={'BEFORE THE FIRST CUT'}
@@ -684,8 +782,13 @@ export default function AboutPage() {
             </div>
           )}
 
+          {/* QUALITY — mobile par slide, desktop par fade (same markup) */}
           {showQuality && (
-            <div ref={qualityRef} className="quality-section-wrapper" style={fixedWrapperStyle(4)}>
+            <div
+              ref={qualityRef}
+              className="quality-section-wrapper"
+              style={fixedWrapperStyle(4)}
+            >
               <QualitySection
                 scrollProgressRef={scrollProgressRef}
                 POINTS={quality_points}
@@ -693,12 +796,18 @@ export default function AboutPage() {
                 heading_part_2={''}
                 heading_part_3={'DIFFERENCE'}
                 heading_part_4={'MEANS BETTER'}
+                image="/optimize/WhenDifferenceMatters.png"
               />
             </div>
           )}
 
+          {/* CONTACT — mobile par slide, desktop par fade (same markup) */}
           {showContact && (
-            <div ref={contactRef} className="contact-section-wrapper" style={fixedWrapperStyle(5)}>
+            <div
+              ref={contactRef}
+              className="contact-section-wrapper"
+              style={fixedWrapperStyle(5)}
+            >
               <ContactSection2 scrollProgressRef={scrollProgressRef} />
             </div>
           )}
@@ -724,6 +833,7 @@ export default function AboutPage() {
 }
 
 
+
 // 'use client'
 // import { useState, useEffect, useRef } from 'react'
 // import gsap from 'gsap'
@@ -731,7 +841,6 @@ export default function AboutPage() {
 // import HeroSection from '@/components/HeroSection/HeroSection'
 // import SecondSection from '@/components/SecondSection/SecondSection'
 // import CapabilitySection from '@/components/CapabilitySection/CapabilitySection'
-// import ProcessSection from '@/components/ProcessSection/ProcessSection'
 // import QualitySection from '@/components/QualitySection/QualitySection'
 // import ContactSection2 from '@/components/ContactSection/ContactSection2'
 // import CursorTrail from '@/components/CursorTrail/CursorTrail'
@@ -740,9 +849,8 @@ export default function AboutPage() {
 // const STAGE_HERO = 0
 // const STAGE_SECOND = 1
 // const STAGE_CAPABILITY = 2
-// const STAGE_PROCESS = 3
-// const STAGE_QUALITY = 4
-// const STAGE_CONTACT = 5
+// const STAGE_QUALITY = 3
+// const STAGE_CONTACT = 4
 
 // const HERO_STEP = 0.08
 // // Mobile pe Hero slow
@@ -764,17 +872,6 @@ export default function AboutPage() {
 
 // const CAPABILITY_STEP = 0.008
 
-// const PROCESS_STEP = 0.010
-// // Mobile pe Process slow
-// const getProcessStep = () => {
-//   if (typeof window === 'undefined') return PROCESS_STEP
-//   const w = window.innerWidth
-//   if (w <= 480) return 0.005
-//   if (w <= 768) return 0.006
-//   if (w <= 1024) return 0.008
-//   return PROCESS_STEP
-// }
-
 // const QUALITY_STEP = 0.01
 // // Mobile pe Quality faster
 // const getQualityStep = () => {
@@ -789,7 +886,6 @@ export default function AboutPage() {
 // const CONTACT_STEP = 0.015
 
 // const CAPABILITY_SPLIT = 0.4
-// const PROCESS_SPLIT = 0.4
 // const QUALITY_SPLIT = 0.25
 // const CONTACT_SPLIT = 0.4
 
@@ -840,8 +936,8 @@ export default function AboutPage() {
 //     coloredPart: 'second',
 //     description: 'Because small inaccuracies can become major problems on site.',
 //     images: [
-//       { src: '/images/precision1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-//       { src: '/images/precision2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+//       { src: '/optimize/about/review-the-drawing1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+//       { src: '/optimize/about/review-the-drawing2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
 //     ],
 //     titlePos: { top: '10%', left: '4%' },
 //     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
@@ -854,12 +950,12 @@ export default function AboutPage() {
 //     coloredPart: 'second',
 //     description: 'Because quality is easier to maintain when the process is properly managed.',
 //     images: [
-//       { src: '/images/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-//       { src: '/images/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+//       { src: '/optimize/about/Understand-Specification1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+//       { src: '/optimize/about/Understand-Specification2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
 //     ],
 //     titlePos: { top: '10%', left: '4%' },
 //     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
-//      mobileTitlePos: { top: '0%', left: '6%' },
+//     mobileTitlePos: { top: '0%', left: '6%' },
 //     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
 //   },
 //   {
@@ -868,12 +964,12 @@ export default function AboutPage() {
 //     coloredPart: 'second',
 //     description: 'Procuring and staging certified grade metals prior to production.',
 //     images: [
-//       { src: '/images/control1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-//       { src: '/images/control3.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+//       { src: '/optimize/about/Plan-The-Material1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+//       { src: '/optimize/about/Plan-The-Material2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
 //     ],
 //     titlePos: { top: '10%', left: '4%' },
 //     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
-//      mobileTitlePos: { top: '0%', left: '6%' },
+//     mobileTitlePos: { top: '0%', left: '6%' },
 //     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
 //   },
 //   {
@@ -882,28 +978,17 @@ export default function AboutPage() {
 //     coloredPart: 'second',
 //     description: 'Procuring and staging certified grade metals prior to production.',
 //     images: [
-//       { src: '/images/control1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
-//       { src: '/images/control3.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
+//       { src: '/optimize/about/Consider-Fabrication-Process1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
+//       { src: '/optimize/about/Consider-Fabrication-Process2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
 //     ],
 //     titlePos: { top: '10%', left: '4%' },
 //     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
-//      mobileTitlePos: { top: '0%', left: '6%' },
+//     mobileTitlePos: { top: '0%', left: '6%' },
 //     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
 //   },
 // ]
 
 // const TOTAL_PANELS = POINTS.length + 1
-
-// const POINTS_PROCESS = [
-//   { title: 'UNDERSTAND', desc: 'We review your drawings, specifications and project requirements.',  image: '/optimize/cap1-mobile.png',mobileImage: '/images/cap1.png', pos: { top: '70%', left: '15%' } },
-//   { title: 'PLAN', desc: 'Materials, processes and production requirements are defined before fabrication begins.', image: '/optimize/cap2-mobile.png',mobileImage: '/optimize/cap2.png', pos: { top: '70%', left: '15%' } },
-//   { title: 'FABRICATE', desc: 'Our teams combine advanced machinery with skilled fabrication to produce the required components or assemblies.',image: '/optimize/cap3-mobile.png',mobileImage: '/optimize/cap3.png', pos: { top: '70%', left: '15%' } },
-//   { title: 'FINISH', desc: 'The work is prepared with the required surface treatment, finish or assembly.',  image: '/optimize/cap4-mobile.png',mobileImage: '/images/cap4.png', pos: { top: '70%', left: '15%' } },
-//   { title: 'VERIFY', desc: 'Quality and dimensional checks are carried out against the required specifications.',image: '/optimize/cap5-mobile.png',mobileImage: '/optimize/cap5.png', pos: { top: '70%', left: '15%' } },
-//   { title: 'DELIVER', desc: 'The completed work is prepared for delivery, installation or integration into your project.', image: '/optimize/cap6-mobile.png',mobileImage: '/optimize/cap6.png', pos: { top: '70%', left: '15%' }, button: false },
-// ]
-
-// const TOTAL_ITEMS_PROCESS = POINTS_PROCESS.length + 1
 
 // const quality_points = [
 //   { title: 'PRECISION THAT FITS', desc: 'Built around drawings, specifications and real project requirements.' },
@@ -918,7 +1003,6 @@ export default function AboutPage() {
 //   const [showHero, setShowHero] = useState(false)
 //   const [showSecond, setShowSecond] = useState(false)
 //   const [showCapability, setShowCapability] = useState(false)
-//   const [showProcess, setShowProcess] = useState(false)
 //   const [showQuality, setShowQuality] = useState(false)
 //   const [showContact, setShowContact] = useState(false)
 
@@ -931,7 +1015,6 @@ export default function AboutPage() {
 //   const heroRef = useRef(null)
 //   const secondRef = useRef(null)
 //   const capabilityRef = useRef(null)
-//   const processRef = useRef(null)
 //   const qualityRef = useRef(null)
 //   const contactRef = useRef(null)
 
@@ -982,7 +1065,6 @@ export default function AboutPage() {
 //         [STAGE_HERO]: HERO_STEP,
 //         [STAGE_SECOND]: SECOND_STEP,
 //         [STAGE_CAPABILITY]: CAPABILITY_STEP,
-//         [STAGE_PROCESS]: PROCESS_STEP,
 //         [STAGE_QUALITY]: QUALITY_STEP,
 //         [STAGE_CONTACT]: CONTACT_STEP,
 //       }
@@ -1165,7 +1247,7 @@ export default function AboutPage() {
 //       return
 //     }
 
-//     // CAPABILITY
+//     // CAPABILITY -> QUALITY
 //     if (stageRef.current === STAGE_CAPABILITY) {
 //       if (direction > 0) {
 //         scrollProgressRef.current = clamp01(scrollProgressRef.current + CAPABILITY_STEP * factor)
@@ -1176,7 +1258,7 @@ export default function AboutPage() {
 //           dispatch('capabilityProgress', (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT))
 //         }
 //         if (scrollProgressRef.current >= 1) {
-//           mountForward(setShowProcess, processRef, STAGE_PROCESS)
+//           mountForward(setShowQuality, qualityRef, STAGE_QUALITY)
 //         }
 //       } else {
 //         scrollProgressRef.current = Math.max(0, scrollProgressRef.current - CAPABILITY_STEP * factor)
@@ -1195,36 +1277,6 @@ export default function AboutPage() {
 //       return
 //     }
 
-//     // PROCESS -> QUALITY (Third was removed)
-//     if (stageRef.current === STAGE_PROCESS) {
-//       const step = getProcessStep()
-
-//       if (direction > 0) {
-//         scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
-//         if (scrollProgressRef.current <= PROCESS_SPLIT) {
-//           slideParallax(processRef, capabilityRef, scrollProgressRef.current / PROCESS_SPLIT)
-//         } else {
-//           slideParallax(processRef, capabilityRef, 1)
-//           dispatch('processProgress', (scrollProgressRef.current - PROCESS_SPLIT) / (1 - PROCESS_SPLIT))
-//         }
-//         if (scrollProgressRef.current >= 1) {
-//           mountForward(setShowQuality, qualityRef, STAGE_QUALITY)
-//         }
-//       } else {
-//         scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
-//         if (scrollProgressRef.current <= PROCESS_SPLIT) {
-//           slideParallax(processRef, capabilityRef, scrollProgressRef.current / PROCESS_SPLIT)
-//           dispatch('processProgress', 0)
-//         } else {
-//           dispatch('processProgress', (scrollProgressRef.current - PROCESS_SPLIT) / (1 - PROCESS_SPLIT))
-//         }
-//         if (scrollProgressRef.current <= 0) {
-//           unmountBackward(setShowProcess, capabilityRef, STAGE_CAPABILITY, () => dispatch('capabilityProgress', 1))
-//         }
-//       }
-//       return
-//     }
-
 //     // QUALITY
 //     if (stageRef.current === STAGE_QUALITY) {
 //       const step = getQualityStep()
@@ -1232,9 +1284,9 @@ export default function AboutPage() {
 //       if (direction > 0) {
 //         scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
 //         if (scrollProgressRef.current <= QUALITY_SPLIT) {
-//           slideParallax(qualityRef, processRef, scrollProgressRef.current / QUALITY_SPLIT)
+//           slideParallax(qualityRef, capabilityRef, scrollProgressRef.current / QUALITY_SPLIT)
 //         } else {
-//           slideParallax(qualityRef, processRef, 1)
+//           slideParallax(qualityRef, capabilityRef, 1)
 //           dispatch('qualityProgress', (scrollProgressRef.current - QUALITY_SPLIT) / (1 - QUALITY_SPLIT))
 //         }
 //         if (scrollProgressRef.current >= 1) {
@@ -1243,13 +1295,13 @@ export default function AboutPage() {
 //       } else {
 //         scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
 //         if (scrollProgressRef.current <= QUALITY_SPLIT) {
-//           slideParallax(qualityRef, processRef, scrollProgressRef.current / QUALITY_SPLIT)
+//           slideParallax(qualityRef, capabilityRef, scrollProgressRef.current / QUALITY_SPLIT)
 //           dispatch('qualityProgress', 0)
 //         } else {
 //           dispatch('qualityProgress', (scrollProgressRef.current - QUALITY_SPLIT) / (1 - QUALITY_SPLIT))
 //         }
 //         if (scrollProgressRef.current <= 0) {
-//           unmountBackward(setShowQuality, processRef, STAGE_PROCESS, () => dispatch('processProgress', 1))
+//           unmountBackward(setShowQuality, capabilityRef, STAGE_CAPABILITY, () => dispatch('capabilityProgress', 1))
 //         }
 //       }
 //       return
@@ -1468,35 +1520,23 @@ export default function AboutPage() {
 //             </div>
 //           )}
 
-//           {showProcess && (
-//             <div ref={processRef} className="process-section-wrapper" style={fixedWrapperStyle(4)}>
-//               <ProcessSection
-//                 scrollProgressRef={scrollProgressRef}
-//                 POINTS={POINTS_PROCESS}
-//                 TOTAL_ITEMS={TOTAL_ITEMS_PROCESS}
-//                 heading_part_1={'ONE TEAM. ONE WORKFLOW.'}
-//                 heading_part_2={' ONE STANDARD'}
-//                 description={'We keep the critical stages of fabrication connected so there is less room for miscommunication and more control over the final result.'}
-//               />
-//             </div>
-//           )}
-
 //           {showQuality && (
-//             <div ref={qualityRef} className="quality-section-wrapper" style={fixedWrapperStyle(5)}>
+//             <div ref={qualityRef} className="quality-section-wrapper" style={fixedWrapperStyle(4)}>
 //               <QualitySection
 //                 scrollProgressRef={scrollProgressRef}
 //                 POINTS={quality_points}
 //                 heading_part_1={'WHEN'}
-//                 heading_part_2={'DIFFERENCE'}
-//                 heading_part_3={'MEANS'}
-//                 heading_part_4={'BETTER'}
+//                 heading_part_2={''}
+//                 heading_part_3={'DIFFERENCE'}
+//                 heading_part_4={'MEANS BETTER'}
+//                  image="/optimize/WhenDifferenceMatters.png"
 //               />
 //             </div>
 //           )}
 
 //           {showContact && (
-//             <div ref={contactRef} className="contact-section-wrapper" style={fixedWrapperStyle(6)}>
-//               <ContactSection2 scrollProgressRef={scrollProgressRef} />
+//             <div ref={contactRef} className="contact-section-wrapper" style={fixedWrapperStyle(5)}>
+//               <ContactSection2 scrollProgressRef={scrollProgressRef}/>
 //             </div>
 //           )}
 

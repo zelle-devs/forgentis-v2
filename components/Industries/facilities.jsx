@@ -17,7 +17,7 @@ const APPLICATIONS_DATA = [
       'FINISHING — PVD · Powder Coating · Brushed & Matte',
     ],
     image: {
-      src: '/images/precision2.png',
+      src: '/optimize/facility/Facilities1.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
@@ -33,7 +33,7 @@ const APPLICATIONS_DATA = [
       'CAPACITY — Infrastructure for demanding work.',
     ],
     image: {
-      src: '/images/precision1.png',
+      src: '/optimize/facility/Facilities2.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },

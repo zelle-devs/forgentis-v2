@@ -12,7 +12,7 @@ const capabilitiesData = [
     footer: "One partner. One workflow. One finished result.",
   },
   {
-    tag: "03 — METAL FABRICATION",
+    tag: "01 — METAL FABRICATION",
     title: "FROM SHEET AND SECTION TO <span>FINISHED ASSEMBLY.</span>",
     desc: "We fabricate steel, stainless steel, aluminum and brass into components, structures and assemblies built to your requirements. From individual parts to larger fabricated assemblies, our teams work from drawings and specifications to produce metalwork designed for its intended application.",
     listTitle: "MATERIALS",
@@ -20,7 +20,7 @@ const capabilitiesData = [
     cta: "DISCUSS YOUR REQUIREMENT",
   },
   {
-    tag: "04 — CNC & PRECISION MANUFACTURING",
+    tag: "02 — CNC & PRECISION MANUFACTURING",
     title: "REPEATABILITY IS <span>PRECISION AT SCALE.</span>",
     desc: "Computer-controlled manufacturing allows us to produce consistent parts across individual components and repeat production. Our CNC capabilities support applications where accuracy, consistency and repeatability matter—from engineered components to architectural details.",
     listTitle: "BUILT FOR",
@@ -32,7 +32,7 @@ const capabilitiesData = [
     ],
   },
   {
-    tag: "05 — LASER CUTTING",
+    tag: "03 — LASER CUTTING",
     title: "SHARP CUTS. CLEAN EDGES. <span>COMPLEX PROFILES.</span>",
     desc: "Our CNC laser cutting capability allows us to produce detailed profiles, panels, brackets, screens and precision components with clean, consistent cuts. We cut material up to 25mm, subject to material type and grade.",
     listTitle: "IDEAL FOR",
@@ -47,7 +47,7 @@ const capabilitiesData = [
     cta: "START WITH A DRAWING",
   },
   {
-    tag: "06 — BENDING & FORMING",
+    tag: "04 — BENDING & FORMING",
     title: "FLAT MATERIAL. <span>PRECISE FORM.</span>",
     desc: "Precision bending and forming transform sheet and plate into components that are ready for assembly, installation or further fabrication. Every bend is developed around the drawing and application requirement, helping components align correctly when they reach the site.",
     listTitle: "CAPABILITIES",
@@ -60,19 +60,19 @@ const capabilitiesData = [
     ],
   },
   {
-    tag: "07 — MACHINING",
+    tag: "05 — MACHINING",
     title: "PRECISION WHERE THE <span>DETAIL MATTERS.</span>",
     desc: "For components requiring controlled dimensions, detailed features or machining after fabrication, our machining capabilities provide the precision needed to bring the specification to life. From individual components to repeat requirements, machining is integrated into the wider fabrication workflow.",
     footer: "BUILT TO YOUR SPECIFICATION.",
   },
   {
-    tag: "08 — WELDING & ASSEMBLY",
+    tag: "06 — WELDING & ASSEMBLY",
     title: "JOINED TO PERFORM. <span>ASSEMBLED TO INSTALL.</span>",
     desc: "Our skilled welding teams combine MIG, TIG and spot welding to create strong, clean and consistent joints. Where required, components are assembled within our facility before delivery—reducing the complexity of installation and ensuring the finished unit arrives ready for its intended application.",
     items: ["MIG", "TIG", "SPOT WELDING", "ASSEMBLY"],
   },
   {
-    tag: "09 — FINISHING",
+    tag: "07 — FINISHING",
     title: "THE FINAL DETAIL <span>CHANGES THE RESULT.</span>",
     desc: "Finishing is more than appearance. The right treatment protects the material, supports the application and completes the design intent.",
     richItems: [
@@ -83,19 +83,19 @@ const capabilitiesData = [
     ],
   },
   {
-    tag: "10 — CUSTOM FABRICATION",
+    tag: "08 — CUSTOM FABRICATION",
     title: "WHEN THE STANDARD <span>SOLUTION DOESN'T EXIST.</span>",
     desc: "Some projects don't fit into a standard product category. Bring us a drawing, sample, reference image or concept. Our team can develop the fabrication approach around the required dimensions, material, finish and application.",
     footer: "YOUR DESIGN. OUR FABRICATION EXPERTISE.",
   },
   {
-    tag: "11 — PROTOTYPING & PRODUCTION",
+    tag: "09 — PROTOTYPING & PRODUCTION",
     title: "TEST THE FIT. CONFIRM FINISH. <span>THEN SCALE.</span>",
     desc: "For new designs or complex requirements, we can produce a prototype or sample before moving into full production. This allows dimensions, fit, finish and fabrication details to be reviewed before the complete batch is manufactured.",
     footer: "PROTOTYPE → APPROVE → PRODUCE",
   },
   {
-    tag: "12 — PRODUCTION AT SCALE",
+    tag: "10 — PRODUCTION AT SCALE",
     title: "FROM ONE PART TO <span>REPEAT PRODUCTION.</span>",
     desc: "When your requirement moves beyond a single component, Forgentis can support repeat production with controlled processes designed around consistency.",
     listTitle: "PRODUCTION PLANNING CONSIDERS",

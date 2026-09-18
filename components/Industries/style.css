@@ -263,15 +263,15 @@
 }
 
 .app_action_btn:hover {
-  /* background: linear-gradient(
+  background: linear-gradient(
     110deg,
     #3E4A52 0%,
     #A7ADB1 38%,
     #E8E9E7 52%,
     #A7ADB1 68%,
     #3E4A52 100%
-  ); */
-  color: #000!important;
+  );
+   -webkit-text-fill-color: #000;
   box-shadow: 0 0 18px rgba(68, 135, 197, 0.4);
 }
 
@@ -281,6 +281,73 @@
 
 .app_btn_arrow {
   transition: transform 0.2s ease;
+}
+
+/* ==========================================
+   NO IMAGE PANEL — Center aligned, full width, no empty top gap
+   ========================================== */
+.app_item_panel.no_image_panel {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;          /* vertical + horizontal center */
+  text-align: center;
+  padding: 0 12vw;                  /* no top/bottom padding */
+  gap: 0;
+  min-height: 90dvh;                /* matches panel height */
+  height: 90dvh;                    /* lock height, same as other panels */
+}
+
+.app_item_panel.no_image_panel .app_content_wrap {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;                   /* kill any inherited margins */
+  padding: 0;                       /* kill any inherited padding */
+  align-items: center;
+  text-align: center;
+  gap: 14px;                        /* keep the same internal rhythm */
+}
+
+/* Kill any stray top margin on the first child (tag/title) */
+.app_item_panel.no_image_panel .app_content_wrap > *:first-child {
+  margin-top: 0;
+}
+
+.app_item_panel.no_image_panel .app_tag {
+  text-align: center;
+}
+
+.app_item_panel.no_image_panel .app_title {
+  text-align: center;
+  margin: 0;
+}
+
+.app_item_panel.no_image_panel .app_desc {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.app_item_panel.no_image_panel .app_list_wrap {
+  align-items: center;
+  margin: 0;
+}
+
+.app_item_panel.no_image_panel .app_list_title {
+  text-align: center;
+}
+
+.app_item_panel.no_image_panel .app_items_grid {
+  justify-content: center;
+}
+
+.app_item_panel.no_image_panel .app_footer_statement {
+  text-align: center;
+  margin: 0;
+}
+
+.app_item_panel.no_image_panel .app_action_btn {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ==========================================
@@ -312,6 +379,18 @@
 
 /* Mobile Devices & Small Viewports (≤ 768px) */
 @media (max-width: 768px) {
+  .app_item_panel.no_image_panel {
+    padding: 40px 6vw;
+    text-align: center;
+    min-height: 50dvh;
+    height: auto;
+  }
+
+  .app_item_panel.no_image_panel .app_content_wrap {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
   .app_section {
     height: 100vh;
     overflow-y: auto; /* Fallback safe scrolling for tiny mobile screens if needed */

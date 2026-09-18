@@ -6,7 +6,7 @@ import './style.css'
 
 const APPLICATIONS_DATA = [
   {
-    tag: '03 — CONSTRUCTION & INFRASTRUCTURE',
+    tag: '01 — CONSTRUCTION & INFRASTRUCTURE',
     title: 'BUILT FOR THE STRUCTURES THAT <span>KEEP PROJECTS MOVING.</span>',
     desc: 'From structural steel and support frames to railings, access systems and site metalwork, Forgentis provides fabricated components designed to integrate into demanding construction projects.',
     listTitle: 'WE FABRICATE:',
@@ -24,13 +24,13 @@ const APPLICATIONS_DATA = [
       onClick: () => console.log('Construction Clicked'),
     },
     image: {
-      src: '/images/capability1.png',
+      src: '/optimize/industries/Industries1.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
   },
   {
-    tag: '04 — ARCHITECTURE & INTERIOR',
+    tag: '02 — ARCHITECTURE & INTERIOR',
     title: 'WHERE ENGINEERING <span>MEETS DESIGN.</span>',
     desc: 'Architectural metalwork has to perform technically while meeting the visual intent of the design. Forgentis works from architectural drawings and specifications to create detailed metal elements that bring spaces and facades to life.',
     listTitle: 'WE FABRICATE:',
@@ -48,13 +48,13 @@ const APPLICATIONS_DATA = [
       onClick: () => console.log('Architecture Clicked'),
     },
     image: {
-      src: '/images/precision1.png',
+      src: '/optimize/industries/Industries2.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
   },
   {
-    tag: '05 — INDUSTRIAL & MANUFACTURING',
+    tag: '03 — INDUSTRIAL & MANUFACTURING',
     title: 'BUILT TO WORK. <span>BUILT TO LAST.</span>',
     desc: 'Industrial fabrication demands more than appearance. Components need to handle load, perform consistently and integrate correctly into the wider system. Forgentis manufactures engineered metal components and assemblies for industrial environments where reliability matters.',
     listTitle: 'WE FABRICATE:',
@@ -72,13 +72,13 @@ const APPLICATIONS_DATA = [
       onClick: () => console.log('Industrial Clicked'),
     },
     image: {
-      src: '/images/control1.png',
+      src: '/optimize/industries/Industries3.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
   },
   {
-    tag: '06 — RETAIL & COMMERCIAL',
+    tag: '04 — RETAIL & COMMERCIAL',
     title: 'METALWORK DESIGNED FOR THE <span>CUSTOMER EXPERIENCE.</span>',
     desc: 'Commercial environments demand precision, consistency and finish. From a single flagship space to a multi-location rollout, Forgentis provides fabricated metalwork designed to meet the visual and practical requirements of commercial projects.',
     listTitle: 'WE FABRICATE:',
@@ -92,13 +92,13 @@ const APPLICATIONS_DATA = [
     ],
     footer: 'ONE FABRICATION PARTNER. CONSISTENT RESULTS ACROSS EVERY LOCATION.',
     image: {
-      src: '/images/precision2.png',
+      src: '/optimize/industries/retail_and_com.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
   },
   {
-    tag: '07 — HOSPITALITY',
+    tag: '05 — HOSPITALITY',
     title: 'DESIGNED TO BE SEEN. <span>BUILT TO BE USED.</span>',
     desc: 'Hotels, restaurants and hospitality spaces demand metalwork that combines visual impact with durability. Forgentis produces architectural and decorative metal elements designed to withstand daily use while maintaining their intended finish.',
     listTitle: 'WE FABRICATE:',
@@ -112,13 +112,13 @@ const APPLICATIONS_DATA = [
     ],
     footer: 'PVD, brushed stainless and other finishing options allow the final fabrication to complement the design intent.',
     image: {
-      src: '/images/capability2.png',
+      src: '/optimize/industries/Industries4.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
   },
   {
-    tag: '08 — AUTOMOTIVE & ENGINEERING',
+    tag: '06 — AUTOMOTIVE & ENGINEERING',
     title: 'PRECISION FOR APPLICATIONS THAT <span>DEMAND IT.</span>',
     desc: 'Automotive and engineering projects often require repeatable components, controlled dimensions and fabrication that integrates precisely into a larger system. Forgentis works from drawings, specifications and application requirements to produce components and assemblies built for consistency.',
     listTitle: 'WE FABRICATE:',
@@ -132,13 +132,13 @@ const APPLICATIONS_DATA = [
     ],
     footer: 'PRECISION. REPEATABILITY. CONTROL.',
     image: {
-      src: '/images/control3.png',
+      src: '/optimize/industries/Industries5.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
   },
   {
-    tag: '09 — ENERGY & SOLAR',
+    tag: '07 — ENERGY & SOLAR',
     title: 'BUILT FOR DEMANDING <span>ENVIRONMENTS.</span>',
     desc: 'Energy and solar applications require metalwork designed to withstand outdoor exposure and demanding operating conditions. Forgentis fabricates mounting structures, frames, brackets and enclosures around the requirements of the application.',
     listTitle: 'WE FABRICATE:',
@@ -152,25 +152,27 @@ const APPLICATIONS_DATA = [
     ],
     footer: 'Material selection, fabrication and finishing are considered together to create solutions designed for long-term performance.',
     image: {
-      src: '/images/precision1.png',
+      src: '/optimize/industries/Industries6.png',
       speed: 0.14,
       innerSpeed: 0.1,
     },
-  },
+  }
+  ,
   {
-    tag: '10 — SPECIALIZED & CUSTOM APPLICATIONS',
+    tag: 'SPECIALIZED & CUSTOM APPLICATIONS',
     title: "DON'T SEE YOUR <span>INDUSTRY?</span>",
     desc: "Our capabilities aren't limited to a predefined list of sectors. If you have a drawing, prototype, sample or fabrication challenge, bring it to us. We'll assess the requirement, determine whether it fits our capabilities and recommend the most practical fabrication approach.",
     footer: 'YOUR INDUSTRY MAY BE DIFFERENT. THE REQUIREMENT IS STILL METAL.',
     button: {
       label: 'TALK TO OUR TEAM',
       onClick: () => console.log('Team Clicked'),
-    },
-    image: {
-      src: '/images/capability1.png',
-      speed: 0.14,
-      innerSpeed: 0.1,
-    },
+    }
+    // ,
+    // image: {
+    //   src: '/images/capability1.png',
+    //   speed: 0.14,
+    //   innerSpeed: 0.1,
+    // },
   },
 ]
 
@@ -316,22 +318,24 @@ export default function InsustriesSection({
 
           return (
             <div
-              key={pIndex}
-              className={`app_panel app_item_panel ${
-                isReversed ? 'row_reverse' : ''
-              }`}
-            >
-              {/* Single Parallax Image */}
-              <div
-                ref={(el) => (imageRefs.current[pIndex] = el)}
-                className="app_image_wrap"
-              >
-                <img
-                  ref={(el) => (innerImgRefs.current[pIndex] = el)}
-                  src={item.image.src}
-                  alt={item.tag}
-                />
-              </div>
+  key={pIndex}
+  className={`app_panel app_item_panel ${
+    item.image ? (isReversed ? 'row_reverse' : '') : 'no_image_panel'
+  }`}
+>
+             {/* Single Parallax Image (only if image exists) */}
+{item.image && (
+  <div
+    ref={(el) => (imageRefs.current[pIndex] = el)}
+    className="app_image_wrap"
+  >
+    <img
+      ref={(el) => (innerImgRefs.current[pIndex] = el)}
+      src={item.image.src}
+      alt={item.tag}
+    />
+  </div>
+)}
 
               {/* Side Content Block */}
               <div

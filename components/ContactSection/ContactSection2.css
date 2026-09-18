@@ -56,13 +56,14 @@
 
 /* Content */
 .contact-left {
-  max-width: 360px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 14px;
   will-change: transform, opacity;
   z-index: 3;
+  margin-top: 2%;
 }
 
 .contact-heading {
@@ -159,7 +160,7 @@
   font-size: 12px;
   margin-bottom: -50px;
   letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white);
   text-transform: uppercase;
   z-index: 2;
 }
@@ -172,7 +173,7 @@
   position: relative;
   z-index: 10;
   pointer-events: auto;
-  color: var(--color-blue-main2);
+  color: var(--color-white);
   cursor: pointer;
 }
 

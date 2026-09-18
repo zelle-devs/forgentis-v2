@@ -9,6 +9,7 @@ function QualitySection({
   heading_part_2,
   heading_part_3,
   heading_part_4,
+  image = '/optimize/Goodisntenough.png',
 }) {
   const wrapperRef = useRef(null)
   const imageWrapRef = useRef(null)
@@ -158,10 +159,10 @@ function QualitySection({
     <div ref={wrapperRef} className="quality-section">
       <div ref={imageWrapRef} className="quality-image-wrap">
         <img
-          ref={imageRef}
-          src="/optimize/when_good_enough.png"
-          alt="Craftsmanship"
-        />
+  ref={imageRef}
+  src={image}
+  alt="Craftsmanship"
+/>
       </div>
 
       <h2 ref={titleRef} className="quality-title">
