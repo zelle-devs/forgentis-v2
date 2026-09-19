@@ -609,7 +609,7 @@ export default function Industries() {
       {showHero && (
         <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
           <HeroSection
-            headline={<>FABRICATION FOR THE TEAMS THAT <span>BUILD</span></>}
+            headline={<>FABRICATION FOR<br/> THE TEAMS THAT BUILD</>}
           />
         </div>
       )}

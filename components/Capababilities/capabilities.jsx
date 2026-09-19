@@ -18,8 +18,8 @@ const capabilitiesData = [
     desc: "We fabricate steel, stainless steel, aluminum and brass into components, structures and assemblies built to your requirements. From individual parts to larger fabricated assemblies, our teams work from drawings and specifications to produce metalwork designed for its intended application.",
     listTitle: "MATERIALS",
     items: ["Mild Steel", "Stainless Steel", "Aluminum", "Brass"],
-    cta: "DISCUSS YOUR REQUIREMENT",
-    link: "/consultation",
+    // cta: "DISCUSS YOUR REQUIREMENT",
+    // link: "/consultation",
   },
   {
     tag: "02 — CNC & PRECISION MANUFACTURING",
@@ -46,8 +46,8 @@ const capabilitiesData = [
       "Precision profiles",
       "Custom components",
     ],
-    cta: "START WITH A DRAWING",
-    link: "/consultation",
+    // cta: "START WITH A DRAWING",
+    // link: "/consultation",
   },
   {
     tag: "04 — BENDING & FORMING",
@@ -110,12 +110,7 @@ const capabilitiesData = [
       "Delivery schedule",
     ],
     footer: "Scale production without losing control of the specification.",
-  },
-   {
-    tag: "",
-    title: "PRECISION DOESN'T END WHEN <span>THE MACHINE STOPS</span>",
-    desc: "Every stage contributes to the final result.",
-  },
+  }
 ];
 
 export default function Section01Cap() {

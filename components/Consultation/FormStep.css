@@ -138,6 +138,7 @@
     outline: none;
     transition: all var(--transition-normal);
     box-sizing: border-box;
+    height: 34px;
 }
 
 .neu-input::placeholder {
@@ -179,6 +180,7 @@ textarea.neu-input {
     border-radius: var(--radius-xl);
     transition: all var(--transition-normal);
     color: var(--color-white)!important;
+    /* height: 40px; */
 }
 
 .custom-trigger:hover {

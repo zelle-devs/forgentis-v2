@@ -86,7 +86,7 @@
 }
 
 .capability-main-title .title-part-color {
-  font-weight: 300;
+  font-weight: 100;
   background: var(--color-blue-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -128,7 +128,7 @@
   left: 0;
   will-change: transform;
 }
-.capability-point-title {
+/* .capability-point-title {
   max-width: 700;
   position: absolute;
   z-index: 4;
@@ -144,6 +144,28 @@
   will-change: transform;
   display: flex;
   gap: 20px;
+} */
+
+.capability-point-title {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  width: max-content;
+  max-width: 92%;
+  margin: 0;
+  padding: 0;
+
+  font-family: var(--font-family-primary);
+  font-weight: 100 !important;
+  font-size: var(--font-size-8xl);
+  line-height: 0.9;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  pointer-events: none;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  will-change: transform;
 }
 
 .capability-point-title .highlight-white {
@@ -151,7 +173,7 @@
 }
 
 .capability-point-title .highlight-blue {
-  font-weight: 300!important;
+  font-weight: 100!important;
   background: var(--color-blue-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -182,7 +204,7 @@
    ========================================== */
 @media (min-width: 1440px) {
   .capability-main-title { font-size: 100px; max-width: 900px; }
-  .capability-point-title { font-size: 72px; max-width: 800px;}
+  .capability-point-title { font-size: 60px; max-width: 800px;}
   .capability-main-desc { font-size: var(--font-size-xl); }
 }
 
@@ -309,15 +331,14 @@
   }
 
   .capability-point-title {
+    display: block;
+    width: max-content;
+    max-width: none;
+    white-space: nowrap;
     font-size: clamp(40px, 11vw, 68px);
-    flex-direction: column;
-    gap: 0;
     line-height: 0.9;
     letter-spacing: -1.5px;
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
-    /* max-width: calc(100% - 24px); */
-    padding-right: 12px;
-    box-sizing: border-box;
+    padding: 0;
   }
 
   .capability-point-desc {

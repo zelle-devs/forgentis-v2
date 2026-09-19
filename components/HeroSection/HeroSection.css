@@ -23,8 +23,8 @@
 /* Content Container */
 .hero-content {
   position: absolute;
-  bottom: 0;
-  left: 15%;
+  bottom: 25%;
+  left: 10%;
   z-index: 3;
   max-width: 70%;
   color: #ffffff;
@@ -72,6 +72,13 @@
   }
 }
 
+@media (max-width: 480px) {
+  
+  .hero-content {
+    max-width: 100%;
+    bottom: 0;
+  }
+}
 
 /* .hero-section {
   position: relative;

@@ -90,7 +90,7 @@ const ReviewStep = ({ formData, selectedDate, selectedTime, onEditDate, onEditFo
                         <div className="section-label">Business Needs</div>
                         <div className="review-grid">
                             <div className="review-item-wrapper">
-                                <span>Primary Goal</span>
+                                {/* <span>Primary Goal</span> */}
                                 <div className="review-item">
                                     <p>{formData.primaryGoal}</p>
                                 </div>
@@ -101,7 +101,6 @@ const ReviewStep = ({ formData, selectedDate, selectedTime, onEditDate, onEditFo
 
                 {formData.notes && (
                     <>
-                        <div className="section-label">Additional Requirements</div>
                         <div className="review-grid">
                             <div className="review-item-wrapper full-width">
                                 <span>Your Requirements</span>
@@ -185,7 +184,7 @@ const ReviewStep = ({ formData, selectedDate, selectedTime, onEditDate, onEditFo
                 <div className="selection-note">
                     <div className="note-content">
                         <IoIosInformationCircle className="note-icon" />
-                        <span>A fabrication specialist will contact you shortly before your scheduled consultation.</span>
+                        <span>Our specialist will contact you shortly after your scheduled consultation.</span>
                     </div>
                 </div>
             </div>

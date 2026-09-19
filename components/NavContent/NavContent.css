@@ -161,7 +161,6 @@
   will-change: transform;
   flex-shrink: 0;
 }
-
 .nav-button {
   display: inline-flex;
   align-items: center;
@@ -172,16 +171,21 @@
   font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
   text-transform: uppercase;
-  background: var(--color-steel-main);
-  color: var(--color-black);
+
+  /* Default state = Hover state */
+  background: transparent;
+  color: var(--color-white);
   border: 2px solid var(--color-steel-main);
   border-radius: var(--radius-full);
+
   cursor: pointer;
   transition: all var(--transition-normal);
   white-space: nowrap;
   position: relative;
   overflow: hidden;
   will-change: transform, opacity, box-shadow;
+
+  box-shadow: 0 0 10px var(--color-steel-main);
 }
 
 .nav-button::before {
@@ -206,7 +210,7 @@
 
 .nav-button:hover {
   background: transparent;
-  color: var(--color-white);
+  color: var(--color-blue-main2);
   box-shadow: 0 0 10px var(--color-steel-main);
   transform: translateY(-3px);
 }
@@ -546,8 +550,9 @@
 .sidebar-footer {
   margin-top: 10px;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px 90px;
+  gap: 10px 30px;
   padding-top: 30px;
   border-top: 1px solid rgba(10, 10, 10, 0.12);
 }
@@ -556,7 +561,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 180px;
+  /* min-width: 180px; */
 }
 
 .sidebar-footer-label {
@@ -583,7 +588,7 @@
 }
 
 .sidebar-footer-value:hover {
-  color: var(--color-blue-main);
+  color: var(--color-blue-main2);
 }
 
 .sidebar-socials {
@@ -602,7 +607,7 @@
 }
 
 .sidebar-socials a:hover {
-  color: var(--color-blue-main);
+  color: var(--color-blue-main2);
 }
 
 .sidebar-footer-bottom {
@@ -1044,7 +1049,7 @@
 
   .nav-hamburger {
     width: 40px;
-    height: 50px;
+    height: 55px;
   }
   .nav-hamburger span {
     width: 22px;
@@ -1078,7 +1083,7 @@
 
   .nav-hamburger {
     width: 38px;
-    height: 48px;
+    height: 50px;
   }
 
   .nav-mobile-btn {

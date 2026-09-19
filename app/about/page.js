@@ -768,7 +768,7 @@ export default function AboutPage() {
         <>
           <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
             <HeroSection
-              headline={<>BUILT ON PRECISION. DRIVEN BY <span>PURPOSE</span></>}
+              headline={<>BUILT ON PRECISION. DRIVEN BY <br/>PURPOSE</>}
               subtitle={''}
               buttonText={''}
               onButtonClick={() => {}}
@@ -818,9 +818,9 @@ export default function AboutPage() {
               <QualitySection
                 scrollProgressRef={scrollProgressRef}
                 POINTS={quality_points}
-                heading_part_1={'WHEN'}
+                heading_part_1={'WHEN DIFFERENCE'}
                 heading_part_2={''}
-                heading_part_3={'DIFFERENCE'}
+                heading_part_3={''}
                 heading_part_4={'MEANS BETTER'}
                 image="/optimize/WhenDifferenceMatters.png"
               />

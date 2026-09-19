@@ -64,11 +64,11 @@ const slideInWrapperStyle = (zIndex) => ({
 })
 
 const singleData = {
-  title: 'SEE WHERE THE WORK <span>GETS DONE</span>',
-  desc: 'Show the facility through photography and video—from laser cutting and welding to finishing, inspection and dispatch.',
-  footer: 'Real fabrication. Real machinery. Real people.',
-  buttonText: 'VIEW FACILITY GALLERY',
-  buttonLink: '',
+  title: 'ENGINEERED FOR PRECISION<span>BUILT FOR PERFORMANCE</span>',
+  desc: 'Explore the fabrication capabilities, technology and standards behind every Forgentis project—from precision cutting and welding to finishing, inspection and final preparation.',
+  footer: 'Precision in every stage. Consistency in every result.',
+  // buttonText: 'VIEW FACILITY GALLERY',
+  // buttonLink: '',
 }
 
 export default function Facility() {
@@ -654,7 +654,7 @@ export default function Facility() {
       {showHero && (
         <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
           <HeroSection
-            headline={<>WHERE PRECISION BECOMES <span>PRODUCTION</span></>}
+            headline={<>WHERE PRECISION BECOMES <br/>PRODUCTION</>}
           />
         </div>
       )}

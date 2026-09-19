@@ -230,8 +230,7 @@ function CapabilitySection({
               })}
 
               {/* Point Title */}
-             {/* Point Title */}
-<h2
+{/* <h2
   className="capability-point-title"
   style={{
     top: isMobile
@@ -246,11 +245,49 @@ function CapabilitySection({
 >
                 <span className={isEven ? 'highlight-white' : 'highlight-blue'}>
                   {point.titleFirst}
-                </span>{' '}
+                </span>
+                {''}
+                
                 <span className={isEven ? 'highlight-blue' : 'highlight-white'}>
                   {point.titleSecond}
                 </span>
-              </h2>
+              </h2> */}
+
+<h2
+  className="capability-point-title"
+  style={{
+    top: isMobile
+      ? point.mobileTitlePos?.top || '52%'
+      : point.titlePos.top,
+    left: isMobile
+      ? point.mobileTitlePos?.left || '6%'
+      : point.titlePos.left,
+    right: isMobile ? point.mobileTitlePos?.right : undefined,
+    bottom: isMobile ? point.mobileTitlePos?.bottom : undefined,
+  }}
+>
+  <span
+    className={
+      point.coloredPart === 'first'
+        ? 'highlight-blue'
+        : 'highlight-white'
+    }
+  >
+    {point.titleFirst}
+  </span>
+
+  <br />
+
+  <span
+    className={
+      point.coloredPart === 'second'
+        ? 'highlight-blue'
+        : 'highlight-white'
+    }
+  >
+    {point.titleSecond}
+  </span>
+</h2>
 
               {/* Parallax Description */}
            {point.description && (

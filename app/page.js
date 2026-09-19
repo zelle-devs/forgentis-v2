@@ -94,7 +94,7 @@ const POINTS = [
   {
     titleFirst: 'CAPABILITY',
     titleSecond: 'AT EVERY SCALE',
-    coloredPart: 'second',
+    coloredPart: 'first',
     images: [
       { src: '/optimize/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
       { src: '/optimize/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
@@ -105,7 +105,7 @@ const POINTS = [
   {
     titleFirst: 'CONTROL',
     titleSecond: 'AT EVERY STAGE',
-    coloredPart: 'second',
+    coloredPart: 'first',
     images: [
       { src: '/optimize/control1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
       { src: '/optimize/control2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
@@ -116,7 +116,7 @@ const POINTS = [
   {
     titleFirst: 'COMPLEXITY',
     titleSecond: 'MADE POSSIBLE',
-    coloredPart: 'second',
+    coloredPart: 'first',
     images: [
       { src: '/optimize/craft1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
       { src: '/optimize/craft2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
@@ -127,7 +127,7 @@ const POINTS = [
   {
     titleFirst: 'FINISHED',
     titleSecond: 'WITH PURPOSE',
-    coloredPart: 'second',
+    coloredPart: 'first',
     images: [
       { src: '/optimize/capability1.png', top: '36%', left: '4%', width: '45%', height: '50%', speed: 0.22 },
       { src: '/optimize/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
@@ -1162,6 +1162,8 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
             >
               <ProcessSection2
                 scrollProgressRef={scrollProgressRef}
+                stageRef={stageRef}          // 👈 add
+                myStage={STAGE_PROCESS}
                 POINTS={POINTS_PROCESS}
                 TOTAL_ITEMS={TOTAL_ITEMS_PROCESS}
                 heading_part_1={'EVERY PROJECT DEMANDS A'}
@@ -1200,8 +1202,8 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
                 POINTS={quality_points}
                 heading_part_1={"WHEN “GOOD " }
                 heading_part_2={''}
-                heading_part_3={"ENOUGH” ISN'T."}
-                heading_part_4={""}
+                heading_part_3={""}
+                heading_part_4={"ENOUGH” ISN'T."}
               />
             </div>
           )}

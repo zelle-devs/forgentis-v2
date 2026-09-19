@@ -20,10 +20,10 @@ const APPLICATIONS_DATA = [
       'Custom structural components',
     ],
     footer: 'PRECISION THAT FITS. FABRICATION THAT STAYS ON SCHEDULE.',
-    button: {
-      label: 'DISCUSS A CONSTRUCTION PROJECT',
-      link: '/consultation',
-    },
+    // button: {
+    //   label: 'DISCUSS A CONSTRUCTION PROJECT',
+    //   link: '/consultation',
+    // },
     image: {
       src: '/optimize/industries/Industries1.png',
       speed: 0.14,
@@ -44,10 +44,11 @@ const APPLICATIONS_DATA = [
       'Custom feature elements',
     ],
     footer: 'From clean contemporary finishes to highly detailed fabrication, every element is built around the design requirement.',
-    button: {
-      label: 'EXPLORE ARCHITECTURAL WORK',
-      link: '/consultation',
-    },
+    // button: {
+    //   label: 'EXPLORE ARCHITECTURAL WORK',
+    //   link: '/consultation',
+    // }
+    // ,
     image: {
       src: '/optimize/industries/Industries2.png',
       speed: 0.14,
@@ -68,10 +69,10 @@ const APPLICATIONS_DATA = [
       'Custom assemblies',
     ],
     footer: 'ENGINEERED FOR THE APPLICATION. FABRICATED FOR PERFORMANCE.',
-    button: {
-      label: 'DISCUSS AN INDUSTRIAL REQUIREMENT',
-      link: '/consultation',
-    },
+    // button: {
+    //   label: 'DISCUSS AN INDUSTRIAL REQUIREMENT',
+    //   link: '/consultation',
+    // },
     image: {
       src: '/optimize/industries/Industries3.png',
       speed: 0.14,
@@ -168,7 +169,7 @@ const APPLICATIONS_DATA = [
       label: 'TALK TO OUR TEAM',
       link: '/consultation',
     }
-  },
+  }
 ]
 
 export default function InsustriesSection({

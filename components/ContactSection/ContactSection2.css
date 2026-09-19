@@ -101,9 +101,9 @@
 }
 
 .contact-btn:hover {
-  background: var(--color-white);
-  color: var(--color-black);
-  border-color: var(--color-white);
+  /* background: var(--color-white); */
+  color: var(--color-blue-main2);
+  /* border-color: var(--color-white); */
 }
 
 .contact-right-word {
