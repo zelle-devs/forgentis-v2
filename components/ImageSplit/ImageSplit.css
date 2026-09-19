@@ -10,7 +10,6 @@
   perspective: 1200px;
 }
 
-/* Full Image Background - Initially hidden */
 .full-image-background {
   position: absolute;
   top: 0;
@@ -68,7 +67,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100%!important;
   background-size: contain;
   background-repeat: no-repeat;
   will-change: transform;
@@ -107,9 +106,6 @@
   }
 }
 
-/* Desktop default 160x280 already file mein hai — usko chhedne ki zaroorat nahi */
-
-/* Mobile ke liye alag window dimensions (agar chahiye) */
 @media (max-width: 768px) {
   .left-window,
   .center-window,

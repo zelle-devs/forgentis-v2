@@ -315,24 +315,50 @@ export default function AboutPage() {
     }
   }
 
+  // const mountForward = (setter, ref, nextStage) => {
+  //   isTransitioning.current = true
+  //   stageRef.current = nextStage
+  //   setter(true)
+  //   scrollProgressRef.current = 0
+  //   requestAnimationFrame(() => {
+  //     requestAnimationFrame(() => {
+  //       if (ref?.current) gsap.set(ref.current, { y: '100%' })
+  //       // Mobile par thoda extra settle time
+  //       setTimeout(
+  //         () => {
+  //           isTransitioning.current = false
+  //         },
+  //         isMobileViewport() ? 80 : 0
+  //       )
+  //     })
+  //   })
+  // }
+
   const mountForward = (setter, ref, nextStage) => {
-    isTransitioning.current = true
-    stageRef.current = nextStage
-    setter(true)
-    scrollProgressRef.current = 0
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (ref?.current) gsap.set(ref.current, { y: '100%' })
-        // Mobile par thoda extra settle time
-        setTimeout(
-          () => {
-            isTransitioning.current = false
-          },
-          isMobileViewport() ? 80 : 0
-        )
+  isTransitioning.current = true
+
+  stageRef.current = nextStage
+  scrollProgressRef.current = 0
+
+  // Pehle section ko mount karo
+  // Wrapper already translateY(100%) par hoga
+  setter(true)
+
+  requestAnimationFrame(() => {
+    if (ref?.current) {
+      gsap.set(ref.current, {
+        y: '100%',
+        opacity: 1,
+        scale: 1,
       })
+    }
+
+    // Transition lock ko next frame par release karo
+    requestAnimationFrame(() => {
+      isTransitioning.current = false
     })
-  }
+  })
+}
 
   const unmountBackward = (setter, underRef, prevStage, extraDispatch) => {
     isTransitioning.current = true
@@ -769,7 +795,7 @@ export default function AboutPage() {
             <div
               ref={capabilityRef}
               className="capability-section-wrapper"
-              style={fixedWrapperStyle(3)}
+               style={slideInWrapperStyle(3)}
             >
               <CapabilitySection
                 heading_1={'GOOD FABRICATION STARTS'}
@@ -787,7 +813,7 @@ export default function AboutPage() {
             <div
               ref={qualityRef}
               className="quality-section-wrapper"
-              style={fixedWrapperStyle(4)}
+              style={slideInWrapperStyle(4)}
             >
               <QualitySection
                 scrollProgressRef={scrollProgressRef}
@@ -806,7 +832,7 @@ export default function AboutPage() {
             <div
               ref={contactRef}
               className="contact-section-wrapper"
-              style={fixedWrapperStyle(5)}
+              style={slideInWrapperStyle(5)}
             >
               <ContactSection2 scrollProgressRef={scrollProgressRef} />
             </div>

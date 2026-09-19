@@ -129,7 +129,7 @@ function ThirdSection({
 
                 <div className="slide-image-overlay" />
 
-                <div
+                {/* <div
                   className="slide-content-box"
                   style={{
                     top: isMobile
@@ -147,7 +147,37 @@ function ThirdSection({
                       EXPLORE OUR WORK →
                     </button>
                   )}
-                </div>
+                </div> */}
+
+{/* Inside the slides map loop in ThirdSection.jsx */}
+<div
+  className="slide-content-box"
+  style={{
+    top: isMobile
+      ? slide.mobilePos?.top || 'auto'
+      : slide.pos?.top || '60%',
+    left: isMobile
+      ? slide.mobilePos?.left || 'auto'
+      : slide.pos?.left || '8%',
+  }}
+>
+  {/* Logo Container */}
+  {slide.logo && (
+    <div className="slide-logo-container">
+      <img src={slide.logo} alt={`${slide.desc} logo`} className="slide-logo" />
+    </div>
+  )}
+
+  <div className="slide-text-content">
+    <span className="slide-category">{slide.desc}</span>
+    <h3 className="slide-title">{slide.title}</h3>
+    {slide.button && (
+      <button type="button" className="explore-work-btn">
+        EXPLORE OUR WORK →
+      </button>
+    )}
+  </div>
+</div>
 
                 <div className="slide-counter">
                   <span>{String(slide.id || index + 1).padStart(2, '0')}</span>

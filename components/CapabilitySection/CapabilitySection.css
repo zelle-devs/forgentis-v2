@@ -129,7 +129,7 @@
   will-change: transform;
 }
 .capability-point-title {
-  max-width: 600;
+  max-width: 700;
   position: absolute;
   z-index: 4;
   font-family: var(--font-family-primary);
@@ -182,18 +182,18 @@
    ========================================== */
 @media (min-width: 1440px) {
   .capability-main-title { font-size: 100px; max-width: 900px; }
-  .capability-point-title { font-size: 72px; }
+  .capability-point-title { font-size: 72px; max-width: 800px;}
   .capability-main-desc { font-size: var(--font-size-xl); }
 }
 
 @media (min-width: 1920px) {
   .capability-main-title { font-size: 120px; max-width: 1100px; }
-  .capability-point-title { font-size: 105px; }
+  .capability-point-title { font-size: 105px; max-width: 1200px; }
 }
 
 @media (min-width: 2560px) {
   .capability-main-title { font-size: 150px; max-width: 1400px; }
-  .capability-point-title { font-size: 130px; }
+  .capability-point-title { font-size: 130px; max-width: 1300px;}
   .capability-main-desc { font-size: 22px; max-width: 750px; }
 }
 
@@ -219,7 +219,8 @@
   }
 
   .capability-point-title {
-    font-size: clamp(60px, 7vw, 80px);
+    /* font-size: clamp(60px, 7vw, 80px); */
+    max-width: 600px;
     gap: 14px;
   }
 
@@ -314,7 +315,7 @@
     line-height: 0.9;
     letter-spacing: -1.5px;
     text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
-    max-width: calc(100% - 24px);
+    /* max-width: calc(100% - 24px); */
     padding-right: 12px;
     box-sizing: border-box;
   }
@@ -441,7 +442,7 @@
   .capability-point-title { font-size: clamp(22px, 18vw, 38px); }
   .capability-point-desc {
     font-size: 12px;
-    max-width: calc(100% - 32px) !important;
+    /* max-width: calc(100% - 32px) !important; */
   }
 
   .capability-image:nth-of-type(1) {
@@ -486,7 +487,7 @@
   .capability-point-title { font-size: 30px; letter-spacing: -1px; }
   .capability-point-desc {
     font-size: 11.5px;
-    max-width: calc(100% - 28px) !important;
+    /* max-width: calc(100% - 28px) !important; */
   }
 
   .capability-image:nth-of-type(1) {

@@ -68,6 +68,7 @@ const singleData = {
   desc: 'Show the facility through photography and video—from laser cutting and welding to finishing, inspection and dispatch.',
   footer: 'Real fabrication. Real machinery. Real people.',
   buttonText: 'VIEW FACILITY GALLERY',
+  buttonLink: '',
 }
 
 export default function Facility() {
@@ -674,7 +675,7 @@ export default function Facility() {
         <div
           ref={singleRef}
           className="single-quality-section-wrapper"
-          style={fixedWrapperStyle(3)}
+          style={slideInWrapperStyle(3)}
         >
           <Section01SingleQuality
             data={singleData}
@@ -688,7 +689,7 @@ export default function Facility() {
         <div
           ref={contactRef}
           className="contact-section-wrapper"
-          style={fixedWrapperStyle(4)}
+          style={slideInWrapperStyle(4)}
         >
           <ContactSection2 scrollProgressRef={scrollProgressRef} />
         </div>

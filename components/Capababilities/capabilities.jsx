@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import Link from "next/link";
 import "./style.css";
 
 const capabilitiesData = [
@@ -18,6 +19,7 @@ const capabilitiesData = [
     listTitle: "MATERIALS",
     items: ["Mild Steel", "Stainless Steel", "Aluminum", "Brass"],
     cta: "DISCUSS YOUR REQUIREMENT",
+    link: "/consultation",
   },
   {
     tag: "02 — CNC & PRECISION MANUFACTURING",
@@ -45,6 +47,7 @@ const capabilitiesData = [
       "Custom components",
     ],
     cta: "START WITH A DRAWING",
+    link: "/consultation",
   },
   {
     tag: "04 — BENDING & FORMING",
@@ -107,6 +110,11 @@ const capabilitiesData = [
       "Delivery schedule",
     ],
     footer: "Scale production without losing control of the specification.",
+  },
+   {
+    tag: "",
+    title: "PRECISION DOESN'T END WHEN <span>THE MACHINE STOPS</span>",
+    desc: "Every stage contributes to the final result.",
   },
 ];
 
@@ -281,7 +289,12 @@ useLayoutEffect(() => {
             <div className="statement_section_cs1">{item.footer}</div>
           )}
 
-          {item.cta && <button className="cta_button_cs1">{item.cta}</button>}
+          {/* {item.cta && <button className="cta_button_cs1">{item.cta}</button>} */}
+          {item.cta && (
+            <Link href={item.link || "#"} className="cta_link_wrapper">
+              <button className="cta_button_cs1">{item.cta}</button>
+            </Link>
+          )}
         </div>
       ))}
     </section>

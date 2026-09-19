@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import Link from "next/link";
 import "./style.css";
 
 export default function Section01SingleQuality({
@@ -201,14 +202,16 @@ export default function Section01SingleQuality({
         )}
 
         {/* ACTION BUTTON */}
-        {data.buttonText && (
-          <button
-            type="button"
-            className="cta_button_cs1"
-            onClick={onButtonClick}
-          >
-            {data.buttonText}
-          </button>
+       {data.buttonText && (
+          <Link href={data.buttonLink || "#"} className="cta_link_wrapper">
+            <button
+              type="button"
+              className="cta_button_cs1"
+              onClick={onButtonClick}
+            >
+              {data.buttonText}
+            </button>
+          </Link>
         )}
       </div>
     </section>

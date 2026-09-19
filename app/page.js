@@ -201,6 +201,7 @@ const project_slides = [
     id: 1,
     src: '/images/vlektra.png',
     mobileSrc: '/images/vlektra_mob.png',
+    logo: '/optimize/vlektra.png',
     desc: 'VLEKTRA Precision Fabrication',
     title: 'Custom-fabricated components, precisely cut, formed, finished, and assembled to specification.',
     pos: { bottom: '10%', left: '5%' },
@@ -210,6 +211,7 @@ const project_slides = [
     src: '/images/kings.png',
     mobileSrc: '/images/kings_mob.png',
     desc: 'KINGS GROUP Architectural Metalwork',
+    logo: '/optimize/king.png',
     title: 'Custom laser-cut panels and decorative metal elements, fabricated to project specifications and ready for installation.',
      pos: { top: '12%', left: '53%' },
   },
@@ -218,6 +220,7 @@ const project_slides = [
     src: '/images/shams.png',
     mobileSrc: '/images/shams_mob.png',
     desc: 'SHAMS POWER Solar Components',
+    logo: '/optimize/shams2.png',
     title: 'Custom-fabricated metal components developed to meet specific solar installation requirements.',
       pos: { bottom: '0%', left: '58%' },
   },
@@ -490,21 +493,68 @@ const slideParallax = (overRef, underRef, progress) => {
       .to(fadeOverlayRef.current, { opacity: 0, duration: 0.3, ease: 'power2.inOut' })
   }
 
-  const mountForward = (setter, ref, nextStage) => {
+
+// const mountForward = (setter, ref, nextStage) => {
+//   isTransitioning.current = true
+//   stageRef.current = nextStage
+//   scrollProgressRef.current = 0
+
+//   // Section ko pehle hi neeche position karo
+//   if (ref?.current) {
+//     gsap.set(ref.current, {
+//       y: '100%',
+//       opacity: 1,
+//       scale: 1,
+//     })
+//   }
+
+//   // Ab section mount karo
+//   setter(true)
+
+//   // React render ke baad position confirm karo
+//   requestAnimationFrame(() => {
+//     if (ref?.current) {
+//       gsap.set(ref.current, {
+//         y: '100%',
+//         opacity: 1,
+//         scale: 1,
+//       })
+//     }
+
+//     isTransitioning.current = false
+//   })
+// }
+
+const mountForward = (setter, ref, nextStage) => {
   isTransitioning.current = true
+
+  // Current section ko uski final position par hold karo
+  scrollProgressRef.current = 1
+
+  // Next stage activate karo
   stageRef.current = nextStage
+
+  // Next section mount karo
   setter(true)
-  scrollProgressRef.current = 0
+
   requestAnimationFrame(() => {
+    if (ref?.current) {
+      gsap.set(ref.current, {
+        y: '100%',
+        opacity: 1,
+        scale: 1,
+      })
+    }
+
     requestAnimationFrame(() => {
-      if (ref?.current) gsap.set(ref.current, { y: '100%' })
-      // ✅ Mobile par thoda extra settle time
-      setTimeout(() => {
-        isTransitioning.current = false
-      }, isMobileViewport() ? 80 : 0)
+      // Ab next section ke liye progress reset
+      scrollProgressRef.current = 0
+
+      isTransitioning.current = false
     })
   })
 }
+
 
   const unmountBackward = (setter, underRef, prevStage, extraDispatch) => {
     isTransitioning.current = true
@@ -1056,7 +1106,7 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
         <>
           <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
             <HeroSection 
-               headline={<>WE SHAPE <br/> WHAT <span>BUILDS</span></>}
+               headline={<>WE SHAPE WHAT BUILDS</>}
             />
           </div>
 
@@ -1090,7 +1140,7 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
             <div
               ref={capabilityRef}
               className="capability-section-wrapper"
-              style={fixedWrapperStyle(4)}
+              style={slideInWrapperStyle(4)}
             >
               <CapabilitySection
                 heading_1={'WHAT SHAPES AN IDEA INTO WELL'}
@@ -1108,7 +1158,7 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
             <div
               ref={processRef}
               className="process-section-wrapper"
-              style={fixedWrapperStyle(5)}
+              style={slideInWrapperStyle(5)}
             >
               <ProcessSection2
                 scrollProgressRef={scrollProgressRef}
@@ -1126,7 +1176,7 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
             <div
               ref={thirdRef}
               className="third-section-wrapper"
-              style={fixedWrapperStyle(6)}
+              style={slideInWrapperStyle(6)}
             >
               <ThirdSection
                 scrollProgressRef={scrollProgressRef}
@@ -1143,7 +1193,7 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
             <div
               ref={qualityRef}
               className="quality-section-wrapper"
-              style={fixedWrapperStyle(7)}
+              style={slideInWrapperStyle(7)}
             >
               <QualitySection
                 scrollProgressRef={scrollProgressRef}
@@ -1159,7 +1209,7 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
             <div
               ref={contactRef}
               className="contact-section-wrapper"
-              style={fixedWrapperStyle(8)}
+              style={slideInWrapperStyle(8)}
             >
               <ContactSection2 scrollProgressRef={scrollProgressRef} />
             </div>

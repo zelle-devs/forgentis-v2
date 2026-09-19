@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import Link from 'next/link'
 import './style.css'
 
 const APPLICATIONS_DATA = [
@@ -21,7 +22,7 @@ const APPLICATIONS_DATA = [
     footer: 'PRECISION THAT FITS. FABRICATION THAT STAYS ON SCHEDULE.',
     button: {
       label: 'DISCUSS A CONSTRUCTION PROJECT',
-      onClick: () => console.log('Construction Clicked'),
+      link: '/consultation',
     },
     image: {
       src: '/optimize/industries/Industries1.png',
@@ -45,7 +46,7 @@ const APPLICATIONS_DATA = [
     footer: 'From clean contemporary finishes to highly detailed fabrication, every element is built around the design requirement.',
     button: {
       label: 'EXPLORE ARCHITECTURAL WORK',
-      onClick: () => console.log('Architecture Clicked'),
+      link: '/consultation',
     },
     image: {
       src: '/optimize/industries/Industries2.png',
@@ -69,7 +70,7 @@ const APPLICATIONS_DATA = [
     footer: 'ENGINEERED FOR THE APPLICATION. FABRICATED FOR PERFORMANCE.',
     button: {
       label: 'DISCUSS AN INDUSTRIAL REQUIREMENT',
-      onClick: () => console.log('Industrial Clicked'),
+      link: '/consultation',
     },
     image: {
       src: '/optimize/industries/Industries3.png',
@@ -165,14 +166,8 @@ const APPLICATIONS_DATA = [
     footer: 'YOUR INDUSTRY MAY BE DIFFERENT. THE REQUIREMENT IS STILL METAL.',
     button: {
       label: 'TALK TO OUR TEAM',
-      onClick: () => console.log('Team Clicked'),
+      link: '/consultation',
     }
-    // ,
-    // image: {
-    //   src: '/images/capability1.png',
-    //   speed: 0.14,
-    //   innerSpeed: 0.1,
-    // },
   },
 ]
 
@@ -370,7 +365,7 @@ export default function InsustriesSection({
                   <div className="app_footer_statement">{item.footer}</div>
                 )}
 
-                {item.button && (
+                {/* {item.button && (
                   <button
                     type="button"
                     className="app_action_btn"
@@ -379,6 +374,17 @@ export default function InsustriesSection({
                     <span>{item.button.label}</span>
                     <span className="app_btn_arrow">→</span>
                   </button>
+                )} */}
+                {item.button && (
+                  <Link href={item.button.link || '#'} className="app_btn_link">
+                    <button
+                      type="button"
+                      className="app_action_btn"
+                    >
+                      <span>{item.button.label}</span>
+                      <span className="app_btn_arrow">→</span>
+                    </button>
+                  </Link>
                 )}
               </div>
             </div>

@@ -192,7 +192,7 @@ export default function FourthSection() {
                   ry={s.rx}
                   fill="none"
                   stroke="rgba(255, 255, 255, 0.85)"
-                  strokeWidth="4"
+                  strokeWidth="1.5"
                 />
               ))}
             </g>

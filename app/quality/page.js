@@ -838,7 +838,7 @@ export default function Quality() {
       {showHero && (
         <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
           <HeroSection
-            headline={<>QUALITY ISN'T THE LAST STEP. <span>IT'S EVERY STEP</span></>}
+            headline={<>QUALITY ISN'T THE LAST STEP. <br/><span>IT'S EVERY STEP</span></>}
           />
         </div>
       )}
@@ -859,7 +859,7 @@ export default function Quality() {
         <div
           ref={resourceRef}
           className="resource-section-wrapper"
-          style={fixedWrapperStyle(3)}
+          style={slideInWrapperStyle(3)}
         >
           <ResourceSection />
         </div>
@@ -870,7 +870,7 @@ export default function Quality() {
         <div
           ref={processRef}
           className="process-section-wrapper"
-          style={fixedWrapperStyle(4)}
+          style={slideInWrapperStyle(4)}
         >
           <ProcessSection
             heading_part_1="NOTHING LEAVES WITHOUT A"
@@ -887,7 +887,7 @@ export default function Quality() {
         <div
           ref={capability2Ref}
           className="capability-section-wrapper"
-          style={fixedWrapperStyle(5)}
+          style={slideInWrapperStyle(5)}
         >
           <Section01Quality qualityData={qualityData2} eventName="capabilityProgress2" />
         </div>
@@ -898,7 +898,7 @@ export default function Quality() {
         <div
           ref={contactRef}
           className="contact-section-wrapper"
-          style={fixedWrapperStyle(6)}
+          style={slideInWrapperStyle(6)}
         >
           <ContactSection2 scrollProgressRef={scrollProgressRef} />
         </div>

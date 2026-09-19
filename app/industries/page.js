@@ -630,7 +630,7 @@ export default function Industries() {
         <div
           ref={contactRef}
           className="contact-section-wrapper"
-          style={fixedWrapperStyle(3)}
+          style={slideInWrapperStyle(3)}
         >
           <ContactSection2 scrollProgressRef={scrollProgressRef} />
         </div>
