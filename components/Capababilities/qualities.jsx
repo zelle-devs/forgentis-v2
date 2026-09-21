@@ -11,7 +11,7 @@ export default function Section01Quality({
   const containerRef = useRef(null);
   const slidesRef = useRef([]);
   const tlRef = useRef(null);
-
+const isAnimatingRef = useRef(false);
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const slides = slidesRef.current.filter(Boolean);
@@ -147,18 +147,72 @@ export default function Section01Quality({
     DYNAMIC SCROLL LISTENER (Tight duration for real-time scrub)
     =====================================================
     */
-    const handleProgress = (e) => {
-      const p = e.detail?.progress ?? 0;
+    // const handleProgress = (e) => {
+    //   const p = e.detail?.progress ?? 0;
 
-      if (tlRef.current) {
-        gsap.to(tlRef.current, {
-          progress: p,
-          duration: 0.2,
-          ease: "power1.out",
-          overwrite: "auto",
-        });
-      }
-    };
+    //   if (tlRef.current) {
+    //     gsap.to(tlRef.current, {
+    //       progress: p,
+    //       duration: 0.2,
+    //       ease: "power1.out",
+    //       overwrite: "auto",
+    //     });
+    //   }
+    // };
+
+
+
+ const handleProgress = (e) => {
+  const p = e.detail?.progress ?? 0;
+
+  if (!tlRef.current) return;
+
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  if (isMobile) {
+    // Agar animation chal rahi hai to ignore karo
+    if (isAnimatingRef.current) return;
+
+    const slides = slidesRef.current.filter(Boolean);
+    const steps = slides.length - 1;
+    if (steps <= 0) return;
+
+    const currentProgress = tlRef.current.progress();
+    const currentStep = Math.round(currentProgress * steps);
+    const targetStep = Math.round(p * steps);
+
+    if (targetStep === currentStep) return;
+
+    // Sirf ek step allow karo
+    const diff = targetStep - currentStep;
+    const limitedDiff = Math.max(-1, Math.min(1, diff));
+    const finalStep = currentStep + limitedDiff;
+
+    // Boundary check
+    if (finalStep < 0 || finalStep > steps) return;
+
+    const targetProgress = finalStep / steps;
+
+    isAnimatingRef.current = true;
+
+    gsap.to(tlRef.current, {
+      progress: targetProgress,
+      duration: 0.6,
+      ease: "power2.out",
+      overwrite: "auto",
+      onComplete: () => {
+        isAnimatingRef.current = false;
+      },
+    });
+  } else {
+    gsap.to(tlRef.current, {
+      progress: p,
+      duration: 0.2,
+      ease: "power1.out",
+      overwrite: "auto",
+    });
+  }
+};
 
     window.addEventListener(eventName, handleProgress);
 

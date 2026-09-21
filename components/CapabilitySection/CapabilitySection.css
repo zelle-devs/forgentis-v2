@@ -412,7 +412,7 @@
   .capability-main-desc { font-size: 13px; line-height: 1.55; }
 
   .capability-point-title {
-    font-size: clamp(26px, 10vw, 46px);
+    font-size: clamp(20px, 9vw, 40px);
     letter-spacing: -1.2px;
   }
 

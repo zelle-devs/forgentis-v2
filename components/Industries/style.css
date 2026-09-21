@@ -362,48 +362,37 @@
     margin: 0 auto;
   }
 }
-
 /* Tablets & Small Laptops (≤ 1024px) */
 @media (max-width: 1024px) {
   .app_item_panel {
-    padding: 0 5vw;
-    gap: 4vw;
+    padding: 60px 5vw 60px 5vw;   /* 40px → 60px */
+    gap: 5vw;                     /* 4vw → 5vw */
+    align-items: center;
   }
   .app_image_wrap {
     width: 46%;
-    height: 52vh;
+    height: 56vh;                 /* 52vh → 56vh */
   }
   .app_content_wrap {
     width: 50%;
+    gap: 20px;                    /* 14px → 20px */
   }
 }
 
 /* Mobile Devices & Small Viewports (≤ 768px) */
 @media (max-width: 768px) {
-  .app_item_panel.no_image_panel {
-    padding: 40px 6vw;
-    text-align: center;
-    min-height: 50dvh;
-    height: auto;
-  }
-
-  .app_item_panel.no_image_panel .app_content_wrap {
-    width: 100% !important;
-    max-width: 100%;
-  }
-
   .app_section {
-    height: 100vh;
-    overflow-y: auto; /* Fallback safe scrolling for tiny mobile screens if needed */
+    height: 100dvh;
+    overflow: hidden;
   }
 
   .app_counter {
-    top: 20px;
-    left: 20px;
+    top: 24px;
+    left: 24px;
   }
 
   .app_panel {
-    height: auto !important;
+    height: 100dvh !important;
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
@@ -411,78 +400,130 @@
     box-sizing: border-box;
   }
 
+  /* ⬆️ AUR GAP BADHAYA ⬆️ */
   .app_item_panel,
   .app_item_panel.row_reverse {
     flex-direction: column !important;
     justify-content: center;
-    padding: 80px 5vw 40px 5vw;
-    gap: 16px;
+    padding: 90px 5vw 80px 5vw;   /* 60/50 → 90/80 */
+    gap: 32px;                    /* 20px → 32px */
   }
 
-  /* Ensure Image Container has explicit visibility and height on mobile */
   .app_image_wrap {
     width: 100% !important;
-    height: 26vh !important;
-    min-height: 180px;
+    height: 28vh !important;      /* 24vh → 28vh */
+    min-height: 190px;            /* 160px → 190px */
     flex-shrink: 0;
   }
 
   .app_content_wrap {
     width: 100% !important;
-    gap: 8px;
+    gap: 16px;                    /* 10px → 16px */
   }
 
   .app_intro_panel {
-    padding: 0 6vw;
+    padding: 80px 6vw 70px 6vw;   /* 50/40 → 80/70 */
   }
 
   .app_intro_title {
-    font-size: clamp(28px, 7vw, 42px);
-    margin-bottom: 16px;
+    font-size: clamp(30px, 7.5vw, 46px);
+    margin-bottom: 22px;          /* 16px → 22px */
   }
 
   .app_intro_desc {
-    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-    margin-bottom: 20px;
+    font-size: clamp(0.95rem, 3.6vw, 1.15rem);
+    margin-bottom: 28px;          /* 20px → 28px */
   }
 
   .app_intro_bullets {
     flex-direction: row;
-    gap: 12px;
+    gap: 18px;                    /* 14px → 18px */
   }
 
   .app_title {
-    font-size: clamp(1.4rem, 5vw, 2rem);
+    font-size: clamp(1.5rem, 5.5vw, 2.1rem);
+    margin: 0;
   }
 
   .app_desc {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .app_tag {
+    font-size: 0.85rem;
+    letter-spacing: 2.5px;
+  }
+
+  .app_list_wrap {
+    gap: 12px;                    /* 8px → 12px */
+    margin-top: 8px;              /* 4px → 8px */
+  }
+
+  .app_list_title {
+    font-size: 0.78rem;
   }
 
   .app_items_grid {
-    gap: 6px;
+    gap: 9px;                     /* 6px → 9px */
   }
 
   .app_badge {
-    font-size: 0.75rem;
-    padding: 4px 10px;
+    font-size: 0.8rem;
+    padding: 6px 14px;            /* 4px 10px → 6px 14px */
+  }
+
+  .app_footer_statement {
+    font-size: 0.85rem;
+    margin-top: 10px;             /* 6px → 10px */
+  }
+
+  /* No image panel */
+  .app_item_panel.no_image_panel {
+    padding: 80px 6vw 70px 6vw;
+    text-align: center;
+    min-height: 100dvh;
+    height: 100dvh;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .app_item_panel.no_image_panel .app_content_wrap {
+    width: 100% !important;
+    max-width: 100%;
+    gap: 16px;
   }
 }
 
 /* Extra Small Mobile Screens (≤ 380px / 300px min) */
 @media (max-width: 380px) {
   .app_item_panel {
-    padding: 70px 4vw 30px 4vw;
-    gap: 12px;
+    padding: 70px 4vw 60px 4vw;   /* 45/35 → 70/60 */
+    gap: 22px;                    /* 14px → 22px */
   }
 
   .app_image_wrap {
-    height: 22vh !important;
-    min-height: 150px;
+    height: 24vh !important;      /* 20vh → 24vh */
+    min-height: 170px;            /* 140px → 170px */
+  }
+
+  .app_title {
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
+  }
+
+  .app_desc {
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .app_badge {
+    font-size: 0.75rem;
+    padding: 5px 11px;
   }
 
   .app_intro_bullets {
     flex-direction: column;
-    gap: 8px;
+    gap: 14px;
   }
 }

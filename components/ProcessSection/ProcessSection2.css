@@ -11,6 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: pan-y;
 }
 
 /* ============================================
@@ -325,6 +326,17 @@ z-index: 1;
   }
   .process-main-desc {
     font-size: 0.9rem;
+  }
+
+  .process-wrapper-main {
+    height: 100vh;
+    overflow-y: scroll; /* Touch scroll ko enable karne ke liye */
+    scroll-snap-type: y mandatory; /* 👈 Yeh ensure karega ke scroll hamesha complete slide par ruke */
+  }
+
+  .process-section {
+    scroll-snap-align: start; /* 👈 Har section/slide start par snap hogi */
+    min-height: 100vh;
   }
 
   /* Gap zyada taaki image aur text alag dikhein */

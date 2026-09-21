@@ -627,44 +627,104 @@ const mountForward = (setter, ref, nextStage) => {
     }
 
     // FOURTH
-    if (stageRef.current === STAGE_FOURTH) {
-      const step = getStep('fourth')
-      if (direction > 0) {
-        scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
-        if (scrollProgressRef.current <= FOURTH_SPLIT) {
-          dispatch('fourthShapeProgress', scrollProgressRef.current / FOURTH_SPLIT)
-        } else {
-          dispatch('fourthShapeProgress', 1)
-          dispatch(
-            'fourthImageProgress',
-            (scrollProgressRef.current - FOURTH_SPLIT) / (1 - FOURTH_SPLIT)
-          )
-        }
-        if (scrollProgressRef.current >= 1) {
-          mountForward(setShowCapability, capabilityRef, STAGE_CAPABILITY)
-        }
-      } else {
-        scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
-        if (scrollProgressRef.current <= FOURTH_SPLIT) {
-          dispatch('fourthShapeProgress', scrollProgressRef.current / FOURTH_SPLIT)
-          dispatch('fourthImageProgress', 0)
-        } else {
-          dispatch(
-            'fourthImageProgress',
-            (scrollProgressRef.current - FOURTH_SPLIT) / (1 - FOURTH_SPLIT)
-          )
-        }
-        if (scrollProgressRef.current <= 0) {
-          stageRef.current = STAGE_SECOND
-          runFade(() => {
-            setShowFourth(false)
-            scrollProgressRef.current = 1
-            dispatch('secondTextProgress', 1)
-          })
-        }
-      }
-      return
+    // if (stageRef.current === STAGE_FOURTH) {
+    //   const step = getStep('fourth')
+    //   if (direction > 0) {
+    //     scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
+    //     if (scrollProgressRef.current <= FOURTH_SPLIT) {
+    //       dispatch('fourthShapeProgress', scrollProgressRef.current / FOURTH_SPLIT)
+    //     } else {
+    //       dispatch('fourthShapeProgress', 1)
+    //       dispatch(
+    //         'fourthImageProgress',
+    //         (scrollProgressRef.current - FOURTH_SPLIT) / (1 - FOURTH_SPLIT)
+    //       )
+    //     }
+    //     if (scrollProgressRef.current >= 1) {
+    //       mountForward(setShowCapability, capabilityRef, STAGE_CAPABILITY)
+    //     }
+    //   } else {
+    //     scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
+    //     if (scrollProgressRef.current <= FOURTH_SPLIT) {
+    //       dispatch('fourthShapeProgress', scrollProgressRef.current / FOURTH_SPLIT)
+    //       dispatch('fourthImageProgress', 0)
+    //     } else {
+    //       dispatch(
+    //         'fourthImageProgress',
+    //         (scrollProgressRef.current - FOURTH_SPLIT) / (1 - FOURTH_SPLIT)
+    //       )
+    //     }
+    //     if (scrollProgressRef.current <= 0) {
+    //       stageRef.current = STAGE_SECOND
+    //       runFade(() => {
+    //         setShowFourth(false)
+    //         scrollProgressRef.current = 1
+    //         dispatch('secondTextProgress', 1)
+    //       })
+    //     }
+    //   }
+    //   return
+    // }
+
+    // FOURTH
+if (stageRef.current === STAGE_FOURTH) {
+  const step = getStep('fourth')
+
+  // 3 splits — config me daal sakte ho, ya yahan define karo
+  const SHAPE_END = 0.4      // 0 → 0.4  pattern
+  const IMAGE1_END = 0.7     // 0.4 → 0.7 image1 fade
+  // 0.7 → 1.0 image2 slide
+
+  if (direction > 0) {
+    scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
+    const p = scrollProgressRef.current
+
+    if (p <= SHAPE_END) {
+      dispatch('fourthShapeProgress', p / SHAPE_END)
+      dispatch('fourthImageProgress', 0)
+      dispatch('fourthImage2Progress', 0)
+    } else if (p <= IMAGE1_END) {
+      dispatch('fourthShapeProgress', 1)
+      dispatch('fourthImageProgress', (p - SHAPE_END) / (IMAGE1_END - SHAPE_END))
+      dispatch('fourthImage2Progress', 0)
+    } else {
+      dispatch('fourthShapeProgress', 1)
+      dispatch('fourthImageProgress', 1)
+      dispatch('fourthImage2Progress', (p - IMAGE1_END) / (1 - IMAGE1_END))
     }
+
+    if (p >= 1) {
+      mountForward(setShowCapability, capabilityRef, STAGE_CAPABILITY)
+    }
+  } else {
+    scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
+    const p = scrollProgressRef.current
+
+    if (p <= SHAPE_END) {
+      dispatch('fourthShapeProgress', p / SHAPE_END)
+      dispatch('fourthImageProgress', 0)
+      dispatch('fourthImage2Progress', 0)
+    } else if (p <= IMAGE1_END) {
+      dispatch('fourthShapeProgress', 1)
+      dispatch('fourthImageProgress', (p - SHAPE_END) / (IMAGE1_END - SHAPE_END))
+      dispatch('fourthImage2Progress', 0)
+    } else {
+      dispatch('fourthShapeProgress', 1)
+      dispatch('fourthImageProgress', 1)
+      dispatch('fourthImage2Progress', (p - IMAGE1_END) / (1 - IMAGE1_END))
+    }
+
+    if (p <= 0) {
+      stageRef.current = STAGE_SECOND
+      runFade(() => {
+        setShowFourth(false)
+        scrollProgressRef.current = 1
+        dispatch('secondTextProgress', 1)
+      })
+    }
+  }
+  return
+}
 
     // CAPABILITY
     if (stageRef.current === STAGE_CAPABILITY) {

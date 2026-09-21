@@ -273,12 +273,12 @@
    ========================================== */
 @media (max-width: 480px) {
   .second-section {
-    padding: 40px 20px 32px;
+    padding: 70px 20px 32px;
     gap: 28px;
   }
 
   .second-heading {
-    font-size: clamp(34px, 12vw, 58px);
+    font-size: clamp(24px, 10vw, 48px);
     line-height: 1.0;
     letter-spacing: -1.2px;
   }

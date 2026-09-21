@@ -279,7 +279,7 @@ export default function InsustriesSection({
   return (
     <div ref={wrapperRef} className="app_section">
       {/* Counter */}
-      <div className="app_counter">
+      {/* <div className="app_counter">
         <span className="app_counter_current">
           {String(activeIndex).padStart(2, '0')}
         </span>
@@ -287,7 +287,7 @@ export default function InsustriesSection({
         <span className="app_counter_total">
           {String(totalPanels - 1).padStart(2, '0')}
         </span>
-      </div>
+      </div> */}
 
       {/* Main Track */}
       <div className="app_track" ref={trackRef}>

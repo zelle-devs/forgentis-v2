@@ -65,20 +65,20 @@ export default function FacilitiesSection({
     vh.current = window.innerHeight
 
     trackSetter.current = gsap.quickTo(trackRef.current, 'y', {
-      duration: 0.4,
+      duration: 1.1,
       ease: 'power2.out',
     })
 
     imageSetters.current = imageRefs.current.map((el) =>
-      el ? gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power2.out' }) : null
+      el ? gsap.quickTo(el, 'y', { duration: 1.3, ease: 'power2.out' }) : null
     )
 
     innerImgSetters.current = innerImgRefs.current.map((el) =>
-      el ? gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power2.out' }) : null
+      el ? gsap.quickTo(el, 'y', { duration: 1.4, ease: 'power2.out' }) : null
     )
 
     contentSetters.current = contentRefs.current.map((el) =>
-      el ? gsap.quickTo(el, 'y', { duration: 0.4, ease: 'power2.out' }) : null
+      el ? gsap.quickTo(el, 'y', { duration: 1.2, ease: 'power2.out' }) : null
     )
 
     gsap.set(trackRef.current, { y: 0 })
@@ -141,7 +141,7 @@ export default function FacilitiesSection({
 
   return (
     <div ref={wrapperRef} className="app_section">
-      <div className="app_counter">
+      {/* <div className="app_counter">
         <span className="app_counter_current">
           {String(activeIndex).padStart(2, '0')}
         </span>
@@ -149,7 +149,7 @@ export default function FacilitiesSection({
         <span className="app_counter_total">
           {String(totalPanels - 1).padStart(2, '0')}
         </span>
-      </div>
+      </div> */}
 
       <div className="app_track" ref={trackRef}>
         {/* Panel 0: Intro */}
