@@ -218,10 +218,26 @@
 /* ==========================================
    HAMBURGER
    ========================================== */
-.nav-hamburger {
+/* .nav-hamburger {
   width: clamp(36px, 3vw, 44px);
   height: clamp(36px, 3vw, 44px);
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(4px, 0.4vw, 6px);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  z-index: 100;
+  will-change: transform, opacity;
+  transition: all 0.3s ease;
+} */
+
+.nav-hamburger {
+  width: clamp(36px, 3vw, 44px);
+  height: clamp(36px, 3vw, 44px);
+  display: none; /* desktop par hidden */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -781,6 +797,9 @@
    TABLET (≤ 1024px)
    ========================================== */
 @media (max-width: 1024px) {
+  .nav-hamburger {
+  display: flex;
+}
   .nav-top-row {
     padding: 6px 20px;
   }

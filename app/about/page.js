@@ -22,6 +22,7 @@ import {
   getTouchMultiplier,
   isMobileViewport,
 } from '@/app/config/aboutScrollConfig'
+import LoadingScreen from '@/components/LoadingScreen/LoadingScreen'
 
 // ----- Stage constants -----
 const STAGE_HERO = 0
@@ -750,19 +751,21 @@ export default function AboutPage() {
   // Render
   // ==========================================================================
   return (
-    <main
-      className="main-container"
-      style={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: '100vw',
-        height: '100dvh',
-        overflow: 'hidden',
-        overscrollBehavior: 'none',
-        touchAction: 'none',
-      }}
-    >
-      {!loading && <NavContent />}
+   <main
+  className="main-container"
+  style={{
+    position: 'relative',
+    width: '100%',
+    maxWidth: '100vw',
+    height: '100dvh',
+    overflow: 'hidden',
+    overscrollBehavior: 'none',
+    touchAction: 'none',
+  }}
+>
+  {loading && <LoadingScreen />}
+
+  {!loading && <NavContent />}
 
       {showHero && (
         <>
@@ -859,6 +862,8 @@ export default function AboutPage() {
           />
         </>
       )}
+
+      
     </main>
   )
 }

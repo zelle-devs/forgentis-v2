@@ -199,8 +199,8 @@ const TOTAL_ITEMS_PROCESS = POINTS_PROCESS.length + 1
 const project_slides = [
   {
     id: 1,
-    src: '/images/vlektra.png',
-    mobileSrc: '/images/vlektra_mob.png',
+    src: '/optimize/vlektra1.png',
+    mobileSrc: '/optimize/vlektra_mob.png',
     logo: '/optimize/vlektra.png',
     desc: 'VLEKTRA Precision Fabrication',
     title: 'Custom-fabricated components, precisely cut, formed, finished, and assembled to specification.',
@@ -208,8 +208,8 @@ const project_slides = [
   },
   {
     id: 2,
-    src: '/images/kings.png',
-    mobileSrc: '/images/kings_mob.png',
+    src: '/optimize/kings.png',
+    mobileSrc: '/optimize/kings_mob.png',
     desc: 'KINGS GROUP Architectural Metalwork',
     logo: '/optimize/king.png',
     title: 'Custom laser-cut panels and decorative metal elements, fabricated to project specifications and ready for installation.',
@@ -217,8 +217,8 @@ const project_slides = [
   },
   {
     id: 3,
-    src: '/images/shams.png',
-    mobileSrc: '/images/shams_mob.png',
+    src: '/optimize/shams1.png',
+    mobileSrc: '/optimize/shams_mob.png',
     desc: 'SHAMS POWER Solar Components',
     logo: '/optimize/shams2.png',
     title: 'Custom-fabricated metal components developed to meet specific solar installation requirements.',

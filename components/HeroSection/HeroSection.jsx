@@ -24,14 +24,14 @@ function HeroSection({
   const headlineRef = useRef(null)
   const subtitleRef = useRef(null)
 
-  const [heroImage, setHeroImage] = useState('/optimize/hero_1.png')
+  const [heroImage, setHeroImage] = useState('/optimize/hero_1-black.png')
 
   useEffect(() => {
     const updateImage = () => {
       setHeroImage(
         window.innerWidth <= 768
-          ? '/optimize/hero_mob_1.jpg'
-          : '/optimize/hero_1.png'
+          ? '/optimize/hero_mob_1-black.jpg'
+          : '/optimize/hero_1-black.png'
       )
     }
 

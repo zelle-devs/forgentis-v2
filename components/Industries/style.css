@@ -52,7 +52,7 @@
 .app_panel {
   position: relative;
   width: 100%;
-  height: 90dvh;
+  height: 100dvh;
   box-sizing: border-box;
 }
 

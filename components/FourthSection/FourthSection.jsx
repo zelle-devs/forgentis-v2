@@ -31,7 +31,7 @@ const PATTERN_CONFIG = {
 }
 
 const IMAGES = {
-  first: '/optimize/1.png',
+  first: '/optimize/forgentis.jpeg',
   second: '/optimize/2.png',
 }
 
