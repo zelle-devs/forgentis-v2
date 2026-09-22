@@ -1,0 +1,450 @@
+/* ============================================
+   BASE
+   ============================================ */
+.process-wrapper-main {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  max-height: 1080px;
+  background: #0b0b0b;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pan-y;
+}
+
+/* ============================================
+   MAIN TITLE OVERLAY
+   ============================================ */
+.process-title-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 clamp(24px, 6vw, 120px);
+  pointer-events: none;
+  will-change: opacity, transform;
+  background: #0b0b0b;
+}
+
+.process-main-title {
+  font-family: var(--font-family-primary, 'Times New Roman', serif);
+  font-weight: 100;
+  font-size: clamp(2rem, 5.5vw, 5.5rem);
+  line-height: 1.05;
+  color: #ffffff;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  max-width: 900px;
+}
+
+.process-title-line {
+  display: block;
+  will-change: transform;
+}
+
+.process-title-line--accent {
+  background: var(--color-blue-gradient, linear-gradient(90deg, #0270ea, #4da3ff));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 100;
+}
+
+.process-main-desc {
+  font-family: var(--font-family-secondary, sans-serif);
+  font-size: clamp(0.9rem, 1.15vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 640px;
+  will-change: transform;
+}
+
+/* ============================================
+   SECTION CONTENT
+   ============================================ */
+.process-section-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  will-change: opacity;
+}
+
+.process-glass-backdrop {
+  position: absolute;
+  inset: -30px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px) brightness(0.2);
+  transform: scale(1.15);
+  z-index: 0;
+  transition: background-image 0.4s ease-in-out;
+  pointer-events: none;
+}
+
+.process-backdrop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.process-section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5vw;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.process-image-container {
+  position: relative;
+  width: 44vw;
+  height: 65vh;
+  max-width: 650px;
+  max-height: 650px;
+  background: transparent;
+  overflow: visible;
+  flex-shrink: 0;
+z-index: 1;  
+}
+
+/* .process-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  will-change: transform;
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.6);
+} */
+
+.process-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  /* border: 5px solid black; */
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform;
+  /* box-shadow: 0 25px 55px rgba(0, 0, 0, 1.5); */
+/* box-shadow:
+  rgba(14, 30, 37, 0.16) 0px -4px 8px 0px,
+  rgba(14, 30, 37, 0.32) 0px 2px 22px 0px; */
+
+  /* box-shadow:
+  rgba(14, 30, 37, 0.22) 0px -8px 14px -2px,
+  rgba(14, 30, 37, 0.34) 0px 4px 24px 0px; */
+
+  /* box-shadow:
+  rgba(14, 30, 37, 0.9) 0px -28px 32px -5px,
+  rgba(14, 30, 37, 0.34) 0px 4px 24px 0px; */
+
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+}
+
+.process-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.process-card-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.process-content-container {
+  position: relative;
+  width: 45vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 3vw;
+  /* margin-top: 30px; */
+  z-index: 2;  
+}
+
+.process-text-viewport {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  /* overflow: hidden; */
+}
+
+.process-text-pane {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center!important;
+  will-change: transform, opacity;
+}
+
+.process-counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-family-primary, 'Times New Roman', serif);
+  color: #fff;
+  margin-bottom: 1.5rem;
+  opacity: 0.85;
+}
+
+.process-counter-current {
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.process-counter-divider {
+  width: 30px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.process-counter-total {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.process-item-title {
+  font-family: var(--font-family-primary, 'Times New Roman', serif);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 4vw, 4.8rem);
+  color: #ffffff;
+  line-height: 1.1;
+  margin: 0 0 1.2rem 0;
+  text-transform: capitalize;
+}
+
+.process-item-desc {
+  font-family: var(--font-family-secondary, sans-serif);
+  font-size: clamp(0.9rem, 1.05vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+  max-width: 540px;
+}
+
+.process-cta-btn {
+  position: relative;
+  align-self: flex-start;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 0.9rem 2rem;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.process-cta-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* ============================================
+   TABLET (≤1024px)
+   ============================================ */
+@media screen and (max-width: 1024px) {
+  .process-wrapper-main {
+    margin-top: 25px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .process-section {
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    padding: 8vh 5vw;
+    gap: 40px;
+  }
+
+   .process-image-container {
+    width: 80vw;
+    height: 45vh;
+    max-width: none;
+    background: #151515;
+    border-radius: 6px;
+    overflow: visible;      /* 👈 wapis visible — ab opacity overlap sambhal legi */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0;
+    z-index: 1;              /* rakho */
+  }
+
+  .process-content-container {
+    width: 90vw;
+    height: auto;
+    padding-left: 0;
+    z-index: 2;               /* rakho */
+  }
+}
+
+/* ============================================
+   MOBILE (≤768px)
+   ============================================ */
+@media screen and (max-width: 768px) {
+  .process-title-overlay {
+    padding: 0 24px;
+  }
+  .process-main-title {
+    font-size: clamp(3.6rem, 10vw, 3.6rem);
+    margin-bottom: 1rem;
+  }
+  .process-main-desc {
+    font-size: 0.9rem;
+  }
+
+  .process-wrapper-main {
+    height: 100vh;
+    /* Removed conflicting inner scroll & snap properties to work cleanly with parent driver */
+  }
+
+  .process-section {
+    min-height: 100vh;
+    padding: 6vh 20px;
+    gap: 50px;
+  }
+
+  .process-image-container {
+    width: 100%;
+    height: 38vh;
+    border-radius: 8px;
+  }
+
+  .process-content-container {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .process-text-viewport {
+    height: 480px;
+    overflow: hidden;
+  }
+
+  .process-counter {
+    margin-bottom: 1rem;
+  }
+
+  .process-counter-current {
+    font-size: 1.2rem;
+  }
+
+  .process-counter-total {
+    font-size: 0.85rem;
+  }
+
+  .process-item-title {
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+    margin-bottom: 0.8rem;
+  }
+
+  .process-item-desc {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .process-cta-btn {
+    padding: 0.8rem 1.6rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* ============================================
+   SMALL MOBILE (≤480px)
+   ============================================ */
+@media screen and (max-width: 480px) {
+  .process-image-container {
+    height: 32vh;
+  }
+
+  .process-text-viewport {
+    height: 460px;
+  }
+
+  .process-item-title {
+    font-size: 1.6rem;
+  }
+
+  .process-item-desc {
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================
+   VERY SMALL (≤380px)
+   ============================================ */
+@media screen and (max-width: 380px) {
+  .process-image-container {
+    height: 28vh;
+  }
+
+  .process-text-viewport {
+    height: 440px;
+  }
+
+  .process-item-title {
+    font-size: 1.4rem;
+  }
+
+  .process-item-desc {
+    font-size: 0.85rem;
+  }
+}
+
+/* ============================================
+   LARGE SCREENS (≥1920px)
+   ============================================ */
+@media screen and (min-width: 1920px) {
+  .process-section {
+    margin: 0 auto;
+  }
+
+  .process-image-container {
+    width: 48vw;
+    height: 70vh;
+    max-width: 850px;
+    max-height: 850px;
+  }
+
+  .process-item-title {
+    font-size: 5.2rem;
+  }
+
+  .process-item-desc {
+    font-size: 1.35rem;
+  }
+}

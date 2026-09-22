@@ -1,0 +1,328 @@
+/* ============================================================
+   FOURTH SECTION
+   ============================================================ */
+
+.fourth-section {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+
+  background: #0a0a0a;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ============================================================
+   IMAGE CONTAINERS
+   ============================================================ */
+
+.image-container {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  will-change: opacity, transform;
+}
+
+.image-container-2 {
+  z-index: 1;
+}
+
+
+/* ============================================================
+   IMAGE
+   ============================================================ */
+
+.revealed-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center center;
+}
+
+
+/* ============================================================
+   SVG WRAPPER
+   ============================================================ */
+
+/*
+   IMPORTANT
+
+   Your old values:
+
+   left  = 14%
+   width = 74.5%
+   top   = 2%
+
+   are preserved as the base geometry.
+
+   Instead of allowing the SVG itself to distort,
+   the wrapper uses viewport-relative dimensions with
+   a controlled aspect-ratio.
+*/
+
+.svg-wrapper {
+  position: absolute;
+
+  top: 2%;
+  left: 14%;
+
+  width: 74.5%;
+  height: 100%;
+
+  z-index: 2;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+  pointer-events: none;
+
+  overflow: visible;
+
+  transform-origin: center center;
+
+  will-change: width, height, left, top, transform;
+}
+
+
+.fourth-svg {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: visible;
+
+  /*
+    IMPORTANT:
+    Keep the generated geometry proportional.
+  */
+  preserveAspectRatio: none;
+
+  will-change: transform;
+}
+
+
+/* ============================================================
+   SLIDER DIVIDER
+   ============================================================ */
+
+.slider-divider {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 3px;
+  height: 100%;
+
+  z-index: 3;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+
+  box-shadow:
+    0 0 20px 2px
+    rgba(255, 255, 255, 0.6);
+
+  will-change: transform, opacity;
+}
+
+
+/* ============================================================
+   LARGE DESKTOP
+   ============================================================ */
+
+@media (min-width: 1440px) {
+
+  .svg-wrapper {
+    top: 2%;
+    left: 14%;
+    width: 74.5%;
+    height: 100%;
+  }
+
+}
+
+
+/* ============================================================
+   VERY LARGE DESKTOP
+   ============================================================ */
+
+@media (min-width: 1920px) {
+
+  .svg-wrapper {
+    /*
+      Keep the same visual relationship as the
+      1440–1920 desktop range.
+    */
+
+    top: 2%;
+    left: 14%;
+    width: 74.5%;
+    height: 100%;
+  }
+
+}
+
+
+/* ============================================================
+   ULTRA WIDE
+   ============================================================ */
+
+@media (min-width: 2560px) {
+
+  .svg-wrapper {
+    /*
+      Prevent the pattern from becoming visually
+      too stretched on ultra-wide displays.
+    */
+
+    top: 2%;
+    left: 14%;
+
+    width: 74.5%;
+    height: 100%;
+
+    transform: none;
+  }
+
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+  .fourth-section {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .svg-wrapper {
+    top: 2%;
+    left: 14%;
+
+    width: 74.5%;
+    height: 100%;
+
+    padding: 0;
+
+    transform: none;
+  }
+
+  .fourth-svg {
+    width: 100%;
+    height: 100%;
+
+    transform: none;
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+  .revealed-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .svg-wrapper {
+    top: 2%;
+    left: 14%;
+
+    width: 74.5%;
+    height: 100%;
+
+    padding: 0;
+
+    transform: none;
+  }
+
+  .fourth-svg {
+    width: 100%;
+    height: 100%;
+
+    transform: none;
+  }
+
+  .slider-divider {
+    width: 2px;
+  }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+  .fourth-svg line {
+    stroke-width: 1.6;
+  }
+
+}
+
+
+/* ============================================================
+   EXTRA SMALL
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+  .fourth-svg line {
+    stroke-width: 1.4;
+  }
+
+}
+
+
+/* ============================================================
+   VERY SMALL
+   ============================================================ */
+
+@media (max-width: 320px) {
+
+  .fourth-svg line {
+    stroke-width: 1.2;
+  }
+
+}
