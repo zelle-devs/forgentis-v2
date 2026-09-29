@@ -322,15 +322,15 @@
   }
   
   .hero-content {
-    left: 6%;
-    right: 6%;
-    top: auto;
+    /* left: 6%;
+    right: 6%; */
+    /* top: auto; */
     transform: none; /* 👈 Reset transform for mobile bottom alignment */
-    bottom: 50px;
+    /* bottom: 50px; */
     width: auto;
     max-width: 100%;
     align-items: center;
-    text-align: center;
+    text-align: left;
   }
 
   .hero-eyebrow {
@@ -372,15 +372,15 @@
     );
   }
   .hero-content {
-    left: 20px;
-    right: 20px;
-    top: auto;
+    /* left: 20px;
+    right: 20px; */
+    /* top: auto; */
     transform: none;
-    bottom: 45px;
+    /* bottom: 45px; */
     width: auto;
     max-width: 100%;
     align-items: center;
-    text-align: center;
+    text-align: left;
   }
 
   .hero-eyebrow {
@@ -422,15 +422,15 @@
     );
   }
   .hero-content {
-    left: 16px;
+    /* left: 16px;
     right: 16px;
-    top: auto;
+    top: auto; */
     transform: none;
-    bottom: 40px;
+    /* bottom: 40px; */
     width: auto;
     max-width: 100%;
     align-items: center;
-    text-align: center;
+    text-align: left;
   }
 
   .hero-eyebrow {
@@ -472,15 +472,15 @@
     );
   }
   .hero-content {
-    left: 12px;
+    /* left: 12px;
     right: 12px;
-    top: auto;
+    top: auto; */
     transform: none;
-    bottom: 35px;
+    /* bottom: 35px; */
     width: auto;
     max-width: 100%;
     align-items: center;
-    text-align: center;
+    text-align: left;
   }
 
   .hero-eyebrow {
