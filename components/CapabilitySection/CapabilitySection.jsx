@@ -55,33 +55,42 @@ function CapabilitySection({
     const getPanelHeight = () => {
       const rawVh = getRawVh()
       if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-        return rawVh * 0.58
+        return rawVh * 0.75
       }
       return rawVh
     }
 
     vh.current = getPanelHeight()
 
-    trackSetter.current = gsap.quickTo(trackRef.current, 'y', {
-      duration: 1.1,
-      ease: 'power3.out',
-    })
+  // ✅ Mobile pe Capability ke quickTo durations chhoti — snappy feel
+const isMob =
+  typeof window !== 'undefined' && window.innerWidth <= 768
 
-    imageSetters.current = imageRefs.current.map((el) =>
-      el ? gsap.quickTo(el, 'y', { duration: 1.3, ease: 'power3.out' }) : null
-    )
+const trackDur = isMob ? 0.35 : 1.1
+const imgDur = isMob ? 0.35 : 1.3
+const innerDur = isMob ? 0.35 : 1.4
+const descDur = isMob ? 0.3 : 1.2
 
-    innerImgSetters.current = innerImgRefs.current.map((el) =>
-      el ? gsap.quickTo(el, 'y', { duration: 1.4, ease: 'power3.out' }) : null
-    )
+trackSetter.current = gsap.quickTo(trackRef.current, 'y', {
+  duration: trackDur,
+  ease: 'power3.out',
+})
 
-    descSetters.current = descRefs.current.map((el) =>
-      el ? gsap.quickTo(el, 'y', { duration: 1.2, ease: 'power3.out' }) : null
-    )
+imageSetters.current = imageRefs.current.map((el) =>
+  el ? gsap.quickTo(el, 'y', { duration: imgDur, ease: 'power3.out' }) : null
+)
 
-    btnSetters.current = btnRefs.current.map((el) =>
-      el ? gsap.quickTo(el, 'y', { duration: 1.2, ease: 'power3.out' }) : null
-    )
+innerImgSetters.current = innerImgRefs.current.map((el) =>
+  el ? gsap.quickTo(el, 'y', { duration: innerDur, ease: 'power3.out' }) : null
+)
+
+descSetters.current = descRefs.current.map((el) =>
+  el ? gsap.quickTo(el, 'y', { duration: descDur, ease: 'power3.out' }) : null
+)
+
+btnSetters.current = btnRefs.current.map((el) =>
+  el ? gsap.quickTo(el, 'y', { duration: descDur, ease: 'power3.out' }) : null
+)
 
     // Initial reset
     gsap.set(trackRef.current, { y: 0 })
@@ -109,46 +118,75 @@ function CapabilitySection({
   // ===== Scroll apply =====
   useEffect(() => {
     const applyScroll = () => {
-      const y = scrollTarget.current
-      if (trackSetter.current) trackSetter.current(-y)
+  const y = scrollTarget.current
+  if (trackSetter.current) trackSetter.current(-y)
 
-      let flatImageIndex = 0
-      POINTS.forEach((point, pIndex) => {
-        const panelIndex = pIndex + 1
-        const localOffset = y - panelIndex * vh.current
+  // Har baar fresh check — closure-stale state pe depend nahi karna
+  const isMobileNow =
+    typeof window !== 'undefined' && window.innerWidth <= 768
 
-        point.images.forEach((img) => {
-          const containerSetter = imageSetters.current[flatImageIndex]
-          const internalImgSetter = innerImgSetters.current[flatImageIndex]
+  let flatImageIndex = 0
+  POINTS.forEach((point, pIndex) => {
+    const panelIndex = pIndex + 1
+    const localOffset = y - panelIndex * vh.current
 
-          if (containerSetter) containerSetter(-localOffset * img.speed)
+    // point.images.forEach((img) => {
+    //   const containerSetter = imageSetters.current[flatImageIndex]
+    //   const internalImgSetter = innerImgSetters.current[flatImageIndex]
 
-          const innerSpeed = img.innerSpeed ?? img.speed * 0.7
-          if (internalImgSetter) internalImgSetter(localOffset * innerSpeed)
+    //   // Mobile: image apni jagah fixed — koi parallax nahi
+    //   // Desktop: original parallax bilkul waisa hi
+    //   if (containerSetter) {
+    //     containerSetter(isMobileNow ? 0 : -localOffset * img.speed)
+    //   }
 
-          flatImageIndex++
-        })
+    //   const innerSpeed = img.innerSpeed ?? img.speed * 0.7
+    //   if (internalImgSetter) {
+    //     internalImgSetter(isMobileNow ? 0 : localOffset * innerSpeed)
+    //   }
 
-        if (point.description) {
-          const descSpeed = point.descPos?.speed ?? 0.08
-          const dSetter = descSetters.current[pIndex]
-          if (dSetter) dSetter(-localOffset * descSpeed)
-        }
+    //   flatImageIndex++
+    // })
 
-        if (point.button) {
-          const btnSpeed =
-            point.button.pos?.speed ?? point.descPos?.speed ?? 0.08
-          const bSetter = btnSetters.current[pIndex]
-          if (bSetter) bSetter(-localOffset * btnSpeed)
-        }
-      })
+    point.images.forEach((img) => {
+  const containerSetter = imageSetters.current[flatImageIndex]
+  const internalImgSetter = innerImgSetters.current[flatImageIndex]
 
-      const newIndex = Math.round(y / (vh.current || 1))
-      if (newIndex !== activeIndexRef.current) {
-        activeIndexRef.current = newIndex
-        setActiveIndex(newIndex)
-      }
+  // Container — mobile pe hamesha fixed (jaisa tha, waisa hi rahega)
+  if (containerSetter) {
+    containerSetter(isMobileNow ? 0 : -localOffset * img.speed)
+  }
+
+  // Inner <img> — mobile pe bhi move karegi (container ke andar hi,
+  // clipped by overflow:hidden), desktop wala formula reuse kiya
+  const innerSpeed = img.innerSpeed ?? img.speed * 0.7
+  if (internalImgSetter) {
+    internalImgSetter(localOffset * innerSpeed)
+  }
+
+  flatImageIndex++
+})
+
+    if (point.description) {
+      const descSpeed = point.descPos?.speed ?? 0.08
+      const dSetter = descSetters.current[pIndex]
+      if (dSetter) dSetter(-localOffset * descSpeed)
     }
+
+    if (point.button) {
+      const btnSpeed =
+        point.button.pos?.speed ?? point.descPos?.speed ?? 0.08
+      const bSetter = btnSetters.current[pIndex]
+      if (bSetter) bSetter(-localOffset * btnSpeed)
+    }
+  })
+
+  const newIndex = Math.round(y / (vh.current || 1))
+  if (newIndex !== activeIndexRef.current) {
+    activeIndexRef.current = newIndex
+    setActiveIndex(newIndex)
+  }
+}
 
     const handleCapabilityProgress = (e) => {
       const progress = e.detail?.progress ?? 0
@@ -159,7 +197,7 @@ function CapabilitySection({
         document.documentElement.clientHeight
 
       const panelHeight =
-        window.innerWidth <= 768 ? rawVh * 0.58 : rawVh
+        window.innerWidth <= 768 ? rawVh * 0.75 : rawVh
 
       vh.current = panelHeight
 

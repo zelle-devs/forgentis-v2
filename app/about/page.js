@@ -69,7 +69,7 @@ const POINTS = [
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
   },
   {
@@ -83,7 +83,7 @@ const POINTS = [
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
   },
   {
@@ -97,7 +97,7 @@ const POINTS = [
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
   },
   {
@@ -111,7 +111,7 @@ const POINTS = [
     ],
     titlePos: { top: '10%', left: '4%' },
     descPos: { top: '50%', left: '55%', maxWidth: '480px', speed: 0.12 },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
   },
 ]
@@ -612,7 +612,7 @@ export default function AboutPage() {
       isTouchScrollingRef.current = true
     }
 
-    const handleTouchMove = (e) => {
+       const handleTouchMove = (e) => {
       if (!isTouchScrollingRef.current) return
       if (loadingRef.current) return
       if (document.querySelector('.nav-sidebar')) return
@@ -621,10 +621,26 @@ export default function AboutPage() {
       const deltaY = touchLastYRef.current - currentY
       touchLastYRef.current = currentY
 
-      const multiplier = getTouchMultiplier()
-      const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
+      const isMobileDevice = isMobileViewport()
 
-      wheelAccumRef.current += touchDelta
+      // ✅ Sirf CapabilitySection pe mobile — normal threshold-based scroll
+      const isCapabilityOnMobile =
+        isMobileDevice && stageRef.current === STAGE_CAPABILITY
+
+      if (isCapabilityOnMobile) {
+        const MIN_SWIPE = 15 // px per step
+
+        if (Math.abs(deltaY) >= MIN_SWIPE) {
+          const direction = deltaY > 0 ? 1 : -1
+          handleScrollStep(direction, 1.0)
+          touchLastYRef.current = currentY // reset anchor
+        }
+      } else {
+        // Baaki sab — original smooth accumulation
+        const multiplier = getTouchMultiplier()
+        const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
+        wheelAccumRef.current += touchDelta
+      }
 
       if (e.cancelable) e.preventDefault()
     }
@@ -661,6 +677,7 @@ export default function AboutPage() {
     }
 
     // ---- rAF tick ----
+    // ---- rAF tick ----
     const tick = () => {
       if (isTransitioning.current) {
         wheelAccumRef.current = 0
@@ -668,23 +685,34 @@ export default function AboutPage() {
         const raw = wheelAccumRef.current
         const direction = raw > 0 ? 1 : -1
 
-        // MOBILE/TABLET: factor ko 1.0 par lock karo (Capability jaisa smooth)
         const isMobileDevice = isMobileViewport()
-        let factor
-        if (isMobileDevice) {
-          factor = 1.0
-        } else {
-          const magnitude = Math.min(Math.abs(raw), INPUT_CONFIG.wheelMagnitudeCap)
-          factor = Math.max(
-            INPUT_CONFIG.wheelFactorMin,
-            Math.min(INPUT_CONFIG.wheelFactorMax, magnitude / INPUT_CONFIG.wheelFactorDivisor)
-          )
-        }
 
-        handleScrollStep(direction, factor)
-        wheelAccumRef.current -= raw * INPUT_CONFIG.wheelDecay
-        if (Math.abs(wheelAccumRef.current) < INPUT_CONFIG.wheelDeadZone) {
+        // ✅ Sirf CapabilitySection pe mobile — normal scroll (no accumulation)
+        const isCapabilityOnMobile =
+          isMobileDevice && stageRef.current === STAGE_CAPABILITY
+
+        if (isCapabilityOnMobile) {
+          // Ek event = ek step, turant
+          handleScrollStep(direction, 1.0)
           wheelAccumRef.current = 0
+        } else {
+          // Baaki sab — original butter-smooth
+          let factor
+          if (isMobileDevice) {
+            factor = 1.0
+          } else {
+            const magnitude = Math.min(Math.abs(raw), INPUT_CONFIG.wheelMagnitudeCap)
+            factor = Math.max(
+              INPUT_CONFIG.wheelFactorMin,
+              Math.min(INPUT_CONFIG.wheelFactorMax, magnitude / INPUT_CONFIG.wheelFactorDivisor)
+            )
+          }
+
+          handleScrollStep(direction, factor)
+          wheelAccumRef.current -= raw * INPUT_CONFIG.wheelDecay
+          if (Math.abs(wheelAccumRef.current) < INPUT_CONFIG.wheelDeadZone) {
+            wheelAccumRef.current = 0
+          }
         }
       }
 

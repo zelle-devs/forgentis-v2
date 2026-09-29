@@ -296,19 +296,20 @@
 
   /* Panel height — 58dvh (tight, no gap) */
   .capability-panel {
-    height: 58dvh;
-    min-height: 420px;
-    overflow: hidden;
+    height: 75dvh!important;
+    min-height: 480px!important;
+    overflow: visible;
+    margin-bottom: 13%;
   }
 
   .capability-panels {
-    height: 58dvh;
-    min-height: 420px;
+    height: 75dvh!important;
+    min-height: 480px!important;
   }
 
   .capability-intro-panel {
-    height: 58dvh;
-    min-height: 420px;
+    height: 75dvh!important;
+    min-height: 480px!important;
     padding: 0 24px;
     align-items: flex-start;
     justify-content: center;
@@ -360,6 +361,12 @@
     border-radius: 6px;
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
   }
+    .capability-image img {
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+  }
 
   /* Image 1 — top-left main (badi) */
   .capability-image:nth-of-type(1) {
@@ -373,7 +380,7 @@
   .capability-image:nth-of-type(2) {
     width: 52% !important;
     height: 44% !important;
-    top: 52% !important;
+    top: 53% !important;
     left: 44% !important;
   }
 
@@ -432,7 +439,7 @@
   .capability-image:nth-of-type(2) {
     width: 54% !important;
     height: 44% !important;
-    top: 52% !important;
+    top: 53% !important;
     left: 42% !important;
   }
 

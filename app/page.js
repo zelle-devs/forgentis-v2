@@ -89,7 +89,7 @@ const POINTS = [
       { src: '/optimize/precision2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
   },
   {
     titleFirst: 'CAPABILITY',
@@ -100,7 +100,7 @@ const POINTS = [
       { src: '/optimize/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
   },
   {
     titleFirst: 'CONTROL',
@@ -111,7 +111,7 @@ const POINTS = [
       { src: '/optimize/control2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
   },
   {
     titleFirst: 'COMPLEXITY',
@@ -122,7 +122,7 @@ const POINTS = [
       { src: '/optimize/craft2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
   },
   {
     titleFirst: 'FINISHED',
@@ -133,7 +133,7 @@ const POINTS = [
       { src: '/optimize/capability2.png', top: '-20%', left: '54%', width: '40%', height: '60%', speed: 0.22 },
     ],
     titlePos: { top: '10%', left: '4%' },
-    mobileTitlePos: { top: '0%', left: '6%' },
+    mobileTitlePos: { top: '-10%', left: '6%' },
   },
 ]
 
@@ -1026,24 +1026,38 @@ if (stageRef.current === STAGE_FOURTH) {
       isTouchScrollingRef.current = true
     }
 
-    const handleTouchMove = (e) => {
-      if (!isTouchScrollingRef.current) return
-      if (loadingRef.current) return
-      if (document.querySelector('.nav-sidebar')) return
+   const handleTouchMove = (e) => {
+  if (!isTouchScrollingRef.current) return
+  if (loadingRef.current) return
+  if (document.querySelector('.nav-sidebar')) return
 
-      const currentY = e.touches[0].clientY
-      const deltaY = touchLastYRef.current - currentY
-      touchLastYRef.current = currentY
+  const currentY = e.touches[0].clientY
+  const deltaY = touchLastYRef.current - currentY
+  touchLastYRef.current = currentY
 
-      const multiplier = getTouchMultiplier()
-      // wheelAccumRef.current += deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
-const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
+  const isMobileDevice = isMobileViewport()
 
-  // Accumulate karo, magar har frame mein thoda thoda consume karo
-  wheelAccumRef.current += touchDelta
+  // ✅ Sirf CapabilitySection pe mobile — normal threshold-based scroll
+  const isCapabilityOnMobile =
+    isMobileDevice && stageRef.current === STAGE_CAPABILITY
 
-      if (e.cancelable) e.preventDefault()
+  if (isCapabilityOnMobile) {
+    const MIN_SWIPE = 15  // px per step
+
+    if (Math.abs(deltaY) >= MIN_SWIPE) {
+      const direction = deltaY > 0 ? 1 : -1
+      handleScrollStep(direction, 1.0)
+      touchLastYRef.current = currentY // reset anchor
     }
+  } else {
+    // Baaki sab sections — original smooth accumulation
+    const multiplier = getTouchMultiplier()
+    const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
+    wheelAccumRef.current += touchDelta
+  }
+
+  if (e.cancelable) e.preventDefault()
+}
 
     const handleTouchEnd = () => {
       isTouchScrollingRef.current = false
@@ -1075,30 +1089,41 @@ const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
       }
     }
 
-     const tick = () => {
+   const tick = () => {
   if (isTransitioning.current) {
     wheelAccumRef.current = 0
   } else if (Math.abs(wheelAccumRef.current) > INPUT_CONFIG.wheelDeadZone) {
     const raw = wheelAccumRef.current
     const direction = raw > 0 ? 1 : -1
 
-    // ✅ MOBILE/TABLET: factor ko 1.0 par lock karo (Capability jaisa)
     const isMobileDevice = isMobileViewport()
-    let factor
-    if (isMobileDevice) {
-      factor = 1.0
-    } else {
-      const magnitude = Math.min(Math.abs(raw), INPUT_CONFIG.wheelMagnitudeCap)
-      factor = Math.max(
-        INPUT_CONFIG.wheelFactorMin,
-        Math.min(INPUT_CONFIG.wheelFactorMax, magnitude / INPUT_CONFIG.wheelFactorDivisor)
-      )
-    }
 
-    handleScrollStep(direction, factor)
-    wheelAccumRef.current -= raw * INPUT_CONFIG.wheelDecay
-    if (Math.abs(wheelAccumRef.current) < INPUT_CONFIG.wheelDeadZone) {
+    // ✅ Sirf CapabilitySection pe mobile — normal scroll (no accumulation smoothing)
+    const isCapabilityOnMobile =
+      isMobileDevice && stageRef.current === STAGE_CAPABILITY
+
+    if (isCapabilityOnMobile) {
+      // Ek event = ek step, turant reset
+      handleScrollStep(direction, 1.0)
       wheelAccumRef.current = 0
+    } else {
+      // Baaki sab sections — original butter-smooth accumulation
+      let factor
+      if (isMobileDevice) {
+        factor = 1.0
+      } else {
+        const magnitude = Math.min(Math.abs(raw), INPUT_CONFIG.wheelMagnitudeCap)
+        factor = Math.max(
+          INPUT_CONFIG.wheelFactorMin,
+          Math.min(INPUT_CONFIG.wheelFactorMax, magnitude / INPUT_CONFIG.wheelFactorDivisor)
+        )
+      }
+
+      handleScrollStep(direction, factor)
+      wheelAccumRef.current -= raw * INPUT_CONFIG.wheelDecay
+      if (Math.abs(wheelAccumRef.current) < INPUT_CONFIG.wheelDeadZone) {
+        wheelAccumRef.current = 0
+      }
     }
   }
       if (stageRef.current !== lastStageRef.current) {
