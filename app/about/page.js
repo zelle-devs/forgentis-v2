@@ -115,8 +115,20 @@ const POINTS = [
     mobileDescPos: { top: '62%', left: '6%', maxWidth: '100%' },
   },
 ]
+// ✅ Change only this number: 0 = no points, 2 = first 2, POINTS.length = all
+const CAPABILITY_VISIBLE_POINTS = 0
 
-const TOTAL_PANELS = POINTS.length + 1
+const HAS_CAPABILITY_POINTS =
+  Math.min(CAPABILITY_VISIBLE_POINTS, POINTS.length) > 0
+
+// With no points, the whole stage is the slide-in (no internal panel scroll)
+const CAP_SPLIT = HAS_CAPABILITY_POINTS ? CAPABILITY_SPLIT : 1
+
+// Slide-in takes the same number of scrolls as before, no wasted scrolls
+const getCapabilityStep = () =>
+  HAS_CAPABILITY_POINTS
+    ? getStep('capability')
+    : getStep('capability') / CAPABILITY_SPLIT
 
 const quality_points = [
   { title: 'PRECISION THAT FITS', desc: 'Built around drawings, specifications and real project requirements.' },
@@ -192,11 +204,12 @@ export default function AboutPage() {
       if (stageRef.current === targetStage) return
 
       const STAGE_STEPS = {
-        [STAGE_HERO]:       getHeroStep(),
-        [STAGE_SECOND]:     getStep('second'),
+        [STAGE_HERO]: getHeroStep(),
+        [STAGE_SECOND]: getStep('second'),
         [STAGE_CAPABILITY]: getStep('capability'),
-        [STAGE_QUALITY]:    getQualityStep(),
-        [STAGE_CONTACT]:    getStep('contact'),
+        [STAGE_QUALITY]: getQualityStep(),
+        [STAGE_CONTACT]: getStep('contact'),
+        [STAGE_CAPABILITY]: getCapabilityStep(),
       }
 
       const direction = targetStage > stageRef.current ? 1 : -1
@@ -336,30 +349,30 @@ export default function AboutPage() {
   // }
 
   const mountForward = (setter, ref, nextStage) => {
-  isTransitioning.current = true
+    isTransitioning.current = true
 
-  stageRef.current = nextStage
-  scrollProgressRef.current = 0
+    stageRef.current = nextStage
+    scrollProgressRef.current = 0
 
-  // Pehle section ko mount karo
-  // Wrapper already translateY(100%) par hoga
-  setter(true)
+    // Pehle section ko mount karo
+    // Wrapper already translateY(100%) par hoga
+    setter(true)
 
-  requestAnimationFrame(() => {
-    if (ref?.current) {
-      gsap.set(ref.current, {
-        y: '100%',
-        opacity: 1,
-        scale: 1,
-      })
-    }
-
-    // Transition lock ko next frame par release karo
     requestAnimationFrame(() => {
-      isTransitioning.current = false
+      if (ref?.current) {
+        gsap.set(ref.current, {
+          y: '100%',
+          opacity: 1,
+          scale: 1,
+        })
+      }
+
+      // Transition lock ko next frame par release karo
+      requestAnimationFrame(() => {
+        isTransitioning.current = false
+      })
     })
-  })
-}
+  }
 
   const unmountBackward = (setter, underRef, prevStage, extraDispatch) => {
     isTransitioning.current = true
@@ -422,34 +435,34 @@ export default function AboutPage() {
 
     // CAPABILITY -> QUALITY
     if (stageRef.current === STAGE_CAPABILITY) {
-      const step = getStep('capability')
+      const step = getCapabilityStep()
 
       if (direction > 0) {
         scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
-        if (scrollProgressRef.current <= CAPABILITY_SPLIT) {
-          slideParallax(capabilityRef, secondRef, scrollProgressRef.current / CAPABILITY_SPLIT)
+        const p = scrollProgressRef.current
+
+        if (p <= CAP_SPLIT) {
+          slideParallax(capabilityRef, secondRef, p / CAP_SPLIT)
         } else {
           slideParallax(capabilityRef, secondRef, 1)
-          dispatch(
-            'capabilityProgress',
-            (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT)
-          )
+          dispatch('capabilityProgress', (p - CAP_SPLIT) / (1 - CAP_SPLIT))
         }
-        if (scrollProgressRef.current >= 1) {
+
+        if (p >= 1) {
           mountForward(setShowQuality, qualityRef, STAGE_QUALITY)
         }
       } else {
         scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
-        if (scrollProgressRef.current <= CAPABILITY_SPLIT) {
-          slideParallax(capabilityRef, secondRef, scrollProgressRef.current / CAPABILITY_SPLIT)
-          dispatch('capabilityProgress', 0)
+        const p = scrollProgressRef.current
+
+        if (p <= CAP_SPLIT) {
+          slideParallax(capabilityRef, secondRef, p / CAP_SPLIT)
+          if (HAS_CAPABILITY_POINTS) dispatch('capabilityProgress', 0)
         } else {
-          dispatch(
-            'capabilityProgress',
-            (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT)
-          )
+          dispatch('capabilityProgress', (p - CAP_SPLIT) / (1 - CAP_SPLIT))
         }
-        if (scrollProgressRef.current <= 0) {
+
+        if (p <= 0) {
           unmountBackward(setShowCapability, secondRef, STAGE_SECOND, () => {
             dispatch('secondTextProgress', 1)
           })
@@ -612,7 +625,7 @@ export default function AboutPage() {
       isTouchScrollingRef.current = true
     }
 
-       const handleTouchMove = (e) => {
+    const handleTouchMove = (e) => {
       if (!isTouchScrollingRef.current) return
       if (loadingRef.current) return
       if (document.querySelector('.nav-sidebar')) return
@@ -625,7 +638,9 @@ export default function AboutPage() {
 
       // ✅ Sirf CapabilitySection pe mobile — normal threshold-based scroll
       const isCapabilityOnMobile =
-        isMobileDevice && stageRef.current === STAGE_CAPABILITY
+        isMobileDevice &&
+        stageRef.current === STAGE_CAPABILITY &&
+        HAS_CAPABILITY_POINTS
 
       if (isCapabilityOnMobile) {
         const MIN_SWIPE = 15 // px per step
@@ -779,21 +794,21 @@ export default function AboutPage() {
   // Render
   // ==========================================================================
   return (
-   <main
-  className="main-container"
-  style={{
-    position: 'relative',
-    width: '100%',
-    maxWidth: '100vw',
-    height: '100dvh',
-    overflow: 'hidden',
-    overscrollBehavior: 'none',
-    touchAction: 'none',
-  }}
->
-  {loading && <LoadingScreen />}
+    <main
+      className="main-container"
+      style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '100vw',
+        height: '100dvh',
+        overflow: 'hidden',
+        overscrollBehavior: 'none',
+        touchAction: 'none',
+      }}
+    >
+      {loading && <LoadingScreen />}
 
-  {!loading && <NavContent />}
+      {!loading && <NavContent />}
 
       {showHero && (
         <>
@@ -804,11 +819,11 @@ export default function AboutPage() {
               buttonText={''}
               onButtonClick={() => {}}
             /> */}
-                 <HeroSection
-  // eyebrow="METAL FABRICATION EXCELLENCE"
-  headline="BUILT ON PRECISION DRIVEN BY"
-  highlightedHeadline="PURPOSE"
-/>
+            <HeroSection
+              // eyebrow="METAL FABRICATION EXCELLENCE"
+              headline="BUILT ON PRECISION DRIVEN BY"
+              highlightedHeadline="PURPOSE"
+            />
           </div>
 
           {showSecond && (
@@ -831,15 +846,14 @@ export default function AboutPage() {
             <div
               ref={capabilityRef}
               className="capability-section-wrapper"
-               style={slideInWrapperStyle(3)}
+              style={slideInWrapperStyle(3)}
             >
               <CapabilitySection
                 heading_1={'GOOD FABRICATION STARTS'}
                 heading_2={'BEFORE THE FIRST CUT'}
                 paragraph={'Every successful project begins with understanding.'}
-                scrollProgressRef={scrollProgressRef}
+                visiblePoints={CAPABILITY_VISIBLE_POINTS}
                 POINTS={POINTS}
-                TOTAL_PANELS={TOTAL_PANELS}
               />
             </div>
           )}
@@ -891,7 +905,7 @@ export default function AboutPage() {
         </>
       )}
 
-      
+
     </main>
   )
 }

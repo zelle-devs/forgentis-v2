@@ -89,7 +89,7 @@
 }
 
 .hero-highlight-word {
-  font-weight: 600!important;
+  font-weight: 100!important;
   background: var(--color-blue-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

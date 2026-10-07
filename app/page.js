@@ -137,7 +137,21 @@ const POINTS = [
   },
 ]
 
-const TOTAL_PANELS = POINTS.length + 1
+// const TOTAL_PANELS = POINTS.length + 1
+// ✅ Change only this number: 0 = no points, 3 = first 3, POINTS.length = all
+const CAPABILITY_VISIBLE_POINTS = 0
+
+const HAS_CAPABILITY_POINTS =
+  Math.min(CAPABILITY_VISIBLE_POINTS, POINTS.length) > 0
+
+// With no points, the whole stage is the slide-in (no internal panel scroll)
+const CAP_SPLIT = HAS_CAPABILITY_POINTS ? CAPABILITY_SPLIT : 1
+
+// Same scroll count for the slide-in as before, no wasted scrolls
+const getCapabilityStep = () =>
+  HAS_CAPABILITY_POINTS
+    ? getStep('capability')
+    : getStep('capability') / CAPABILITY_SPLIT
 
 const POINTS_PROCESS = [
   {
@@ -213,7 +227,8 @@ const project_slides = [
     desc: 'KINGS GROUP Architectural Metalwork',
     logo: '/optimize/king.png',
     title: 'Custom laser-cut panels and decorative metal elements, fabricated to project specifications and ready for installation.',
-     pos: { top: '12%', left: '53%' },
+    //  pos: { top: '12%', left: '53%' },
+    pos: { bottom: '0%', left: '58%' },
   },
   {
     id: 3,
@@ -222,7 +237,16 @@ const project_slides = [
     desc: 'SHAMS POWER Solar Components',
     logo: '/optimize/shams2.png',
     title: 'Custom-fabricated metal components developed to meet specific solar installation requirements.',
-      pos: { bottom: '0%', left: '58%' },
+    pos: { bottom: '0%', left: '58%' },
+  },
+  {
+    id: 3,
+    src: '/optimize/mip_4.png',
+    mobileSrc: '/optimize/mip_2.jpg',
+    desc: 'MALIR INDUSTRIAL PARK',
+    logo: '/optimize/mip_w.png',
+    title: 'Custom-fabricated architectural signage, precisely engineered, cut, finished, and assembled for on-site installation.',
+    pos: { bottom: '0%', left: '58%' },
   },
 ]
 
@@ -375,6 +399,7 @@ export default function Home() {
         [STAGE_THIRD]: getStep('third'),
         [STAGE_QUALITY]: getQualityStep(),
         [STAGE_CONTACT]: getStep('contact'),
+        [STAGE_CAPABILITY]: getCapabilityStep(),
       }
 
       const direction = targetStage > stageRef.current ? 1 : -1
@@ -452,28 +477,28 @@ export default function Home() {
     }
   }, [])
 
-const slideParallax = (overRef, underRef, progress) => {
-  const isMobileDevice = isMobileViewport()
-  const dur = isMobileDevice ? 0.05 : 0.1  // mobile par tez
+  const slideParallax = (overRef, underRef, progress) => {
+    const isMobileDevice = isMobileViewport()
+    const dur = isMobileDevice ? 0.05 : 0.1  // mobile par tez
 
-  if (overRef?.current) {
-    gsap.to(overRef.current, {
-      y: `${(1 - progress) * 100}%`,
-      duration: dur,
-      ease: 'power2.out',
-      overwrite: 'auto',
-    })
+    if (overRef?.current) {
+      gsap.to(overRef.current, {
+        y: `${(1 - progress) * 100}%`,
+        duration: dur,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      })
+    }
+    if (underRef?.current) {
+      gsap.to(underRef.current, {
+        y: `${-8 * progress}%`,
+        scale: 1 - 0.03 * progress,
+        duration: dur,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      })
+    }
   }
-  if (underRef?.current) {
-    gsap.to(underRef.current, {
-      y: `${-8 * progress}%`,
-      scale: 1 - 0.03 * progress,
-      duration: dur,
-      ease: 'power2.out',
-      overwrite: 'auto',
-    })
-  }
-}
 
   const resetParallaxUnder = (underRef) => {
     if (underRef?.current) {
@@ -494,66 +519,66 @@ const slideParallax = (overRef, underRef, progress) => {
   }
 
 
-// const mountForward = (setter, ref, nextStage) => {
-//   isTransitioning.current = true
-//   stageRef.current = nextStage
-//   scrollProgressRef.current = 0
+  // const mountForward = (setter, ref, nextStage) => {
+  //   isTransitioning.current = true
+  //   stageRef.current = nextStage
+  //   scrollProgressRef.current = 0
 
-//   // Section ko pehle hi neeche position karo
-//   if (ref?.current) {
-//     gsap.set(ref.current, {
-//       y: '100%',
-//       opacity: 1,
-//       scale: 1,
-//     })
-//   }
+  //   // Section ko pehle hi neeche position karo
+  //   if (ref?.current) {
+  //     gsap.set(ref.current, {
+  //       y: '100%',
+  //       opacity: 1,
+  //       scale: 1,
+  //     })
+  //   }
 
-//   // Ab section mount karo
-//   setter(true)
+  //   // Ab section mount karo
+  //   setter(true)
 
-//   // React render ke baad position confirm karo
-//   requestAnimationFrame(() => {
-//     if (ref?.current) {
-//       gsap.set(ref.current, {
-//         y: '100%',
-//         opacity: 1,
-//         scale: 1,
-//       })
-//     }
+  //   // React render ke baad position confirm karo
+  //   requestAnimationFrame(() => {
+  //     if (ref?.current) {
+  //       gsap.set(ref.current, {
+  //         y: '100%',
+  //         opacity: 1,
+  //         scale: 1,
+  //       })
+  //     }
 
-//     isTransitioning.current = false
-//   })
-// }
+  //     isTransitioning.current = false
+  //   })
+  // }
 
-const mountForward = (setter, ref, nextStage) => {
-  isTransitioning.current = true
+  const mountForward = (setter, ref, nextStage) => {
+    isTransitioning.current = true
 
-  // Current section ko uski final position par hold karo
-  scrollProgressRef.current = 1
+    // Current section ko uski final position par hold karo
+    scrollProgressRef.current = 1
 
-  // Next stage activate karo
-  stageRef.current = nextStage
+    // Next stage activate karo
+    stageRef.current = nextStage
 
-  // Next section mount karo
-  setter(true)
-
-  requestAnimationFrame(() => {
-    if (ref?.current) {
-      gsap.set(ref.current, {
-        y: '100%',
-        opacity: 1,
-        scale: 1,
-      })
-    }
+    // Next section mount karo
+    setter(true)
 
     requestAnimationFrame(() => {
-      // Ab next section ke liye progress reset
-      scrollProgressRef.current = 0
+      if (ref?.current) {
+        gsap.set(ref.current, {
+          y: '100%',
+          opacity: 1,
+          scale: 1,
+        })
+      }
 
-      isTransitioning.current = false
+      requestAnimationFrame(() => {
+        // Ab next section ke liye progress reset
+        scrollProgressRef.current = 0
+
+        isTransitioning.current = false
+      })
     })
-  })
-}
+  }
 
 
   const unmountBackward = (setter, underRef, prevStage, extraDispatch) => {
@@ -667,105 +692,96 @@ const mountForward = (setter, ref, nextStage) => {
     // }
 
     // FOURTH
-if (stageRef.current === STAGE_FOURTH) {
-  const step = getStep('fourth')
+    if (stageRef.current === STAGE_FOURTH) {
+      const step = getStep('fourth')
 
-  // 3 splits — config me daal sakte ho, ya yahan define karo
-  const SHAPE_END = 0.4      // 0 → 0.4  pattern
-  const IMAGE1_END = 0.7     // 0.4 → 0.7 image1 fade
-  // 0.7 → 1.0 image2 slide
+      // 3 splits — config me daal sakte ho, ya yahan define karo
+      const SHAPE_END = 0.4      // 0 → 0.4  pattern
+      const IMAGE1_END = 0.7     // 0.4 → 0.7 image1 fade
+      // 0.7 → 1.0 image2 slide
 
-  if (direction > 0) {
-    scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
-    const p = scrollProgressRef.current
+      if (direction > 0) {
+        scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
+        const p = scrollProgressRef.current
 
-    if (p <= SHAPE_END) {
-      dispatch('fourthShapeProgress', p / SHAPE_END)
-      dispatch('fourthImageProgress', 0)
-      dispatch('fourthImage2Progress', 0)
-    } else if (p <= IMAGE1_END) {
-      dispatch('fourthShapeProgress', 1)
-      dispatch('fourthImageProgress', (p - SHAPE_END) / (IMAGE1_END - SHAPE_END))
-      dispatch('fourthImage2Progress', 0)
-    } else {
-      dispatch('fourthShapeProgress', 1)
-      dispatch('fourthImageProgress', 1)
-      dispatch('fourthImage2Progress', (p - IMAGE1_END) / (1 - IMAGE1_END))
+        if (p <= SHAPE_END) {
+          dispatch('fourthShapeProgress', p / SHAPE_END)
+          dispatch('fourthImageProgress', 0)
+          dispatch('fourthImage2Progress', 0)
+        } else if (p <= IMAGE1_END) {
+          dispatch('fourthShapeProgress', 1)
+          dispatch('fourthImageProgress', (p - SHAPE_END) / (IMAGE1_END - SHAPE_END))
+          dispatch('fourthImage2Progress', 0)
+        } else {
+          dispatch('fourthShapeProgress', 1)
+          dispatch('fourthImageProgress', 1)
+          dispatch('fourthImage2Progress', (p - IMAGE1_END) / (1 - IMAGE1_END))
+        }
+
+        if (p >= 1) {
+          mountForward(setShowCapability, capabilityRef, STAGE_CAPABILITY)
+        }
+      } else {
+        scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
+        const p = scrollProgressRef.current
+
+        if (p <= SHAPE_END) {
+          dispatch('fourthShapeProgress', p / SHAPE_END)
+          dispatch('fourthImageProgress', 0)
+          dispatch('fourthImage2Progress', 0)
+        } else if (p <= IMAGE1_END) {
+          dispatch('fourthShapeProgress', 1)
+          dispatch('fourthImageProgress', (p - SHAPE_END) / (IMAGE1_END - SHAPE_END))
+          dispatch('fourthImage2Progress', 0)
+        } else {
+          dispatch('fourthShapeProgress', 1)
+          dispatch('fourthImageProgress', 1)
+          dispatch('fourthImage2Progress', (p - IMAGE1_END) / (1 - IMAGE1_END))
+        }
+
+        if (p <= 0) {
+          stageRef.current = STAGE_SECOND
+          runFade(() => {
+            setShowFourth(false)
+            scrollProgressRef.current = 1
+            dispatch('secondTextProgress', 1)
+          })
+        }
+      }
+      return
     }
-
-    if (p >= 1) {
-      mountForward(setShowCapability, capabilityRef, STAGE_CAPABILITY)
-    }
-  } else {
-    scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
-    const p = scrollProgressRef.current
-
-    if (p <= SHAPE_END) {
-      dispatch('fourthShapeProgress', p / SHAPE_END)
-      dispatch('fourthImageProgress', 0)
-      dispatch('fourthImage2Progress', 0)
-    } else if (p <= IMAGE1_END) {
-      dispatch('fourthShapeProgress', 1)
-      dispatch('fourthImageProgress', (p - SHAPE_END) / (IMAGE1_END - SHAPE_END))
-      dispatch('fourthImage2Progress', 0)
-    } else {
-      dispatch('fourthShapeProgress', 1)
-      dispatch('fourthImageProgress', 1)
-      dispatch('fourthImage2Progress', (p - IMAGE1_END) / (1 - IMAGE1_END))
-    }
-
-    if (p <= 0) {
-      stageRef.current = STAGE_SECOND
-      runFade(() => {
-        setShowFourth(false)
-        scrollProgressRef.current = 1
-        dispatch('secondTextProgress', 1)
-      })
-    }
-  }
-  return
-}
 
     // CAPABILITY
     if (stageRef.current === STAGE_CAPABILITY) {
-      const step = getStep('capability')
+      const step = getCapabilityStep()
+
       if (direction > 0) {
         scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
-        if (scrollProgressRef.current <= CAPABILITY_SPLIT) {
-          slideParallax(
-            capabilityRef,
-            fourthRef,
-            scrollProgressRef.current / CAPABILITY_SPLIT
-          )
+        const p = scrollProgressRef.current
+
+        if (p <= CAP_SPLIT) {
+          slideParallax(capabilityRef, fourthRef, p / CAP_SPLIT)
         } else {
           slideParallax(capabilityRef, fourthRef, 1)
-          dispatch(
-            'capabilityProgress',
-            (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT)
-          )
+          dispatch('capabilityProgress', (p - CAP_SPLIT) / (1 - CAP_SPLIT))
         }
-        if (scrollProgressRef.current >= 1) {
+
+        if (p >= 1) {
           mountForward(setShowProcess, processRef, STAGE_PROCESS)
         }
       } else {
         scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
-        if (scrollProgressRef.current <= CAPABILITY_SPLIT) {
-          slideParallax(
-            capabilityRef,
-            fourthRef,
-            scrollProgressRef.current / CAPABILITY_SPLIT
-          )
-          dispatch('capabilityProgress', 0)
-        } else {
-          dispatch(
-            'capabilityProgress',
-            (scrollProgressRef.current - CAPABILITY_SPLIT) / (1 - CAPABILITY_SPLIT)
-          )
-        }
-        if (scrollProgressRef.current <= 0) {
-          const isMobileDevice = isMobileViewport()
+        const p = scrollProgressRef.current
 
-          if (isMobileDevice) {
+        if (p <= CAP_SPLIT) {
+          slideParallax(capabilityRef, fourthRef, p / CAP_SPLIT)
+          if (HAS_CAPABILITY_POINTS) dispatch('capabilityProgress', 0)
+        } else {
+          dispatch('capabilityProgress', (p - CAP_SPLIT) / (1 - CAP_SPLIT))
+        }
+
+        if (p <= 0) {
+          if (isMobileViewport()) {
             unmountBackward(setShowCapability, secondRef, STAGE_SECOND, () => {
               dispatch('secondTextProgress', 1)
             })
@@ -935,13 +951,13 @@ if (stageRef.current === STAGE_FOURTH) {
           )
         }
         if (scrollProgressRef.current <= 0) {
-  unmountBackward(setShowQuality, thirdRef, STAGE_THIRD, () => {
-    // Third section ko uski starting/end visual state par
-    // immediately sync karo.
-    dispatch('thirdHorizontalProgress', 1)
-    dispatch('thirdSlideProgress', 1)
-  })
-}
+          unmountBackward(setShowQuality, thirdRef, STAGE_THIRD, () => {
+            // Third section ko uski starting/end visual state par
+            // immediately sync karo.
+            dispatch('thirdHorizontalProgress', 1)
+            dispatch('thirdSlideProgress', 1)
+          })
+        }
       }
       return
     }
@@ -1020,44 +1036,47 @@ if (stageRef.current === STAGE_FOURTH) {
       if (loadingRef.current) return
       if (document.querySelector('.nav-sidebar')) return
 
+      wheelAccumRef.current = 0 // ✅ tap = stop, like native scroll
+
       touchStartYRef.current = e.touches[0].clientY
       touchLastYRef.current = e.touches[0].clientY
       touchAccumRef.current = 0
       isTouchScrollingRef.current = true
     }
 
-   const handleTouchMove = (e) => {
-  if (!isTouchScrollingRef.current) return
-  if (loadingRef.current) return
-  if (document.querySelector('.nav-sidebar')) return
+    const handleTouchMove = (e) => {
+      if (!isTouchScrollingRef.current) return
+      if (loadingRef.current) return
+      if (document.querySelector('.nav-sidebar')) return
 
-  const currentY = e.touches[0].clientY
-  const deltaY = touchLastYRef.current - currentY
-  touchLastYRef.current = currentY
+      const currentY = e.touches[0].clientY
+      const deltaY = touchLastYRef.current - currentY
+      touchLastYRef.current = currentY
 
-  const isMobileDevice = isMobileViewport()
+      const isMobileDevice = isMobileViewport()
 
-  // ✅ Sirf CapabilitySection pe mobile — normal threshold-based scroll
-  const isCapabilityOnMobile =
-    isMobileDevice && stageRef.current === STAGE_CAPABILITY
+      // ✅ Sirf CapabilitySection pe mobile — normal threshold-based scroll
+      const isCapabilityOnMobile =
+        isMobileDevice &&
+        stageRef.current === STAGE_CAPABILITY &&
+        HAS_CAPABILITY_POINTS
+      if (isCapabilityOnMobile) {
+        const MIN_SWIPE = 15  // px per step
 
-  if (isCapabilityOnMobile) {
-    const MIN_SWIPE = 15  // px per step
+        if (Math.abs(deltaY) >= MIN_SWIPE) {
+          const direction = deltaY > 0 ? 1 : -1
+          handleScrollStep(direction, 1.0)
+          touchLastYRef.current = currentY // reset anchor
+        }
+      } else {
+        // Baaki sab sections — original smooth accumulation
+        const multiplier = getTouchMultiplier()
+        const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
+        wheelAccumRef.current += touchDelta
+      }
 
-    if (Math.abs(deltaY) >= MIN_SWIPE) {
-      const direction = deltaY > 0 ? 1 : -1
-      handleScrollStep(direction, 1.0)
-      touchLastYRef.current = currentY // reset anchor
+      if (e.cancelable) e.preventDefault()
     }
-  } else {
-    // Baaki sab sections — original smooth accumulation
-    const multiplier = getTouchMultiplier()
-    const touchDelta = deltaY * multiplier * INPUT_CONFIG.touchDeltaMultiplier
-    wheelAccumRef.current += touchDelta
-  }
-
-  if (e.cancelable) e.preventDefault()
-}
 
     const handleTouchEnd = () => {
       isTouchScrollingRef.current = false
@@ -1089,43 +1108,43 @@ if (stageRef.current === STAGE_FOURTH) {
       }
     }
 
-   const tick = () => {
-  if (isTransitioning.current) {
-    wheelAccumRef.current = 0
-  } else if (Math.abs(wheelAccumRef.current) > INPUT_CONFIG.wheelDeadZone) {
-    const raw = wheelAccumRef.current
-    const direction = raw > 0 ? 1 : -1
-
-    const isMobileDevice = isMobileViewport()
-
-    // ✅ Sirf CapabilitySection pe mobile — normal scroll (no accumulation smoothing)
-    const isCapabilityOnMobile =
-      isMobileDevice && stageRef.current === STAGE_CAPABILITY
-
-    if (isCapabilityOnMobile) {
-      // Ek event = ek step, turant reset
-      handleScrollStep(direction, 1.0)
-      wheelAccumRef.current = 0
-    } else {
-      // Baaki sab sections — original butter-smooth accumulation
-      let factor
-      if (isMobileDevice) {
-        factor = 1.0
-      } else {
-        const magnitude = Math.min(Math.abs(raw), INPUT_CONFIG.wheelMagnitudeCap)
-        factor = Math.max(
-          INPUT_CONFIG.wheelFactorMin,
-          Math.min(INPUT_CONFIG.wheelFactorMax, magnitude / INPUT_CONFIG.wheelFactorDivisor)
-        )
-      }
-
-      handleScrollStep(direction, factor)
-      wheelAccumRef.current -= raw * INPUT_CONFIG.wheelDecay
-      if (Math.abs(wheelAccumRef.current) < INPUT_CONFIG.wheelDeadZone) {
+    const tick = () => {
+      if (isTransitioning.current) {
         wheelAccumRef.current = 0
+      } else if (Math.abs(wheelAccumRef.current) > INPUT_CONFIG.wheelDeadZone) {
+        const raw = wheelAccumRef.current
+        const direction = raw > 0 ? 1 : -1
+
+        const isMobileDevice = isMobileViewport()
+
+        // ✅ Sirf CapabilitySection pe mobile — normal scroll (no accumulation smoothing)
+        const isCapabilityOnMobile =
+          isMobileDevice && stageRef.current === STAGE_CAPABILITY
+
+        if (isCapabilityOnMobile) {
+          // Ek event = ek step, turant reset
+          handleScrollStep(direction, 1.0)
+          wheelAccumRef.current = 0
+        } else {
+          // Baaki sab sections — original butter-smooth accumulation
+          let factor
+          if (isMobileDevice) {
+            factor = 1.0
+          } else {
+            const magnitude = Math.min(Math.abs(raw), INPUT_CONFIG.wheelMagnitudeCap)
+            factor = Math.max(
+              INPUT_CONFIG.wheelFactorMin,
+              Math.min(INPUT_CONFIG.wheelFactorMax, magnitude / INPUT_CONFIG.wheelFactorDivisor)
+            )
+          }
+
+          handleScrollStep(direction, factor)
+          wheelAccumRef.current -= raw * INPUT_CONFIG.wheelDecay
+          if (Math.abs(wheelAccumRef.current) < INPUT_CONFIG.wheelDeadZone) {
+            wheelAccumRef.current = 0
+          }
+        }
       }
-    }
-  }
       if (stageRef.current !== lastStageRef.current) {
         lastStageRef.current = stageRef.current
         window.dispatchEvent(
@@ -1196,11 +1215,11 @@ if (stageRef.current === STAGE_FOURTH) {
             {/* <HeroSection 
                headline={<>WE SHAPE WHAT BUILDS</>}
             /> */}
-        <HeroSection
-  // eyebrow="METAL FABRICATION EXCELLENCE"
-  headline="WE SHAPE WHAT"
-  highlightedHeadline="BUILDS"
-/>
+            <HeroSection
+              // eyebrow="METAL FABRICATION EXCELLENCE"
+              headline="WE SHAPE WHAT"
+              highlightedHeadline="BUILDS"
+            />
           </div>
 
           {showSecond && (
@@ -1238,12 +1257,9 @@ if (stageRef.current === STAGE_FOURTH) {
               <CapabilitySection
                 heading_1={'WHAT SHAPES AN IDEA INTO WELL'}
                 heading_2={' FABRICATED METAL'}
-                paragraph={
-                  'The right process turns possibility into something precise, functional and built to last.'
-                }
-                scrollProgressRef={scrollProgressRef}
+                paragraph={'The right process turns possibility into something precise, functional and built to last.'}
+                visiblePoints={CAPABILITY_VISIBLE_POINTS}
                 POINTS={POINTS}
-                TOTAL_PANELS={TOTAL_PANELS}
               />
             </div>
           )}
@@ -1293,7 +1309,7 @@ if (stageRef.current === STAGE_FOURTH) {
               <QualitySection
                 scrollProgressRef={scrollProgressRef}
                 POINTS={quality_points}
-                heading_part_1={"WHEN “GOOD " }
+                heading_part_1={"WHEN “GOOD "}
                 heading_part_2={''}
                 heading_part_3={""}
                 heading_part_4={"ENOUGH” ISN'T."}

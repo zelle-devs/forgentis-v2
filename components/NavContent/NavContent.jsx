@@ -24,6 +24,7 @@ const TOTAL_CHAPTERS = CHAPTERS.length
 const CHAPTER_MENU = [
   { label: 'ABOUT', href: '/about' },
   { label: 'CAPABILITIES', href: '/capabilities' },
+    { label: 'PROJECTS', href: '/projects' },
   { label: 'INDUSTRIES', href: '/industries' },
   { label: 'QUALITY', href: '/quality' },
   { label: 'FACILITIES', href: '/facilities' },
@@ -32,6 +33,7 @@ const CHAPTER_MENU = [
 const NAV_TABS = [
   { label: 'ABOUT', href: '/about' },
   { label: 'CAPABILITIES', href: '/capabilities' },
+   { label: 'PROJECTS', href: '/projects' },
   { label: 'INDUSTRIES', href: '/industries' },
   { label: 'QUALITY', href: '/quality' },
   { label: 'FACILITIES', href: '/facilities' },
@@ -46,6 +48,7 @@ const PAGE_BUTTONS = {
   '/quality': [{ label: 'START A PROJECT', href: '/consultation' }],
   '/facilities': [{ label: 'START A PROJECT', href: '/consultation' }],
   '/contact': [{ label: 'START A PROJECT', href: '/consultation' }],
+  '/projects': [{ label: 'START A PROJECT', href: '/consultation' }],
   '/consultation': [],
 }
 
