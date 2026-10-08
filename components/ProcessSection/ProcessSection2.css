@@ -41,14 +41,23 @@
   margin: 0 0 1.5rem 0;
   letter-spacing: -0.5px;
   text-transform: uppercase;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   gap: 0.15em;
   max-width: 900px;
+  text-align: left;
+}
+
+.process-main-cta{
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .process-title-line {
-  display: block;
+  /* display: block; */
   will-change: transform;
 }
 
@@ -66,8 +75,9 @@
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.6;
   margin: 0;
-  max-width: 640px;
   will-change: transform;
+  max-width: 900px;
+  text-align: left;
 }
 
 /* ============================================

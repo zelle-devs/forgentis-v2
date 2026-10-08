@@ -70,7 +70,7 @@
 
 .quality-description {
   max-width: 600px;
-  margin: 1.5rem 0 2rem;
+  margin: 1rem 0 2rem;
   font-size: var(--font-size-xl, 1.1rem);
   line-height: 1.45;
   font-weight: 300;
@@ -376,4 +376,9 @@
     height: 280px;
     padding: 1.2rem;
   }
+}
+
+.capability-main-cta.resources{
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

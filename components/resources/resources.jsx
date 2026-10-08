@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import './style.css'
+import Link from 'next/link'
 
 const processCards = [
   {
@@ -141,6 +142,12 @@ export default function ResourceSection() {
             WE DON'T WAIT UNTIL THE END TO <span>FIND A PROBLEM.</span>
           </h2>
 
+           <div className="capability-main-cta resources">
+              <Link href={"/consultation"} className="contact-btn-var-2">
+                TALK TO OUR TEAM
+              </Link>
+            </div>
+
           <p className="quality-description">
             Inspection during production gives us the opportunity to identify and correct issues while the work is still on the floor.
           </p>
@@ -156,9 +163,9 @@ export default function ResourceSection() {
             ))}
           </div>
 
-          <div className="quality-statement">
+          {/* <div className="quality-statement">
             Quality moves with the part.
-          </div>
+          </div> */}
         </div>
 
         {/* RIGHT CARDS */}

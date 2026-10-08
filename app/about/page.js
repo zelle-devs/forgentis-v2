@@ -821,8 +821,9 @@ export default function AboutPage() {
             /> */}
             <HeroSection
               // eyebrow="METAL FABRICATION EXCELLENCE"
-              headline="BUILT ON PRECISION DRIVEN BY"
-              highlightedHeadline="PURPOSE"
+              headline="EVERY PROJECT DEMANDS A "
+              highlightedHeadline="PRECISE PROCESS"
+              subtitle='From planning to fabrication, every stage is controlled for accuracy, consistency, and quality.'
             />
           </div>
 
@@ -854,6 +855,8 @@ export default function AboutPage() {
                 paragraph={'Every successful project begins with understanding.'}
                 visiblePoints={CAPABILITY_VISIBLE_POINTS}
                 POINTS={POINTS}
+                buttonText={"SEE OUR WORK"}
+                buttonHref={"/projects"}
               />
             </div>
           )}

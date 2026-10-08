@@ -516,8 +516,9 @@ export default function Quality() {
       {showHero && (
         <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
           <HeroSection
-            headline="MADE FOR THE PROJECT NOT"
-            highlightedHeadline="THE CATALOGUE"
+            headline="SEE WHAT WE’VE BUILT "
+            highlightedHeadline="THERE’S MORE TO CUT."
+            subtitle='Explore work shaped by precision, capability, and the demands of real-world production.'
           />
         </div>
       )}

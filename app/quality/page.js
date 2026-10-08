@@ -1266,7 +1266,7 @@ export default function Quality() {
           dispatch(
             'capabilityProgress',
             (scrollProgressRef.current - CAPABILITY_1_SPLIT) /
-              (1 - CAPABILITY_1_SPLIT)
+            (1 - CAPABILITY_1_SPLIT)
           )
         }
 
@@ -1385,7 +1385,7 @@ export default function Quality() {
           dispatch(
             'capabilityProgress2',
             (scrollProgressRef.current - CAPABILITY_2_SPLIT) /
-              (1 - CAPABILITY_2_SPLIT)
+            (1 - CAPABILITY_2_SPLIT)
           )
         }
 
@@ -1665,11 +1665,12 @@ export default function Quality() {
           {/* <HeroSection
             headline={<>QUALITY ISN'T THE LAST STEP. <br/><span>IT'S EVERY STEP</span></>}
           /> */}
-      <HeroSection
-  // eyebrow="METAL FABRICATION EXCELLENCE"
-  headline="QUALITY ISN'T THE LAST STEP"
-  highlightedHeadline="IT'S EVERY STEP"
-/>
+          <HeroSection
+            // eyebrow="METAL FABRICATION EXCELLENCE"
+            headline="QUALITY ISN'T THE LAST STEP"
+            highlightedHeadline="IT'S EVERY STEP"
+            subtitle='Quality is built into every stage of our process, from material selection and fabrication to inspection and final delivery.'
+          />
         </div>
       )}
 

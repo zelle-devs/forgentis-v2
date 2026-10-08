@@ -98,7 +98,9 @@
   font-size: var(--font-size-lg);
   color: var(--color-steel-main);
   line-height: 1.2;
-  max-width: 550px;
+  width: 100%;
+  max-width: 900px;
+  text-align: left;
 }
 
 .capability-point-desc {
@@ -538,4 +540,14 @@
     top: 3% !important;
     left: 58% !important;
   }
+}
+
+
+.capability-main-cta{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 900px;
 }

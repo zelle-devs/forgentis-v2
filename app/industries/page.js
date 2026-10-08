@@ -693,8 +693,9 @@ export default function Industries() {
       {showHero && (
         <div ref={heroRef} className="hero-wrapper" style={fixedWrapperStyle(1)}>
           <HeroSection
-            headline="FABRICATION FOR THE TEAMS THAT"
-            highlightedHeadline="BUILD"
+            headline="FABRICATION FOR THE ONES"
+            highlightedHeadline="WHO BUILD"
+            subtitle='Reliable fabrication solutions for industries where strength, precision, and consistency matter.'
           />
         </div>
       )}

@@ -2851,8 +2851,9 @@ export default function Home() {
           /> */}
     <HeroSection
   // eyebrow="METAL FABRICATION EXCELLENCE"
-  headline="ENGINEERED TO FABRICATE"
-  highlightedHeadline="EQUIPPED TO DELIVER"
+  headline="CAPABLE FROM CUT TO"
+  highlightedHeadline=" COMPLETION"
+  subtitle='From first cut to final finish, our capabilities cover the complete fabrication process.'
 />
         </div>
       )}

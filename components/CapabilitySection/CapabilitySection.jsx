@@ -1,7 +1,8 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
-import './CapabilitySection.css'
+import './CapabilitySection.css';
+import Link from 'next/link';
 
 function CapabilitySection({
   POINTS = [],
@@ -9,7 +10,11 @@ function CapabilitySection({
   heading_1,
   heading_2,
   paragraph,
+  buttonText, // ✅ CTA text (optional)
+  buttonHref, // ✅ CTA link (optional) — dono hon tabhi button dikhega
 }) {
+  const showIntroCta = Boolean(buttonText && buttonHref)
+
   // ===== Points normalize =====
   // visiblePoints = 0  -> koi point panel nahi
   // visiblePoints = 2  -> sirf pehle 2
@@ -210,7 +215,15 @@ function CapabilitySection({
               <span className="title-part-color">{heading_2}</span>
             </span>
           </h2>
-          <p className="capability-main-desc">{paragraph}</p>
+          {paragraph && <p className="capability-main-desc">{paragraph}</p>}
+
+          {showIntroCta && (
+            <div className="capability-main-cta">
+              <a href={buttonHref} className="contact-btn-var-2">
+                {buttonText}
+              </a>
+            </div>
+          )}
         </div>
 
         {/* ✅ Point panels — 0 points = kuch render nahi, koi height nahi */}

@@ -36,6 +36,9 @@ const STAGE_SECOND = 1
 const STAGE_FOURTH = 2
 const STAGE_CAPABILITY = 3
 const STAGE_PROCESS = 4
+// ✅ NEW: second Capability section between Process and Third.
+// 4.5 so every existing stage number (used by NavContent etc.) stays the same.
+const STAGE_CAPABILITY_2 = 4.5
 const STAGE_THIRD = 5
 const STAGE_QUALITY = 6
 const STAGE_CONTACT = 7
@@ -48,6 +51,12 @@ const THIRD_SPLIT = SPLITS.third
 const THIRD_WRAP_SPLIT = SPLITS.thirdWrap
 const QUALITY_SPLIT = SPLITS.quality
 const CONTACT_SPLIT = SPLITS.contact
+
+// ✅ Third intro panel removed — drop the scrolls that used to play the intro.
+// Slide-in and horizontal slider keep the same number of scrolls as before.
+const THIRD_INTRO_FRACTION = THIRD_SPLIT * (1 - THIRD_WRAP_SPLIT)
+const THIRD_SLIDEIN_SPLIT = (THIRD_SPLIT * THIRD_WRAP_SPLIT) / (1 - THIRD_INTRO_FRACTION)
+const getThirdStep = () => getStep('third') / (1 - THIRD_INTRO_FRACTION)
 
 const clamp01 = (v) => Math.max(0, Math.min(1, v))
 const dispatch = (name, progress) => {
@@ -264,6 +273,7 @@ export default function Home() {
   const [showFourth, setShowFourth] = useState(false)
   const [showCapability, setShowCapability] = useState(false)
   const [showProcess, setShowProcess] = useState(false)
+  const [showCapability2, setShowCapability2] = useState(false) // ✅ NEW
   const [showThird, setShowThird] = useState(false)
   const [showQuality, setShowQuality] = useState(false)
   const [showContact, setShowContact] = useState(false)
@@ -277,6 +287,7 @@ export default function Home() {
   const fourthRef = useRef(null)
   const capabilityRef = useRef(null)
   const processRef = useRef(null)
+  const capability2Ref = useRef(null) // ✅ NEW
   const thirdRef = useRef(null)
   const qualityRef = useRef(null)
   const contactRef = useRef(null)
@@ -336,6 +347,7 @@ export default function Home() {
         setShowFourth(false)
         setShowCapability(false)
         setShowProcess(false)
+        setShowCapability2(false) // ✅ NEW
         setShowThird(false)
         setShowQuality(false)
         setShowContact(false)
@@ -354,6 +366,8 @@ export default function Home() {
           gsap.set(capabilityRef.current, { y: '0%', scale: 1, opacity: 1 })
         if (processRef.current)
           gsap.set(processRef.current, { y: '0%', scale: 1, opacity: 1 })
+        if (capability2Ref.current) // ✅ NEW
+          gsap.set(capability2Ref.current, { y: '0%', scale: 1, opacity: 1 })
         if (thirdRef.current)
           gsap.set(thirdRef.current, { y: '0%', scale: 1, opacity: 1 })
         if (qualityRef.current)
@@ -396,7 +410,8 @@ export default function Home() {
         [STAGE_FOURTH]: getStep('fourth'),
         [STAGE_CAPABILITY]: getStep('capability'),
         [STAGE_PROCESS]: getProcessStep(),
-        [STAGE_THIRD]: getStep('third'),
+        [STAGE_CAPABILITY_2]: getCapabilityStep(), // ✅ NEW
+        [STAGE_THIRD]: getThirdStep(),
         [STAGE_QUALITY]: getQualityStep(),
         [STAGE_CONTACT]: getStep('contact'),
         [STAGE_CAPABILITY]: getCapabilityStep(),
@@ -819,8 +834,8 @@ export default function Home() {
         }
 
         if (scrollProgressRef.current >= 1) {
-          mountForward(setShowThird, thirdRef, STAGE_THIRD)
-          dispatch('thirdSlideProgress', 0)
+          // ✅ NEW: Process ke baad ab Capability 2 aata hai
+          mountForward(setShowCapability2, capability2Ref, STAGE_CAPABILITY_2)
         }
       } else {
         scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
@@ -847,23 +862,48 @@ export default function Home() {
       return
     }
 
-    // THIRD
-    if (stageRef.current === STAGE_THIRD) {
-      const step = getStep('third')
+    // ✅ NEW: CAPABILITY 2 (between Process and Third)
+    if (stageRef.current === STAGE_CAPABILITY_2) {
+      const step = getCapabilityStep()
+
       if (direction > 0) {
         scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
-        if (scrollProgressRef.current <= THIRD_SPLIT) {
-          const overallP = scrollProgressRef.current / THIRD_SPLIT
-          const wrapP = Math.min(1, overallP / THIRD_WRAP_SPLIT)
-          const introP = Math.max(0, (overallP - THIRD_WRAP_SPLIT) / (1 - THIRD_WRAP_SPLIT))
-          slideParallax(thirdRef, processRef, wrapP)
-          dispatch('thirdSlideProgress', introP)
+        slideParallax(capability2Ref, processRef, scrollProgressRef.current)
+
+        if (scrollProgressRef.current >= 1) {
+          mountForward(setShowThird, thirdRef, STAGE_THIRD)
+          dispatch('thirdSlideProgress', 0)
+        }
+      } else {
+        scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
+        slideParallax(capability2Ref, processRef, scrollProgressRef.current)
+
+        if (scrollProgressRef.current <= 0) {
+          unmountBackward(setShowCapability2, processRef, STAGE_PROCESS, () =>
+            dispatch('processProgress', 1)
+          )
+        }
+      }
+      return
+    }
+
+    // THIRD
+    if (stageRef.current === STAGE_THIRD) {
+      // ✅ Intro panel removed: slide-in → horizontal slider directly
+      const step = getThirdStep()
+      if (direction > 0) {
+        scrollProgressRef.current = clamp01(scrollProgressRef.current + step * factor)
+        if (scrollProgressRef.current <= THIRD_SLIDEIN_SPLIT) {
+          const wrapP = scrollProgressRef.current / THIRD_SLIDEIN_SPLIT
+          slideParallax(thirdRef, capability2Ref, wrapP)
+          dispatch('thirdSlideProgress', wrapP)
+          dispatch('thirdHorizontalProgress', 0)
         } else {
-          slideParallax(thirdRef, processRef, 1)
+          slideParallax(thirdRef, capability2Ref, 1)
           dispatch('thirdSlideProgress', 1)
           dispatch(
             'thirdHorizontalProgress',
-            (scrollProgressRef.current - THIRD_SPLIT) / (1 - THIRD_SPLIT)
+            (scrollProgressRef.current - THIRD_SLIDEIN_SPLIT) / (1 - THIRD_SLIDEIN_SPLIT)
           )
         }
         if (scrollProgressRef.current >= 1) {
@@ -871,25 +911,22 @@ export default function Home() {
         }
       } else {
         scrollProgressRef.current = Math.max(0, scrollProgressRef.current - step * factor)
-        if (scrollProgressRef.current <= THIRD_SPLIT) {
-          const overallP = scrollProgressRef.current / THIRD_SPLIT
-          const wrapP = Math.min(1, overallP / THIRD_WRAP_SPLIT)
-          const introP = Math.max(0, (overallP - THIRD_WRAP_SPLIT) / (1 - THIRD_WRAP_SPLIT))
-          slideParallax(thirdRef, processRef, wrapP)
-          dispatch('thirdSlideProgress', introP)
+        if (scrollProgressRef.current <= THIRD_SLIDEIN_SPLIT) {
+          const wrapP = scrollProgressRef.current / THIRD_SLIDEIN_SPLIT
+          slideParallax(thirdRef, capability2Ref, wrapP)
+          dispatch('thirdSlideProgress', wrapP)
           dispatch('thirdHorizontalProgress', 0)
         } else {
-          slideParallax(thirdRef, processRef, 1)
+          slideParallax(thirdRef, capability2Ref, 1)
           dispatch('thirdSlideProgress', 1)
           dispatch(
             'thirdHorizontalProgress',
-            (scrollProgressRef.current - THIRD_SPLIT) / (1 - THIRD_SPLIT)
+            (scrollProgressRef.current - THIRD_SLIDEIN_SPLIT) / (1 - THIRD_SLIDEIN_SPLIT)
           )
         }
         if (scrollProgressRef.current <= 0) {
-          unmountBackward(setShowThird, processRef, STAGE_PROCESS, () =>
-            dispatch('processProgress', 1)
-          )
+          // ✅ NEW: Third se wapas ab Capability 2 par jata hai
+          unmountBackward(setShowThird, capability2Ref, STAGE_CAPABILITY_2)
         }
       }
       return
@@ -1217,8 +1254,9 @@ export default function Home() {
             /> */}
             <HeroSection
               // eyebrow="METAL FABRICATION EXCELLENCE"
-              headline="WE SHAPE WHAT"
-              highlightedHeadline="BUILDS"
+              headline="FABRICATED IN METAL"
+              highlightedHeadline="DEFINED BY OUR PRECISION"
+              subtitle="Advanced fabrication backed by skilled execution and uncompromising attention to detail."
             />
           </div>
 
@@ -1275,11 +1313,28 @@ export default function Home() {
                 myStage={STAGE_PROCESS}
                 POINTS={POINTS_PROCESS}
                 TOTAL_ITEMS={TOTAL_ITEMS_PROCESS}
-                heading_part_1={'EVERY PROJECT DEMANDS A'}
+                heading_part_1={'EVERY PROJECT DEMANDS A '}
                 heading_part_2={'PRECISE PROCESS'}
                 description={
                   'From precision cutting and forming to fabrication and finishing, our capabilities are built around what the final result demands.'
                 }
+              />
+            </div>
+          )}
+          {/* ✅ NEW: Capability 2 — Third se pehle.
+              zIndex 6 same as Third, lekin DOM me pehle hai is liye Third iske upar aata hai. */}
+          {showCapability2 && (
+            <div
+              ref={capability2Ref}
+              className="capability-section-wrapper capability-section-2-wrapper"
+              style={slideInWrapperStyle(6)}
+            >
+              <CapabilitySection
+                heading_1={'EVERY CUT MATTERS'}
+                heading_2={' SEE WHAT WE’VE BUILT'}
+                paragraph={'Every project has its own requirements. We fabricate accordingly.'}
+                visiblePoints={CAPABILITY_VISIBLE_POINTS}
+                POINTS={POINTS}
               />
             </div>
           )}
@@ -1292,11 +1347,11 @@ export default function Home() {
               <ThirdSection
                 scrollProgressRef={scrollProgressRef}
                 slides={project_slides}
-                heading_part_1={'MADE FOR THE PROJECT'}
-                heading_part_2={'NOT THE CATALOGUE'}
-                description={
-                  'Every project has its own requirements. We fabricate accordingly.'
-                }
+                // heading_part_1={'MADE FOR THE PROJECT'}
+                // heading_part_2={'NOT THE CATALOGUE'}
+                // description={
+                //   'Every project has its own requirements. We fabricate accordingly.'
+                // }
               />
             </div>
           )}

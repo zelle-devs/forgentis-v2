@@ -67,8 +67,8 @@ const singleData = {
   title: 'ENGINEERED FOR PRECISION<span>BUILT FOR PERFORMANCE</span>',
   desc: 'Explore the fabrication capabilities, technology and standards behind every Forgentis project—from precision cutting and welding to finishing, inspection and final preparation.',
   footer: 'Precision in every stage. Consistency in every result.',
-  // buttonText: 'VIEW FACILITY GALLERY',
-  // buttonLink: '',
+  buttonText: 'SEE OUR WORK',
+  buttonLink: '/projects',
 }
 
 export default function Facility() {
@@ -660,6 +660,7 @@ export default function Facility() {
   // eyebrow="METAL FABRICATION EXCELLENCE"
   headline="WHERE PRECISION BECOMES"
   highlightedHeadline="PRODUCTION"
+  subtitle='A production environment designed around capability, control, and repeatable precision.'
 />
         </div>
       )}

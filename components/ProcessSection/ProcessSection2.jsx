@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import gsap from 'gsap'
 import './ProcessSection2.css'
 
@@ -17,6 +18,7 @@ function ProcessSection2({
   const titleOverlayRef = useRef(null)
   const titleRef = useRef(null)
   const descRef = useRef(null)
+  const ctaRef = useRef(null)
   const sectionContentRef = useRef(null)
   const mobileValueRef = useRef(0)
 
@@ -86,7 +88,7 @@ function ProcessSection2({
       const buffer = isMobile ? 0.35 : 0.28
 
       // ─── TITLE OVERLAY ─────────────────────────────────
-      if (titleOverlayRef.current && titleRef.current && descRef.current) {
+      if (titleOverlayRef.current && titleRef.current) {
         const titleFadeStart = buffer * 0.5
         const titleFadeEnd = buffer
 
@@ -111,7 +113,8 @@ function ProcessSection2({
           pointerEvents: titleOpacity > 0.5 ? 'auto' : 'none',
         })
         gsap.set(titleRef.current, { y: titleY })
-        gsap.set(descRef.current, { y: titleY * 0.5 })
+        if (descRef.current) gsap.set(descRef.current, { y: titleY * 0.5 })
+        if (ctaRef.current) gsap.set(ctaRef.current, { y: titleY * 0.3 })
       }
 
       // ─── SECTION CONTENT REVEAL ───────────────────────
@@ -172,7 +175,7 @@ function ProcessSection2({
         // Faster glide = stops sooner (0.15 → 0.3)
         mobileValueRef.current += (targetValue - mobileValueRef.current) * 0.3
 
-        // Snap asnd stop completely when close enough (no endless tiny movement)
+        // Snap and stop completely when close enough (no endless tiny movement)
         if (Math.abs(targetValue - mobileValueRef.current) < 0.01) {
           mobileValueRef.current = targetValue
         }
@@ -271,18 +274,25 @@ function ProcessSection2({
       {/* ===== MAIN TITLE OVERLAY ===== */}
       <div ref={titleOverlayRef} className="process-title-overlay">
         <h2 ref={titleRef} className="process-main-title">
-          <span className="process-title-line">{heading_part_1}</span>
+          {heading_part_1}
           {heading_part_2 && (
             <span className="process-title-line process-title-line--accent">
               {heading_part_2}
             </span>
           )}
         </h2>
+
         {description && (
           <p ref={descRef} className="process-main-desc">
             {description}
           </p>
         )}
+
+        <div ref={ctaRef} className="process-main-cta">
+          <a href="/projects" className="contact-btn-var-2">
+            SEE OUR WORK
+          </a>
+        </div>
       </div>
 
       {/* ===== ACTUAL SECTION CONTENT ===== */}
@@ -360,7 +370,3 @@ function ProcessSection2({
 }
 
 export default ProcessSection2
-
-
-
-
